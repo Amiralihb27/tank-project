@@ -19,9 +19,22 @@ public class Tank {
 
     private ImageView imageView;
 
+    private int score;
+
+    private int health;
+
+    private int powerOfTheBullet = 1;
+
     public Tank(double xPos, double yPos, ImageView imageView) {
         this.xPos = xPos;
         this.yPos = yPos;
+        this.imageView = imageView;
+    }
+
+    public Tank(int speedX, int speedY, ImageView imageView) {
+        this.speedX = speedX;
+        this.speedY = speedY;
+
         this.imageView = imageView;
     }
 
@@ -87,5 +100,30 @@ public class Tank {
 
     public void setDirection(Direction direction) {
         this.direction = direction;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void lostHP() {
+        if (this.health > 0) {
+            this.health--;
+        } else {
+            this.health = 0;
+        }
+
+    }
+
+    public void setHealth(int health) {
+        health = health;
     }
 }
