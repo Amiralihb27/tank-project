@@ -50,31 +50,30 @@ public class Main extends Application {
         canvas = new Canvas(WIDTH, HEIGHT);
         gc = canvas.getGraphicsContext2D();
         Rectangle rect = new Rectangle(0, 0, 600, 600);
-
+        Group obstaclesGroup = new Group();
         rect.setFill(null);
         rect.setStroke(Color.RED);
         rect.setStrokeWidth(5);
         root.getChildren().add(rect);
-        handlingTanks();
+        handlingTanks(obstaclesGroup);
         BrickWall brickWall = new BrickWall(0, 0, new ImageView(new Image(
                 "F:\\project4\\src\\main\\resources\\images\\stackbrick.png", player.getPlayerSize(),
                 player.getPlayerSize(), true, true)));
-//       root.getChildren().add(brickWall.getImageView());
-//        root.getChildren().add(brickWall.getImageView());
         Place place = new Place();
-        place.addBrickToTheTop(root, player.getPlayerSize());
+        place.addBrickToTheTop(root, player.getPlayerSize(), obstaclesGroup);
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         scene.setFill(Color.BLACK);
-        player.move(scene, gc);
+        player.move(scene, gc,obstaclesGroup);
         primaryStage.setTitle("Player Shoot Game");
         primaryStage.setScene(scene);
         primaryStage.show();
         shooting(gc);
     }
 
-    public void handlingTanks() {
+    public void handlingTanks(Group obstaclesGroup) {
         ImageView imageView = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\tank1.png"));
-        player = new Player(200, 350, imageView);
+        player = new Player(400, 600, imageView);
+        player.setYPos(600-player.getPlayerSize());
         bullet = new Bullet(0, 0);
         //  bulletAngle = 90.0;
         player.setBullet(bullet);
@@ -83,7 +82,7 @@ public class Main extends Application {
                 new ImageView(new Image("F:\\javap for 4012\\FilePractice\\enemytank1.png", player.getPlayerSize(),
                         player.getPlayerSize(), true, true)));
         root.getChildren().add(ordinaryTank.getImageView());
-        ordinaryTank.initializeDirection(player.getPlayerSize(), root);
+        ordinaryTank.initializeDirection(player.getPlayerSize(),obstaclesGroup );
     }
 
 

@@ -4,6 +4,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Bounds;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -28,7 +29,7 @@ public class OrdinaryTank extends Tank {
         super.setScore(100);
     }
 
-    public void initializeDirection(int size,Pane root) {
+    public void initializeDirection(int size, Group obstaclesGroup) {
         Random random = new Random();
         super.setXPos(positionToRespawn[random.nextInt(4)]);
         getImageView().setX(getXPos());
@@ -44,44 +45,44 @@ public class OrdinaryTank extends Tank {
             if (super.getSpeedX() != 0 && super.getSpeedY() != 0) {
                 if (random.nextBoolean()) {
                     super.setSpeedX(0);
-                    chooseVerticalPicture(getSpeedY(),size);
+                    chooseVerticalPicture(getSpeedY(), size);
                 } else {
                     super.setSpeedY(0);
-                    chooseHorizontalPicture(getSpeedX(),size);
+                    chooseHorizontalPicture(getSpeedX(), size);
                 }
             }
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
-        gameLoop(size,root);
+        gameLoop(size, obstaclesGroup);
 
         // create a game loop to move the tank
     }
 
-    public void chooseHorizontalPicture(int xPos,int size){
-        switch (xPos){
+    public void chooseHorizontalPicture(int xPos, int size) {
+        switch (xPos) {
             case 1:
                 getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\enemyright.png",
-                        size, size, true,true));
+                        size, size, true, true));
                 break;
             case -1:
                 getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\enemyleft.png",
-                        size, size, true,true));
+                        size, size, true, true));
                 break;
             default:
                 break;
         }
     }
 
-    public void chooseVerticalPicture(int ySpeed,int size){
-        switch (ySpeed){
+    public void chooseVerticalPicture(int ySpeed, int size) {
+        switch (ySpeed) {
             case 1:
                 getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\enemydown.png",
-                        size, size, true,true));
+                        size, size, true, true));
                 break;
             case -1:
                 getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\enemytank1.png",
-                        size, size, true,true));
+                        size, size, true, true));
                 break;
             default:
                 break;
@@ -89,51 +90,70 @@ public class OrdinaryTank extends Tank {
         }
     }
 
-    public void gameLoop(int size,Pane root) {
+    public void gameLoop(int size, Group obstaclesGroup) {
         Timeline gameLoop = new Timeline(new KeyFrame(Duration.millis(20), event -> {
-            move(size,root);
+            move(size, obstaclesGroup);
         }));
         gameLoop.setCycleCount(Animation.INDEFINITE);
         gameLoop.play();
     }
 
-    public void move(int size,Pane root){
+    public void move(int size, Group obstaclesGroup) {
         super.setXPos(super.getXPos() + super.getSpeedX());
         super.setYPos(super.getYPos() + super.getSpeedY());
-        chooseHorizontalPicture(getSpeedX(),size);
-        chooseVerticalPicture(getSpeedY(),size);
+        chooseHorizontalPicture(getSpeedX(), size);
+        chooseVerticalPicture(getSpeedY(), size);
         getImageView().setX(getXPos());
         getImageView().setY(getYPos());
-        checkingBoundries(size,root);
+        checkingBoundries(size, obstaclesGroup);
     }
 
-    public void checkingBoundries(int size, Pane root){
+    public void checkingBoundries(int size, Group obstaclesGroup) {
         Bounds bounds = getImageView().getBoundsInParent();
+        actAgainstCollision(obstaclesGroup);
         if (bounds.getMinX() < 0) {
             super.setXPos(0);
             super.setSpeedX(super.getSpeedX() * -1);
             getImageView().setX(0);
-            chooseHorizontalPicture(getSpeedX(),size);
+            chooseHorizontalPicture(getSpeedX(), size);
         }
         if (bounds.getMaxX() > canvasHeight) {
             setXPos(canvasWidth - bounds.getWidth());
             setSpeedX(getSpeedX() * -1);
             getImageView().setX(getXPos());
-            chooseHorizontalPicture(getSpeedX(),size);
+            chooseHorizontalPicture(getSpeedX(), size);
         }
         if (bounds.getMinY() < 0) {
             setYPos(0);
             getImageView().setY(0);
             setSpeedY(getSpeedY() * -1);
-            chooseVerticalPicture(getSpeedY(),size);
+            chooseVerticalPicture(getSpeedY(), size);
             getImageView().setY(0);
         }
         if (bounds.getMaxY() > canvasHeight) {
             setYPos(canvasHeight - bounds.getHeight());
             setSpeedY(getSpeedY() * -1);
-            chooseVerticalPicture(getSpeedY(),size);
+            chooseVerticalPicture(getSpeedY(), size);
             getImageView().setY(getYPos());
         }
+    }
+
+    public void actAgainstCollision(Group obstaclesGroup) {
+        if (checkCollision(this, obstaclesGroup)) {
+            super.setSpeedX(super.getSpeedX() * -1);
+            super.setSpeedY(super.getSpeedY() * -1);
+        }
+    }
+
+    public boolean checkCollision(Tank tank, Group obstaclesGroup) {
+        for (Node node : obstaclesGroup.getChildren()) {
+            if (tank.getImageView().getBoundsInParent().intersects(node.getBoundsInParent())) {
+                // Collision detected, change direction of tank
+                // tank.changeDirection();
+                return true;
+            }
+        }
+        return false;
     }
 
 

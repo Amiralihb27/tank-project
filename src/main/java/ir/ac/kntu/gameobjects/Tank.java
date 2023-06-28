@@ -25,6 +25,11 @@ public class Tank {
 
     private int powerOfTheBullet = 1;
 
+
+    public Tank(){
+
+    }
+
     public Tank(double xPos, double yPos, ImageView imageView) {
         this.xPos = xPos;
         this.yPos = yPos;
