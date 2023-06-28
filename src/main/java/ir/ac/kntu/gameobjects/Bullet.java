@@ -18,7 +18,7 @@ public class Bullet {
 
     private double angle = 90.0;
 
-    private int bulletSize = 10;
+    private int bulletSize = 15;
 
     private double startingX;
 
@@ -28,7 +28,7 @@ public class Bullet {
 
     private Image bulletImage;
 
-    private double bulletSpeed = 5.0;
+    private double bulletSpeed = 10.0;
 
     public Bullet(double xPos, double yPos) {
         this.xPos = xPos;

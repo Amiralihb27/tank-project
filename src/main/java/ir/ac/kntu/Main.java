@@ -1,10 +1,9 @@
 package ir.ac.kntu;
 
-import ir.ac.kntu.gameobjects.Bullet;
-import ir.ac.kntu.gameobjects.OrdinaryTank;
-import ir.ac.kntu.gameobjects.Player;
+import ir.ac.kntu.gameobjects.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -51,21 +50,19 @@ public class Main extends Application {
         canvas = new Canvas(WIDTH, HEIGHT);
         gc = canvas.getGraphicsContext2D();
         Rectangle rect = new Rectangle(0, 0, 600, 600);
+
         rect.setFill(null);
         rect.setStroke(Color.RED);
         rect.setStrokeWidth(5);
         root.getChildren().add(rect);
-        ImageView imageView = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\tank1.png"));
-        player = new Player(200, 350, imageView);
-        bullet = new Bullet(0, 0);
-        //  bulletAngle = 90.0;
-        player.setBullet(bullet);
-        root.getChildren().add(canvas);
-        OrdinaryTank ordinaryTank = new OrdinaryTank(0, 0,
-                new ImageView(new Image("F:\\javap for 4012\\FilePractice\\enemytank1.png", player.getPlayerSize(),
-                         player.getPlayerSize(), true, true)));
-        root.getChildren().add(ordinaryTank.getImageView());
-        ordinaryTank.initializeDirection(player.getPlayerSize());
+        handlingTanks();
+        BrickWall brickWall = new BrickWall(0, 0, new ImageView(new Image(
+                "F:\\project4\\src\\main\\resources\\images\\stackbrick.png", player.getPlayerSize(),
+                player.getPlayerSize(), true, true)));
+//       root.getChildren().add(brickWall.getImageView());
+//        root.getChildren().add(brickWall.getImageView());
+        Place place = new Place();
+        place.addBrickToTheTop(root, player.getPlayerSize());
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         scene.setFill(Color.BLACK);
         player.move(scene, gc);
@@ -74,6 +71,21 @@ public class Main extends Application {
         primaryStage.show();
         shooting(gc);
     }
+
+    public void handlingTanks() {
+        ImageView imageView = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\tank1.png"));
+        player = new Player(200, 350, imageView);
+        bullet = new Bullet(0, 0);
+        //  bulletAngle = 90.0;
+        player.setBullet(bullet);
+        root.getChildren().add(canvas);
+        OrdinaryTank ordinaryTank = new OrdinaryTank(0, 0,
+                new ImageView(new Image("F:\\javap for 4012\\FilePractice\\enemytank1.png", player.getPlayerSize(),
+                        player.getPlayerSize(), true, true)));
+        root.getChildren().add(ordinaryTank.getImageView());
+        ordinaryTank.initializeDirection(player.getPlayerSize(), root);
+    }
+
 
     public void shooting(GraphicsContext gc) {
         AnimationTimer timer = new AnimationTimer() {
@@ -92,10 +104,10 @@ public class Main extends Application {
                 if (newBullet.isAlive()) {
                     newBullet.update(deltaTime);
                     newBullet.draw(gc);
-                    if (newBullet.getxPos() < 20 || newBullet.getxPos() > 600 - newBullet.getBulletSize() ||
-                            newBullet.getyPos() < 20 || newBullet.getyPos() > 600 - newBullet.getBulletSize()
-                            || Math.abs(newBullet.getxPos() - newBullet.getStartingX()) >= 100 ||
-                            Math.abs(newBullet.getyPos() - newBullet.getStartingY()) >= 100) {
+                    if (newBullet.getxPos() < 0 || newBullet.getxPos() > 600 - newBullet.getBulletSize() ||
+                            newBullet.getyPos() < 0 || newBullet.getyPos() > 600 - newBullet.getBulletSize()
+                            || Math.abs(newBullet.getxPos() - newBullet.getStartingX()) >= 200 ||
+                            Math.abs(newBullet.getyPos() - newBullet.getStartingY()) >= 200) {
                         newBullet.kill();
                     }
                 }

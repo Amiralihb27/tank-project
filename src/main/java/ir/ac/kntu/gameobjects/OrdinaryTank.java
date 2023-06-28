@@ -4,11 +4,13 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Bounds;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 import java.util.Random;
@@ -26,7 +28,7 @@ public class OrdinaryTank extends Tank {
         super.setScore(100);
     }
 
-    public void initializeDirection(int size) {
+    public void initializeDirection(int size,Pane root) {
         Random random = new Random();
         super.setXPos(positionToRespawn[random.nextInt(4)]);
         getImageView().setX(getXPos());
@@ -51,7 +53,7 @@ public class OrdinaryTank extends Tank {
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
-        gameLoop(size);
+        gameLoop(size,root);
 
         // create a game loop to move the tank
     }
@@ -87,25 +89,25 @@ public class OrdinaryTank extends Tank {
         }
     }
 
-    public void gameLoop(int size) {
+    public void gameLoop(int size,Pane root) {
         Timeline gameLoop = new Timeline(new KeyFrame(Duration.millis(20), event -> {
-            move(size);
+            move(size,root);
         }));
         gameLoop.setCycleCount(Animation.INDEFINITE);
         gameLoop.play();
     }
 
-    public void move(int size){
+    public void move(int size,Pane root){
         super.setXPos(super.getXPos() + super.getSpeedX());
         super.setYPos(super.getYPos() + super.getSpeedY());
         chooseHorizontalPicture(getSpeedX(),size);
         chooseVerticalPicture(getSpeedY(),size);
         getImageView().setX(getXPos());
         getImageView().setY(getYPos());
-        checkingBoundries(size);
+        checkingBoundries(size,root);
     }
 
-    public void checkingBoundries(int size){
+    public void checkingBoundries(int size, Pane root){
         Bounds bounds = getImageView().getBoundsInParent();
         if (bounds.getMinX() < 0) {
             super.setXPos(0);

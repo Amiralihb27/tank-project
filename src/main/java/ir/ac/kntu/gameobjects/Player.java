@@ -9,6 +9,9 @@ import javafx.scene.input.KeyCode;
 
 import java.lang.reflect.GenericArrayType;
 
+import static ir.ac.kntu.constants.GlobalConstants.canvasHeight;
+import static ir.ac.kntu.constants.GlobalConstants.canvasWidth;
+
 
 public class Player extends Tank {
 
@@ -63,8 +66,10 @@ public class Player extends Tank {
         super.getBullet().setAngle(90.0);
         super.setDirection(Direction.UP);
         super.getBullet().initializeTheDirection(super.getDirection());
-        super.setYPos(super.getYPos() - super.getSpeedY());
-        super.getImageView().setY(super.getYPos());
+        if (getYPos() + getSpeedY() > 0) {
+            super.setYPos(super.getYPos() - super.getSpeedY());
+            super.getImageView().setY(super.getYPos());
+        }
     }
 
     public void moveDown() {
@@ -73,8 +78,12 @@ public class Player extends Tank {
         setImage(playerImage2);
         super.setDirection(Direction.DOWN);
         super.getBullet().initializeTheDirection(super.getDirection());
-        super.setYPos(super.getYPos() + super.getSpeedY());
-        super.getImageView().setY(super.getYPos());
+        if (getYPos() + getPlayerSize() < canvasHeight){
+            super.setYPos(super.getYPos() + super.getSpeedY());
+            super.getImageView().setY(super.getYPos());
+        }
+
+
     }
 
     public void moveLeft() {
@@ -83,8 +92,10 @@ public class Player extends Tank {
         setImage(playerImage2);
         super.setDirection(Direction.LEFT);
         super.getBullet().initializeTheDirection(super.getDirection());
-        super.setXPos(super.getXPos() - super.getSpeedX());
-        super.getImageView().setX(super.getXPos());
+        if (getXPos() - getSpeedX() > 0) {
+            super.setXPos(super.getXPos() - super.getSpeedX());
+            super.getImageView().setX(super.getXPos());
+        }
     }
 
     public void moveRight() {
@@ -93,8 +104,10 @@ public class Player extends Tank {
         setImage(playerImage2);
         super.setDirection(Direction.RIGHT);
         super.getBullet().initializeTheDirection(super.getDirection());
-        super.setXPos(super.getXPos() + super.getSpeedX());
-        super.getImageView().setX(super.getXPos());
+        if (getXPos() + playerSize + getSpeedX() < canvasWidth) {
+            super.setXPos(super.getXPos() + super.getSpeedX());
+            super.getImageView().setX(super.getXPos());
+        }
     }
 
 
