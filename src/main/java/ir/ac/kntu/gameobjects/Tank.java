@@ -26,7 +26,7 @@ public class Tank {
     private int powerOfTheBullet = 1;
 
 
-    public Tank(){
+    public Tank() {
 
     }
 

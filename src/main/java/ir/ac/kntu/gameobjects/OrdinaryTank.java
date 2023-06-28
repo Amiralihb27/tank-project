@@ -147,7 +147,8 @@ public class OrdinaryTank extends Tank {
 
     public boolean checkCollision(Tank tank, Group obstaclesGroup) {
         for (Node node : obstaclesGroup.getChildren()) {
-            if (tank.getImageView().getBoundsInParent().intersects(node.getBoundsInParent())) {
+            if (tank.getImageView().getBoundsInParent().intersects(node.getBoundsInParent())
+                    && !tank.getImageView().equals(node)) {
                 // Collision detected, change direction of tank
                 // tank.changeDirection();
                 return true;

@@ -7,6 +7,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Pane;
 
 import java.lang.reflect.GenericArrayType;
 
@@ -42,19 +43,19 @@ public class Player extends Tank {
         super.getImageView().setImage(image);
     }
 
-    public void move(Scene scene, GraphicsContext gc, Group obstaclesGroup) {
+    public void move(Scene scene, GraphicsContext gc, Group obstaclesGroup,Pane root) {
         Image temp = super.getImageView().getImage();
         draw(gc);
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.LEFT) {
-                moveLeft(obstaclesGroup);
+                moveLeft(obstaclesGroup,root);
             } else if (event.getCode() == KeyCode.RIGHT) {
-                moveRight(obstaclesGroup);
+                moveRight(obstaclesGroup,root);
             } else if (event.getCode() == KeyCode.UP) {
                 setImage(temp);
-                moveUp(obstaclesGroup);
+                moveUp(obstaclesGroup,root);
             } else if (event.getCode() == KeyCode.DOWN) {
-                moveDown(obstaclesGroup);
+                moveDown(obstaclesGroup,root);
             } else if (event.getCode() == KeyCode.SPACE && !super.getBullet().isAlive()) {
                 super.getBullet().setShooting(true);
             }
@@ -67,32 +68,27 @@ public class Player extends Tank {
     }
 
 
-    public void moveUp(Group obstaclesGroup) {
+    public void moveUp(Group obstaclesGroup, Pane root) {
         super.getBullet().setAngle(90.0);
         super.setDirection(Direction.UP);
         super.getBullet().initializeTheDirection(super.getDirection());
         Collision collision = new Collision(obstaclesGroup);
-        if (collision.checkCollision(makeCopy(), 0, super.getSpeedY() * -1)) {
-            System.out.println("dsdsds");
-        }
-        if (getYPos() + getSpeedY() > 0 && !collision.checkCollision(makeCopy(), 0, super.getSpeedY() * -1)) {
+
+        if (getYPos() + getSpeedY() > 0 && !collision.checkCollision(makeCopy(), 0, super.getSpeedY() * -1,root)) {
             super.setYPos(super.getYPos() - super.getSpeedY());
             super.getImageView().setY(super.getYPos());
         }
     }
 
-    public void moveDown(Group obstaclesGroup) {
+    public void moveDown(Group obstaclesGroup,Pane root) {
         super.getBullet().setAngle(270.0);
         Image playerImage2 = new Image("F:\\project4\\src\\main\\resources\\images\\tank3.png");
         setImage(playerImage2);
         super.setDirection(Direction.DOWN);
         super.getBullet().initializeTheDirection(super.getDirection());
         Collision collision = new Collision(obstaclesGroup);
-        if (collision.checkCollision(makeCopy(), 0, super.getSpeedY())) {
-            System.out.println("dsdsds");
-        }
         if (getYPos() + getPlayerSize() < canvasHeight &&
-                !collision.checkCollision(makeCopy(), 0, super.getSpeedY())) {
+                !collision.checkCollision(makeCopy(), 0, super.getSpeedY(),root)) {
             super.setYPos(super.getYPos() + super.getSpeedY());
             super.getImageView().setY(super.getYPos());
         }
@@ -100,24 +96,20 @@ public class Player extends Tank {
 
     }
 
-    public void moveLeft(Group obstaclesGroup) {
+    public void moveLeft(Group obstaclesGroup,Pane root) {
         super.getBullet().setAngle(180.0);
         Image playerImage2 = new Image("F:\\project4\\src\\main\\resources\\images\\tank2.png");
         setImage(playerImage2);
         super.setDirection(Direction.LEFT);
         super.getBullet().initializeTheDirection(super.getDirection());
         Collision collision = new Collision(obstaclesGroup);
-
-        if (collision.checkCollision(makeCopy(), super.getSpeedX() * -1, 0)) {
-            System.out.println("dsdsds");
-        }
-        if (getXPos() - getSpeedX() > 0 && !collision.checkCollision(makeCopy(), super.getSpeedX() * -1, 0)) {
+        if (getXPos() - getSpeedX() > 0 && !collision.checkCollision(makeCopy(), super.getSpeedX() * -1, 0,root)) {
             super.setXPos(super.getXPos() - super.getSpeedX());
             super.getImageView().setX(super.getXPos());
         }
     }
 
-    public void moveRight(Group obstaclesGroup) {
+    public void moveRight(Group obstaclesGroup,Pane root) {
         super.getBullet().setAngle(0.0);
         Image playerImage2 = new Image("F:\\project4\\src\\main\\resources\\images\\tank4.png");
         setImage(playerImage2);
@@ -125,11 +117,8 @@ public class Player extends Tank {
         super.getBullet().initializeTheDirection(super.getDirection());
         Collision collision = new Collision(obstaclesGroup);
 
-        if (collision.checkCollision(makeCopy(), super.getSpeedX(), 0)) {
-            System.out.println("dsdsds");
-        }
         if (getXPos() + playerSize + getSpeedX() < canvasWidth &&
-                !collision.checkCollision(makeCopy(), super.getSpeedX(), 0)) {
+                !collision.checkCollision(makeCopy(), super.getSpeedX(), 0,root)) {
             super.setXPos(super.getXPos() + super.getSpeedX());
             super.getImageView().setX(super.getXPos());
         }

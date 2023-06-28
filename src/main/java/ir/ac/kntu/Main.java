@@ -3,6 +3,7 @@ package ir.ac.kntu;
 import ir.ac.kntu.gameobjects.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -13,6 +14,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
 
 import static javafx.application.Application.launch;
 
@@ -30,6 +33,8 @@ public class Main extends Application {
 
 
     private static final double BULLET_SPEED = 5.0;
+
+    private ArrayList<Tank> tanks = new ArrayList<>();
 
     private Pane root;
 
@@ -63,17 +68,17 @@ public class Main extends Application {
         place.addBrickToTheTop(root, player.getPlayerSize(), obstaclesGroup);
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         scene.setFill(Color.BLACK);
-        player.move(scene, gc,obstaclesGroup);
+        player.move(scene, gc, obstaclesGroup, root);
         primaryStage.setTitle("Player Shoot Game");
         primaryStage.setScene(scene);
         primaryStage.show();
-        shooting(gc);
+        shooting(gc, obstaclesGroup);
     }
 
     public void handlingTanks(Group obstaclesGroup) {
         ImageView imageView = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\tank1.png"));
         player = new Player(400, 600, imageView);
-        player.setYPos(600-player.getPlayerSize());
+        player.setYPos(600 - player.getPlayerSize());
         bullet = new Bullet(0, 0);
         //  bulletAngle = 90.0;
         player.setBullet(bullet);
@@ -82,11 +87,12 @@ public class Main extends Application {
                 new ImageView(new Image("F:\\javap for 4012\\FilePractice\\enemytank1.png", player.getPlayerSize(),
                         player.getPlayerSize(), true, true)));
         root.getChildren().add(ordinaryTank.getImageView());
-        ordinaryTank.initializeDirection(player.getPlayerSize(),obstaclesGroup );
+        this.tanks.add(ordinaryTank);
+        ordinaryTank.initializeDirection(player.getPlayerSize(), obstaclesGroup);
     }
 
 
-    public void shooting(GraphicsContext gc) {
+    public void shooting(GraphicsContext gc, Group obstaclesGroup) {
         AnimationTimer timer = new AnimationTimer() {
             long lastTime = System.nanoTime();
 
@@ -103,16 +109,43 @@ public class Main extends Application {
                 if (newBullet.isAlive()) {
                     newBullet.update(deltaTime);
                     newBullet.draw(gc);
-                    if (newBullet.getxPos() < 0 || newBullet.getxPos() > 600 - newBullet.getBulletSize() ||
-                            newBullet.getyPos() < 0 || newBullet.getyPos() > 600 - newBullet.getBulletSize()
-                            || Math.abs(newBullet.getxPos() - newBullet.getStartingX()) >= 200 ||
-                            Math.abs(newBullet.getyPos() - newBullet.getStartingY()) >= 200) {
-                        newBullet.kill();
-                    }
+                    checkCollisionForBullet(newBullet, obstaclesGroup);
+
                 }
             }
         };
         timer.start();
+    }
+
+    public void checkCollisionForBullet(Bullet newBullet, Group obstaclesGroup) {
+        Collision collision = new Collision(obstaclesGroup);
+        ImageView bulletImageView = new ImageView(newBullet.getBulletImage());
+        bulletImageView.setY(newBullet.getyPos());
+        bulletImageView.setX(newBullet.getxPos());
+        if (collision.checkCollision(bulletImageView, newBullet.getSpeedX(),
+                newBullet.getSpeedY(), root) || destroy(bulletImageView)) {
+            collision.destroy(root, bulletImageView);
+            newBullet.kill();
+        }
+        if (newBullet.getxPos() < 0 || newBullet.getxPos() > 600 - newBullet.getBulletSize() ||
+                newBullet.getyPos() < 0 || newBullet.getyPos() > 600 - newBullet.getBulletSize()
+                || Math.abs(newBullet.getxPos() - newBullet.getStartingX()) >= 200 ||
+                Math.abs(newBullet.getyPos() - newBullet.getStartingY()) >= 200) {
+            newBullet.kill();
+        }
+    }
+
+    public boolean destroy(ImageView bullet) {
+        Bounds bounds1 = bullet.getBoundsInParent();
+        for (int i = 0; i < this.tanks.size(); i++) {
+            Bounds bounds2 = this.tanks.get(i).getImageView().getBoundsInParent();
+            if (bounds1.intersects(bounds2)) {
+                root.getChildren().remove(tanks.get(i));
+                tanks.remove(tanks.get(i));
+                return true;
+            }
+        }
+        return false;
     }
 
     public void setPosWhileShooting(Bullet newBullet) {

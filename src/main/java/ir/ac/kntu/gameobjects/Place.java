@@ -20,7 +20,7 @@ public class Place {
                         "F:\\project4\\src\\main\\resources\\images\\stackbrick.png", size,
                         size, true, true)));
                 brickWall.getImageView().setX(brickWall.getImageView().getX() + 2 * size * i);
-                brickWall.getImageView().setY(brickWall.getImageView().getY() + size * j - 5 * j);
+                brickWall.getImageView().setY(brickWall.getImageView().getY() + size * j );
                 ImageView copy=createCopy(brickWall.getImageView());
                 obstaclesGroup.getChildren().add(copy);
                 brickWall.drawWall(root);
@@ -33,7 +33,7 @@ public class Place {
                                 "F:\\project4\\src\\main\\resources\\images\\stackbrick.png", size,
                                 size, true, true)));
                 brickWall.getImageView().setX(brickWall.getImageView().getX() + 2 * size * i);
-                brickWall.getImageView().setY(brickWall.getImageView().getY() + size * j - 5 * j);
+                brickWall.getImageView().setY(brickWall.getImageView().getY() + size * j );
                 ImageView copy=createCopy(brickWall.getImageView());
                 obstaclesGroup.getChildren().add(copy);
                 brickWall.drawWall(root);
@@ -50,7 +50,7 @@ public class Place {
                                 "F:\\project4\\src\\main\\resources\\images\\stackbrick.png", size,
                                 size, true, true)));
                 brickWall.getImageView().setX(brickWall.getImageView().getX() + 2 * size * i);
-                brickWall.getImageView().setY(brickWall.getImageView().getY() + size * j - 5 * j);
+                brickWall.getImageView().setY(brickWall.getImageView().getY() + size * j );
                 ImageView copy=createCopy(brickWall.getImageView());
                 obstaclesGroup.getChildren().add(copy);
                 brickWall.drawWall(root);
@@ -63,7 +63,7 @@ public class Place {
                                 "F:\\project4\\src\\main\\resources\\images\\stackbrick.png", size,
                                 size, true, true)));
                 brickWall.getImageView().setX(brickWall.getImageView().getX() + 2 * size * i);
-                brickWall.getImageView().setY(brickWall.getImageView().getY() + size * j - 5 * j);
+                brickWall.getImageView().setY(brickWall.getImageView().getY() + size * j);
                 ImageView copy=createCopy(brickWall.getImageView());
                 obstaclesGroup.getChildren().add(copy);
                 brickWall.drawWall(root);
@@ -80,7 +80,7 @@ public class Place {
                                 "F:\\project4\\src\\main\\resources\\images\\stackmetal.png", size,
                                 size, true, true)));
                 brickWall.getImageView().setX(brickWall.getImageView().getX() + 4 * size * i);
-                brickWall.getImageView().setY(brickWall.getImageView().getY() + size * j - 5 * j);
+                brickWall.getImageView().setY(brickWall.getImageView().getY() + size * j );
                 ImageView copy=createCopy(brickWall.getImageView());
                 obstaclesGroup.getChildren().add(copy);
                 brickWall.drawWall(root);

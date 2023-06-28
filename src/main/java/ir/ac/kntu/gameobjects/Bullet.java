@@ -48,6 +48,15 @@ public class Bullet {
         this.bulletSpeed = bulletSpeed;
     }
 
+
+    public Image getBulletImage() {
+        return bulletImage;
+    }
+
+    public void setBulletImage(Image bulletImage) {
+        this.bulletImage = bulletImage;
+    }
+
     public double getStartingX() {
         return startingX;
     }
@@ -156,6 +165,7 @@ public class Bullet {
     public void draw(GraphicsContext gc) {
         if (alive) {
             gc.drawImage(bulletImage, xPos, yPos, bulletSize, bulletSize);
+
 
         }
     }
