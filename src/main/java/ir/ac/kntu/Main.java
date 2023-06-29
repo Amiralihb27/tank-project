@@ -88,7 +88,11 @@ public class Main extends Application {
                         player.getPlayerSize(), true, true)));
         root.getChildren().add(ordinaryTank.getImageView());
         this.tanks.add(ordinaryTank);
+        Bullet newBullet = new Bullet(0, 0);
+        ordinaryTank.setBullet(newBullet);
         ordinaryTank.initializeDirection(player.getPlayerSize(), obstaclesGroup);
+        shooting(gc, obstaclesGroup);
+        ordinaryTank.shootBullet(root);
     }
 
 
@@ -103,6 +107,7 @@ public class Main extends Application {
                 gc.clearRect(0, 0, 600, 600);
                 player.draw(gc);
                 Bullet newBullet = player.getBullet();
+                // tanks.get(0).shootBullet(gc,tanks,obstaclesGroup,root);
                 if (newBullet.isShooting()) {
                     setPosWhileShooting(newBullet);
                 }
@@ -140,9 +145,18 @@ public class Main extends Application {
         for (int i = 0; i < this.tanks.size(); i++) {
             Bounds bounds2 = this.tanks.get(i).getImageView().getBoundsInParent();
             if (bounds1.intersects(bounds2)) {
-                root.getChildren().remove(tanks.get(i));
-                tanks.remove(tanks.get(i));
-                return true;
+                tanks.get(i).lostHP();
+                if (tanks.get(i).getHealth() <= 0) {
+                    if (!tanks.get(i).getClass().getSimpleName().equals("Player")) {
+                        player.addScore(tanks.get(i).getScore());
+                        root.getChildren().remove(tanks.get(i));
+                        tanks.remove(tanks.get(i));
+                        System.out.println(player.getScore());
+                        return true;
+                    }
+
+                }
+
             }
         }
         return false;

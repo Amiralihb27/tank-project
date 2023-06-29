@@ -64,10 +64,12 @@ public class OrdinaryTank extends Tank {
             case 1:
                 getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\enemyright.png",
                         size, size, true, true));
+                super.getBullet().setAngle(0.0);
                 break;
             case -1:
                 getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\enemyleft.png",
                         size, size, true, true));
+                super.getBullet().setAngle(180.0);
                 break;
             default:
                 break;
@@ -79,10 +81,12 @@ public class OrdinaryTank extends Tank {
             case 1:
                 getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\enemydown.png",
                         size, size, true, true));
+                super.getBullet().setAngle(270.0);
                 break;
             case -1:
                 getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\enemytank1.png",
                         size, size, true, true));
+                super.getBullet().setAngle(90.0);
                 break;
             default:
                 break;
@@ -91,7 +95,7 @@ public class OrdinaryTank extends Tank {
     }
 
     public void gameLoop(int size, Group obstaclesGroup) {
-        Timeline gameLoop = new Timeline(new KeyFrame(Duration.millis(20), event -> {
+        Timeline gameLoop = new Timeline(new KeyFrame(Duration.millis(30), event -> {
             move(size, obstaclesGroup);
         }));
         gameLoop.setCycleCount(Animation.INDEFINITE);

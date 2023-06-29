@@ -45,7 +45,6 @@ public class Collision {
         for (Node node : root.getChildren()) {
             if (object.getBoundsInParent().intersects(node.getBoundsInParent())) {
                 if (object.getImage().getUrl().endsWith("Bullet.png")) {
-                    System.out.println("55");
                     nodesInRoot=node;
                 }
 

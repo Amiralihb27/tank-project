@@ -134,6 +134,10 @@ public class Bullet {
         this.shooting = shooting;
     }
 
+    public void revive(boolean status){
+        alive=status;
+    }
+
     public boolean isAlive() {
         return alive;
     }
