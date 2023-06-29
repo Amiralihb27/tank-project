@@ -48,6 +48,8 @@ public class Tank {
         this.xPos = xPos;
         this.yPos = yPos;
         this.imageView = imageView;
+        this.imageView.setX(xPos);
+        this.imageView.setY(yPos);
     }
 
     public Tank(int speedX, int speedY, ImageView imageView) {
@@ -63,18 +65,30 @@ public class Tank {
 
     public void setXPos(double xPos) {
         this.xPos = xPos;
+        imageView.setX(xPos);
     }
 
     public double getYPos() {
         return yPos;
+
     }
 
     public void setYPos(double yPos) {
         this.yPos = yPos;
+        imageView.setY(yPos);
     }
 
     public void addScore(int amount) {
         this.score += amount;
+    }
+
+
+    public int getPowerOfTheBullet() {
+        return powerOfTheBullet;
+    }
+
+    public void setPowerOfTheBullet(int powerOfTheBullet) {
+        this.powerOfTheBullet = powerOfTheBullet;
     }
 
     public int getTankSize() {
@@ -159,27 +173,26 @@ public class Tank {
         this.size = size;
     }
 
-    public void shootBullet(Pane root) {
+    public void shootBullet(Pane root, ArrayList<Wall> walls) {
         ImageView bullet = new ImageView(new Image(this.getBullet().getBulletImage().getUrl(),
                 15, 15, true, true));
         // System.out.println(bullet.getFitHeight());
         root.getChildren().add(bullet);
-
         // Set initial position of the bullet
         getBullet().setStartingX(this.getXPos()); // Adjust the starting position as needed
         getBullet().setStartingY(this.getYPos());// Adjust the starting position as needed
-
         getBullet().setSpeedY(-Math.sin(Math.toRadians(getBullet().getAngle())) * getBullet().getBulletSpeed());
         getBullet().setSpeedX(Math.cos(Math.toRadians(getBullet().getAngle())) * getBullet().getBulletSpeed());
         // Set up animation timeline
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.03), event -> updateBullet(bullet)));
+        Collision collision = new Collision(walls);
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.03), event -> updateBullet(bullet, root, collision)));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
         // Enable shooting initially
         getBullet().setShooting(true);
         // Set up shooting timeline
         Timeline shootingTimeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> {
-            if (!bullet.isVisible()) {
+            if (!bullet.isVisible() && root.getChildren().contains(this.getImageView())) {
                 // Shoot the bullet if it's not visible
                 shootBullet(bullet);
             }
@@ -188,27 +201,29 @@ public class Tank {
         shootingTimeline.play();
     }
 
-    private void updateBullet(ImageView newBullet) {
+    private void updateBullet(ImageView newBullet, Pane root, Collision collision) {
         if (newBullet.isVisible()) {
             // Update bullet position
-            System.out.println(getBullet().getAngle() + ":Angle");
-            System.out.println("X:" + this.getBullet().getSpeedX());
             getBullet().setStartingY(this.getBullet().getSpeedY() + bullet.getStartingY());
             getBullet().setStartingX(this.getBullet().getSpeedX() + bullet.getStartingX());
             // Set bullet position
             newBullet.setLayoutX(getBullet().getStartingX());
             newBullet.setLayoutY(getBullet().getStartingY());
-            System.out.println(newBullet.getLayoutX() + " " + newBullet.getLayoutY());
-
-            // Check if bullet is out of bounds
-            if (newBullet.getLayoutY() >= 600 || newBullet.getLayoutX() >= 600 ||
+            getBullet().setxPos(getBullet().getStartingX());
+            getBullet().setyPos(getBullet().getStartingY());
+            if (collision.checkCollision2(newBullet, this.getBullet().getSpeedX(), this.getBullet().getSpeedY(),
+                    root)) {
+                respawnBullet(newBullet);
+            } else if (newBullet.getLayoutY() >= 600 || newBullet.getLayoutX() >= 600 ||
                     newBullet.getLayoutY() < 0 || newBullet.getLayoutX() < 0 ||
-                     newBullet.getLayoutX()-getBullet().getStartingX()>=100 ||
-                    newBullet.getLayoutY()-getBullet().getStartingY()>=100 ) {
+                    newBullet.getLayoutX() - getBullet().getStartingX() >= 100 ||
+                    newBullet.getLayoutY() - getBullet().getStartingY() >= 100) {
                 // Respawn the bullet when it reaches the boundary
-                System.out.println("Dead");
                 respawnBullet(newBullet);
             }
+
+            // Check if bullet is out of bounds
+
         }
     }
 
@@ -218,8 +233,6 @@ public class Tank {
         getBullet().setStartingY(this.getImageView().getY());// Adjust the starting position as needed
         getBullet().setSpeedY(-Math.sin(Math.toRadians(getBullet().getAngle())) * getBullet().getBulletSpeed());
         getBullet().setSpeedX(Math.cos(Math.toRadians(getBullet().getAngle())) * getBullet().getBulletSpeed());
-        System.out.println("bullet");
-
         // Enable shooting
         // getBullet().revive(true);
         newBullet.setVisible(true);
@@ -239,7 +252,6 @@ public class Tank {
             getBullet().setStartingX(this.getImageView().getX()); // Adjust the starting position as needed
             getBullet().setStartingY(this.getImageView().getY());// Adjust the starting position as needed
 
-            System.out.println(getBullet().getStartingX() + " starting " + getBullet().getStartingY());
             // Enable shooting again
             getBullet().setShooting(true);
         }));

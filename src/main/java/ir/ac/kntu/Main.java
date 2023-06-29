@@ -28,6 +28,8 @@ public class Main extends Application {
 
     private static final int PLAYER_SIZE = 30;
 
+    private ArrayList<Wall> walls=new ArrayList<>();
+
 
     private static final int BULLET_SIZE = 20;
 
@@ -60,13 +62,15 @@ public class Main extends Application {
         rect.setStroke(Color.RED);
         rect.setStrokeWidth(5);
         root.getChildren().add(rect);
-        handlingTanks(obstaclesGroup);
+
         BrickWall brickWall = new BrickWall(0, 0, new ImageView(new Image(
-                "F:\\project4\\src\\main\\resources\\images\\stackbrick.png", player.getPlayerSize(),
-                player.getPlayerSize(), true, true)));
+                "F:\\project4\\src\\main\\resources\\images\\stackbrick.png", PLAYER_SIZE,
+                PLAYER_SIZE, true, true)));
         Place place = new Place();
-        place.addBrickToTheTop(root, player.getPlayerSize(), obstaclesGroup);
+        place.addBrickToTheTop(root, PLAYER_SIZE, obstaclesGroup,walls);
+        handlingTanks(obstaclesGroup);
         Scene scene = new Scene(root, WIDTH, HEIGHT);
+
         scene.setFill(Color.BLACK);
         player.move(scene, gc, obstaclesGroup, root);
         primaryStage.setTitle("Player Shoot Game");
@@ -92,7 +96,13 @@ public class Main extends Application {
         ordinaryTank.setBullet(newBullet);
         ordinaryTank.initializeDirection(player.getPlayerSize(), obstaclesGroup);
         shooting(gc, obstaclesGroup);
-        ordinaryTank.shootBullet(root);
+        if(root.getChildren().contains(ordinaryTank.getImageView())){
+            ordinaryTank.shootBullet(root,walls);
+        }
+
+        Collision collision=new Collision(walls);
+//        collision.checkCollision(ordinaryTank,ordinaryTank.getBullet().getSpeedX(),ordinaryTank.getBullet().getSpeedY(),
+//                root);
     }
 
 
@@ -124,6 +134,7 @@ public class Main extends Application {
 
     public void checkCollisionForBullet(Bullet newBullet, Group obstaclesGroup) {
         Collision collision = new Collision(obstaclesGroup);
+        collision.setWalls(walls);
         ImageView bulletImageView = new ImageView(newBullet.getBulletImage());
         bulletImageView.setY(newBullet.getyPos());
         bulletImageView.setX(newBullet.getxPos());
@@ -149,7 +160,7 @@ public class Main extends Application {
                 if (tanks.get(i).getHealth() <= 0) {
                     if (!tanks.get(i).getClass().getSimpleName().equals("Player")) {
                         player.addScore(tanks.get(i).getScore());
-                        root.getChildren().remove(tanks.get(i));
+                        root.getChildren().remove(tanks.get(i).getImageView());
                         tanks.remove(tanks.get(i));
                         System.out.println(player.getScore());
                         return true;
