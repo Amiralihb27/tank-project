@@ -14,14 +14,20 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 
+import static ir.ac.kntu.constants.GlobalConstants.canvasWidth;
+
 public class Tank {
+
+    private double firstPosX;
+
+    private double firstPosY;
     private double xPos;
 
     private double yPos;
 
     private Bullet bullet;
 
-    private int tankSize = 30;
+    private static int tankSize = 30;
 
     private int speedY = 5;
 
@@ -39,6 +45,29 @@ public class Tank {
 
     private int size = 25;
 
+
+    private static int positionToRespawn[] = {0, 2 * canvasWidth / 15 + 4 * tankSize,
+            11 * canvasWidth / 15 + tankSize, canvasWidth - tankSize};
+
+    public int[] getPositionToRespawn() {
+        return positionToRespawn;
+    }
+
+    public double getFirstPosX() {
+        return firstPosX;
+    }
+
+    public void setFirstPosX(double firstPosX) {
+        this.firstPosX = firstPosX;
+    }
+
+    public double getFirstPosY() {
+        return firstPosY;
+    }
+
+    public void setFirstPosY(double firstPosY) {
+        this.firstPosY = firstPosY;
+    }
 
     public Tank() {
 
@@ -161,7 +190,7 @@ public class Tank {
     }
 
     public void setHealth(int health) {
-        health = health;
+        this.health = health;
     }
 
 
@@ -201,7 +230,7 @@ public class Tank {
         shootingTimeline.play();
     }
 
-    private void updateBullet(ImageView newBullet, Pane root, Collision collision) {
+    public void updateBullet(ImageView newBullet, Pane root, Collision collision) {
         if (newBullet.isVisible()) {
             // Update bullet position
             getBullet().setStartingY(this.getBullet().getSpeedY() + bullet.getStartingY());
@@ -211,7 +240,7 @@ public class Tank {
             newBullet.setLayoutY(getBullet().getStartingY());
             getBullet().setxPos(getBullet().getStartingX());
             getBullet().setyPos(getBullet().getStartingY());
-            if (collision.checkCollision2(newBullet, this.getBullet().getSpeedX(), this.getBullet().getSpeedY(),
+            if (collision.destroyWalls(newBullet, this.getBullet().getSpeedX(), this.getBullet().getSpeedY(),
                     root)) {
                 respawnBullet(newBullet);
             } else if (newBullet.getLayoutY() >= 600 || newBullet.getLayoutX() >= 600 ||
@@ -227,7 +256,7 @@ public class Tank {
         }
     }
 
-    private void shootBullet(ImageView newBullet) {
+    public void shootBullet(ImageView newBullet) {
         // Reset bullet position
         getBullet().setStartingX(this.getImageView().getX()); // Adjust the starting position as needed
         getBullet().setStartingY(this.getImageView().getY());// Adjust the starting position as needed
@@ -238,7 +267,7 @@ public class Tank {
         newBullet.setVisible(true);
     }
 
-    private void respawnBullet(ImageView newBullet) {
+    public void respawnBullet(ImageView newBullet) {
         // Hide the bullet
         getBullet().kill();
         newBullet.setVisible(false);

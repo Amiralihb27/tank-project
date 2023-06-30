@@ -18,14 +18,14 @@ import java.util.Random;
 
 import static ir.ac.kntu.constants.GlobalConstants.*;
 
-public class OrdinaryTank extends Tank {
+
+public class ShieldTank extends Tank{
 
 
-
-    public OrdinaryTank(int speedX, int speedY, ImageView imageView) {
+    public ShieldTank(int speedX, int speedY, ImageView imageView) {
         super(speedX, speedY, imageView);
-        super.setHealth(1);
-        super.setScore(100);
+        super.setHealth(2);
+        super.setScore(200);
     }
 
     public void initializeDirection(int size, Group obstaclesGroup) {
@@ -61,18 +61,19 @@ public class OrdinaryTank extends Tank {
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
         gameLoop(size, obstaclesGroup);
+
         // create a game loop to move the tank
     }
 
     public void chooseHorizontalPicture(int xPos, int size) {
         switch (xPos) {
             case 1:
-                getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\enemyright.png",
+                getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\enemyrightmetal.png",
                         size, size, true, true));
                 super.getBullet().setAngle(0.0);
                 break;
             case -1:
-                getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\enemyleft.png",
+                getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\enemyleftmetal.png",
                         size, size, true, true));
                 super.getBullet().setAngle(180.0);
                 break;
@@ -84,12 +85,12 @@ public class OrdinaryTank extends Tank {
     public void chooseVerticalPicture(int ySpeed, int size) {
         switch (ySpeed) {
             case 1:
-                getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\enemydown.png",
+                getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\enemydownmetal.png",
                         size, size, true, true));
                 super.getBullet().setAngle(270.0);
                 break;
             case -1:
-                getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\enemytank1.png",
+                getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\enemydownmetal.png",
                         size, size, true, true));
                 super.getBullet().setAngle(90.0);
                 break;
@@ -166,8 +167,4 @@ public class OrdinaryTank extends Tank {
         return false;
     }
 
-
 }
-
-
-

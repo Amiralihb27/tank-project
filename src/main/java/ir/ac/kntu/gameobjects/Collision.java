@@ -40,7 +40,7 @@ public class Collision {
         this.walls = walls;
     }
 
-    public boolean checkCollision(ImageView tank, double dx, double dy, Pane root) {
+    public boolean checkCollision(ImageView tank, double dx, double dy) {
         tank.setLayoutX(tank.getLayoutX() + dx);
         tank.setLayoutY(tank.getLayoutY() + dy);
 
@@ -54,6 +54,23 @@ public class Collision {
 
     }
 
+    public boolean checkCollision2(ImageView tank, double dx, double dy) {
+        tank.setLayoutX(tank.getLayoutX() + dx);
+        tank.setLayoutY(tank.getLayoutY() + dy);
+
+        for (Wall wall : this.walls) {
+            if (tank.getBoundsInParent().intersects(wall.getImageView().getBoundsInParent())) {
+                return true;
+            }
+        }
+
+
+        return false;
+
+    }
+
+
+
 
     public void destroy(Pane root, ImageView object) {
         ArrayList<Node> nodes = new ArrayList<>();
@@ -61,6 +78,7 @@ public class Collision {
             if (object.getBoundsInParent().intersects(node.getBoundsInParent())) {
                 if (object.getImage().getUrl().endsWith("Bullet.png")) {
                     nodes.add(node);
+                    break;
                 }
 
             }
@@ -72,6 +90,7 @@ public class Collision {
                     System.out.println("haha");
                     if (root.getChildren().contains(wall.getImageView())) {
                         root.getChildren().remove(wall.getImageView());
+                        break;
                     }
                 }
 
@@ -82,17 +101,43 @@ public class Collision {
         obstaclesGroup.getChildren().removeAll(nodes);
     }
 
-    public boolean checkCollision2(ImageView object, double dx, double dy, Pane root) {
-//        object.setLayoutX(object.getLayoutX() + dx);
-//        object.setLayoutY(object.getLayoutY() + dy);
-        ImageView imageView = new ImageView(new Image(object.getImage().getUrl()));
-        imageView.setY(object.getLayoutY());
-        imageView.setX(object.getLayoutX());
+    public boolean destroyWalls(ImageView object, double dx, double dy, Pane root) {
+        object.setLayoutX(object.getLayoutX() + dx);
+        object.setLayoutY(object.getLayoutY() + dy);
+//        ImageView imageView = new ImageView(new Image(object.getImage().getUrl()));
+//        imageView.setY(object.getLayoutY());
+//        imageView.setX(object.getLayoutX());
 
         for (Wall wall : walls) {
             if (object.getBoundsInParent().intersects(wall.getImageView().getBoundsInParent())) {
                 if (object.getImage().getUrl().endsWith("Bullet.png")) {
                     if (root.getChildren().contains(wall.getImageView())) {
+                        //wall.lostHP();
+                        walls.remove(wall);
+                        root.getChildren().remove(wall.getImageView());
+                        return true;
+                    }
+                }
+
+            }
+        }
+
+        return false;
+    }
+
+    public boolean destroyWalls(Tank object, double dx, double dy, Pane root) {
+        object.getImageView().setLayoutX(object.getImageView().getLayoutX() + dx);
+        object.getImageView().setLayoutY(object.getImageView().getLayoutY() + dy);
+//        ImageView imageView = new ImageView(new Image(object.getImageView().getImage().getUrl()));
+//        imageView.setY(object.getLayoutY());
+//        imageView.setX(object.getLayoutX());
+
+        for (Wall wall : walls) {
+            if (object.getImageView().getBoundsInParent().intersects(wall.getImageView().getBoundsInParent())) {
+                if (object.getImageView().getImage().getUrl().endsWith("Bullet.png")) {
+                    if (root.getChildren().contains(wall.getImageView())) {
+                        //wall.lostHP();
+                        System.out.println("lili");
                         root.getChildren().remove(wall.getImageView());
                         return true;
                     }

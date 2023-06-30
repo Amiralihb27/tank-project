@@ -26,7 +26,7 @@ public class Main extends Application {
     private static final int HEIGHT = 600;
 
 
-    private static final int PLAYER_SIZE = 30;
+    private static final int PLAYER_SIZE = 25;
 
     private ArrayList<Wall> walls=new ArrayList<>();
 
@@ -62,17 +62,13 @@ public class Main extends Application {
         rect.setStroke(Color.RED);
         rect.setStrokeWidth(5);
         root.getChildren().add(rect);
-
-        BrickWall brickWall = new BrickWall(0, 0, new ImageView(new Image(
-                "F:\\project4\\src\\main\\resources\\images\\stackbrick.png", PLAYER_SIZE,
-                PLAYER_SIZE, true, true)));
         Place place = new Place();
         place.addBrickToTheTop(root, PLAYER_SIZE, obstaclesGroup,walls);
         handlingTanks(obstaclesGroup);
         Scene scene = new Scene(root, WIDTH, HEIGHT);
 
         scene.setFill(Color.BLACK);
-        player.move(scene, gc, obstaclesGroup, root);
+        player.move(scene, gc, obstaclesGroup, root,walls);
         primaryStage.setTitle("Player Shoot Game");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -90,14 +86,24 @@ public class Main extends Application {
         OrdinaryTank ordinaryTank = new OrdinaryTank(0, 0,
                 new ImageView(new Image("F:\\javap for 4012\\FilePractice\\enemytank1.png", player.getPlayerSize(),
                         player.getPlayerSize(), true, true)));
-        root.getChildren().add(ordinaryTank.getImageView());
+        ShieldTank shieldTank=new ShieldTank(0,0,
+                new ImageView(new Image("F:\\project4\\src\\main\\resources\\images" +
+                        "\\enemyupmetal.png", player.getPlayerSize(),
+                player.getPlayerSize(), true, true)));
+        root.getChildren().addAll(ordinaryTank.getImageView(),shieldTank.getImageView());
         this.tanks.add(ordinaryTank);
+        this.tanks.add(shieldTank);
         Bullet newBullet = new Bullet(0, 0);
+        shieldTank.setBullet(newBullet);
         ordinaryTank.setBullet(newBullet);
         ordinaryTank.initializeDirection(player.getPlayerSize(), obstaclesGroup);
+        shieldTank.initializeDirection(player.getPlayerSize(), obstaclesGroup);
         shooting(gc, obstaclesGroup);
         if(root.getChildren().contains(ordinaryTank.getImageView())){
             ordinaryTank.shootBullet(root,walls);
+        }
+        if(root.getChildren().contains(shieldTank.getImageView())){
+            shieldTank.shootBullet(root,walls);
         }
 
         Collision collision=new Collision(walls);
@@ -138,9 +144,9 @@ public class Main extends Application {
         ImageView bulletImageView = new ImageView(newBullet.getBulletImage());
         bulletImageView.setY(newBullet.getyPos());
         bulletImageView.setX(newBullet.getxPos());
-        if (collision.checkCollision(bulletImageView, newBullet.getSpeedX(),
-                newBullet.getSpeedY(), root) || destroy(bulletImageView)) {
-            collision.destroy(root, bulletImageView);
+        if (collision.destroyWalls(bulletImageView, newBullet.getSpeedX(),
+                newBullet.getSpeedY(),root) || destroy(bulletImageView)) {
+            //collision.destroy(root, bulletImageView);
             newBullet.kill();
         }
         if (newBullet.getxPos() < 0 || newBullet.getxPos() > 600 - newBullet.getBulletSize() ||
@@ -157,15 +163,19 @@ public class Main extends Application {
             Bounds bounds2 = this.tanks.get(i).getImageView().getBoundsInParent();
             if (bounds1.intersects(bounds2)) {
                 tanks.get(i).lostHP();
+                System.out.println(tanks.get(i).getHealth()+" health");
                 if (tanks.get(i).getHealth() <= 0) {
                     if (!tanks.get(i).getClass().getSimpleName().equals("Player")) {
                         player.addScore(tanks.get(i).getScore());
+                       // tanks.get(i).getPositionToRespawn()
                         root.getChildren().remove(tanks.get(i).getImageView());
                         tanks.remove(tanks.get(i));
                         System.out.println(player.getScore());
                         return true;
                     }
 
+                }else {
+                    return true;
                 }
 
             }

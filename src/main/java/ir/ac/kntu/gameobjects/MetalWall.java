@@ -4,9 +4,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 
-public class MetalWall extends Wall{
+public class MetalWall extends Wall {
 
-    public MetalWall(double xPos, double yPos, ImageView imageView){
+    public MetalWall(double xPos, double yPos, ImageView imageView) {
         super(xPos, yPos, imageView);
         setHealth(2);
     }
@@ -22,5 +22,5 @@ public class MetalWall extends Wall{
 //
 //            getImageView().setY(getImageView().getY() + canvasHeight / 15);
         //root.getChildren().add(getImageView());
-       }
+    }
 }
