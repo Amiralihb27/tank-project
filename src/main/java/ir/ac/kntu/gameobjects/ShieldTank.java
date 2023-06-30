@@ -90,7 +90,7 @@ public class ShieldTank extends Tank{
                 super.getBullet().setAngle(270.0);
                 break;
             case -1:
-                getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\enemydownmetal.png",
+                getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\enemyupmetal.png",
                         size, size, true, true));
                 super.getBullet().setAngle(90.0);
                 break;

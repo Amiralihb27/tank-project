@@ -70,8 +70,6 @@ public class Collision {
     }
 
 
-
-
     public void destroy(Pane root, ImageView object) {
         ArrayList<Node> nodes = new ArrayList<>();
         for (Node node : obstaclesGroup.getChildren()) {
@@ -112,9 +110,11 @@ public class Collision {
             if (object.getBoundsInParent().intersects(wall.getImageView().getBoundsInParent())) {
                 if (object.getImage().getUrl().endsWith("Bullet.png")) {
                     if (root.getChildren().contains(wall.getImageView())) {
-                        //wall.lostHP();
-                        walls.remove(wall);
-                        root.getChildren().remove(wall.getImageView());
+                        if (!wall.getClass().getSimpleName().equals("MetalWall")) {
+                            walls.remove(wall);
+                            root.getChildren().remove(wall.getImageView());
+                        }
+
                         return true;
                     }
                 }
