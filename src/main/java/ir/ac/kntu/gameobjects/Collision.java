@@ -95,7 +95,6 @@ public class Collision {
             }
         }
 
-
         obstaclesGroup.getChildren().removeAll(nodes);
     }
 

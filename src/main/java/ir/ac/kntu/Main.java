@@ -12,6 +12,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -53,15 +54,40 @@ public class Main extends Application {
 
     private Bullet bullet;
 
+    private Stage stage;
+
+    private Menu menu;
+
     public static void main(String[] args) {
         launch(args);
     }
 
     public void start(Stage primaryStage) throws Exception {
+        this.stage = primaryStage;
+
+
+        // Initialize the menu
+        menu = new Menu(stage);
+
+        // Set the key event handler for the menu
+        menu.show();
+        menu.getScene().setOnKeyPressed(this::handleKeyPress);
+
+        // Show the menu initially
+        // stage.setScene(menu.getScene());
+    }
+
+    public void handleKeyPress(KeyEvent event) {
+        // Pass the key event to the menu for handling
+        menu.handleKeyPress(event);
+    }
+
+    public void startGame(Stage primaryStage){
         root = new Pane();
         canvas = new Canvas(WIDTH, HEIGHT);
         gc = canvas.getGraphicsContext2D();
         Rectangle rect = new Rectangle(0, 0, 600, 600);
+        root.setStyle("-fx-background-color: black;");
         Group obstaclesGroup = new Group();
         rect.setFill(null);
         rect.setStroke(Color.RED);
@@ -71,7 +97,6 @@ public class Main extends Application {
         place.addBrickToTheTop(root, PLAYER_SIZE, obstaclesGroup, walls);
         handlingTanks(obstaclesGroup);
         Scene scene = new Scene(root, WIDTH, HEIGHT);
-
         scene.setFill(Color.BLACK);
         player.move(scene, gc, obstaclesGroup, root, walls);
         primaryStage.setTitle("Player Shoot Game");
@@ -88,6 +113,12 @@ public class Main extends Application {
         //  bulletAngle = 90.0;
         player.setBullet(bullet);
         root.getChildren().add(canvas);
+        creatingEnemy(obstaclesGroup);
+        shooting(gc, obstaclesGroup);
+
+    }
+
+    public void creatingEnemy(Group obstaclesGroup) {
         OrdinaryTank ordinaryTank = new OrdinaryTank(0, 0,
                 new ImageView(new Image("F:\\javap for 4012\\FilePractice\\enemytank1.png", player.getPlayerSize(),
                         player.getPlayerSize(), true, true)));
@@ -104,17 +135,12 @@ public class Main extends Application {
         ordinaryTank.setBullet(newBullet);
         ordinaryTank.initializeDirection(player.getPlayerSize(), obstaclesGroup);
         shieldTank.initializeDirection(player.getPlayerSize(), obstaclesGroup);
-        shooting(gc, obstaclesGroup);
         if (root.getChildren().contains(ordinaryTank.getImageView())) {
             ordinaryTank.shootBullet(root, walls);
         }
         if (root.getChildren().contains(shieldTank.getImageView())) {
             shieldTank.shootBullet(root, walls);
         }
-
-        Collision collision = new Collision(walls);
-//        collision.checkCollision(ordinaryTank,ordinaryTank.getBullet().getSpeedX(),ordinaryTank.getBullet().getSpeedY(),
-//                root);
     }
 
 
@@ -180,7 +206,6 @@ public class Main extends Application {
             Bounds bounds2 = this.tanks.get(i).getImageView().getBoundsInParent();
             if (bounds1.intersects(bounds2)) {
                 tanks.get(i).lostHP();
-                System.out.println(tanks.get(i).getHealth() + " health");
                 if (tanks.get(i).getHealth() <= 0) {
                     if (!tanks.get(i).getClass().getSimpleName().equals("Player")) {
                         player.addScore(tanks.get(i).getScore());
@@ -193,7 +218,7 @@ public class Main extends Application {
                         root.getChildren().add(explosion);
                         root.getChildren().remove(tanks.get(i).getImageView());
                         tanks.remove(tanks.get(i));
-                        explosionAnimation(xPos, yPos);
+                        new Explosion(explosion).explosionAnimation(xPos, yPos, root);
                         return true;
                     }
                 }
@@ -203,36 +228,6 @@ public class Main extends Application {
         return false;
     }
 
-    public void explosionAnimation(double xPos, double yPos) {
-        Timeline timeline = new Timeline(
-                new KeyFrame(Duration.ZERO, e -> {
-                    // Remove the first image
-                    root.getChildren().remove(explosion);
-                    // Add the second image after the specified delay
-                    explosion = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images" +
-                            "\\explode1.png", 30, 30, true, true));
-                    explosion.setX(xPos);
-                    explosion.setY(yPos);
-                    root.getChildren().add(explosion);
-                }),
-                new KeyFrame(Duration.millis(100), e -> {
-                    // Remove the second image
-                    root.getChildren().remove(explosion);
-                    explosion = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images" +
-                            "\\explode2.png", 30, 30, true, true));
-                    explosion.setX(xPos);
-                    explosion.setY(yPos);
-                    // Add the third image after the specified delay
-                    root.getChildren().add(explosion);
-                }),
-                new KeyFrame(Duration.millis(100 * 2), e -> {
-                    // Remove the third image after the specified delay
-                    root.getChildren().remove(explosion);
-                })
-        );
-        timeline.setCycleCount(1);
-        timeline.play();
-    }
 
     public void setPosWhileShooting(Bullet newBullet) {
         newBullet.setStartingX(player.getXPos()

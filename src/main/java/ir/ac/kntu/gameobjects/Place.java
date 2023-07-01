@@ -19,8 +19,8 @@ public class Place {
             for (int j = 0; j < 6; j++) {
                 BrickWall brickWall = new BrickWall(2 * canvasWidth / 15, canvasHeight / 20 + 10,
                         new ImageView(new Image(
-                        "F:\\project4\\src\\main\\resources\\images\\stackbrick.png", size,
-                        size, true, true)));
+                                "F:\\project4\\src\\main\\resources\\images\\stackbrick.png", size,
+                                size, true, true)));
                 walls.add(brickWall);
                 brickWall.getImageView().setX(brickWall.getImageView().getX() + 2.5 * size * i);
                 brickWall.getImageView().setY(brickWall.getImageView().getY() + size * j );

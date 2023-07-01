@@ -21,6 +21,7 @@ public class Tank {
     private double firstPosX;
 
     private double firstPosY;
+
     private double xPos;
 
     private double yPos;
@@ -46,8 +47,9 @@ public class Tank {
     private int size = 25;
 
 
-    private static int positionToRespawn[] = {0, 2 * canvasWidth / 15 + 4 * tankSize,
-            11 * canvasWidth / 15 + tankSize, canvasWidth - tankSize};
+    private static int[] positionToRespawn = {0, 2 * canvasWidth / 15 + 4 * tankSize,
+        11 * canvasWidth / 15 + tankSize,
+        canvasWidth - tankSize};
 
     public int[] getPositionToRespawn() {
         return positionToRespawn;

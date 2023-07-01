@@ -39,15 +39,17 @@ public class OrdinaryTank extends Tank {
         setFirstPosY(0);
         getPositionToRespawn()[rand]=-100;
         getImageView().setX(getXPos());
-        System.out.println(getXPos());
         super.setYPos(0);
         getImageView().setY(0);
-        // create a timeline to change the direction every 5 seconds
+        chooseToMove(size,obstaclesGroup);
+    }
+
+    public void chooseToMove(int size, Group obstaclesGroup){
+        Random random=new Random();
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> {
             int[] directions = {-1, 0, 1};
             super.setSpeedX(directions[random.nextInt(3)]);
             super.setSpeedY(directions[random.nextInt(3)]);
-            // ensure that the tank can only move in one direction at a time
             if (super.getSpeedX() != 0 && super.getSpeedY() != 0) {
                 if (random.nextBoolean()) {
                     super.setSpeedX(0);
@@ -61,7 +63,6 @@ public class OrdinaryTank extends Tank {
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
         gameLoop(size, obstaclesGroup);
-        // create a game loop to move the tank
     }
 
     public void chooseHorizontalPicture(int xPos, int size) {
