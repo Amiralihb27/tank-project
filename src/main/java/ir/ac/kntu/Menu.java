@@ -174,6 +174,7 @@ public class Menu {
         Label passwordLabel = new Label("Password:");
         PasswordField passwordField = new PasswordField();
         Button signInButton = new Button("Sign In");
+        signInButton.setStyle("-fx-background-color: blue; -fx-text-fill: white; -fx-font-size: 14px;");
         colorizeButtons(usernameTextField, passwordField, usernameLabel, passwordLabel);
         // Validate credentials on button click
         signInHandling(signInButton, usernameTextField, passwordField, users);
@@ -186,18 +187,17 @@ public class Menu {
         // Create the sign-in scene
         scene = new Scene(signInLayout, 400, 400);
 
-        scene.getStylesheets().add(getClass().getResource("java/ir/ac/kntu/style.css").toExternalForm());
-        scene.setFill(Color.BLACK);
+    //    scene.getStylesheets().add(getClass().getResource("java/ir/ac/kntu/style.css").toExternalForm());
         stage.setTitle("Sign In");
         stage.setScene(scene);
     }
 
     public void colorizeButtons(TextField usernameTextField, TextField passwordField, Label usernameLabel,
              Label passwordLabel) {
-        usernameLabel.getStyleClass().add("label-class");
-        passwordLabel.getStyleClass().add("label-class");
-        passwordField.getStyleClass().add("textfield-class");
-        usernameTextField.getStyleClass().add("textfield-class");
+        usernameLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: firebrick;");
+        passwordLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: FIREBRICK;");
+        passwordField.setStyle("-fx-background-color: yellow; -fx-text-fill: blue;");
+        usernameTextField.setStyle("-fx-background-color: yellow; -fx-text-fill: blue;");
         usernameTextField.setMaxWidth(300);
         usernameTextField.setPrefWidth(300);
         passwordField.setMaxWidth(300);
