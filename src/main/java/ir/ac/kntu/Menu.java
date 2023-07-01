@@ -1,5 +1,6 @@
 package ir.ac.kntu;
 
+import ir.ac.kntu.gameobjects.User;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -17,9 +18,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.scene.shape.StrokeType;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Menu {
@@ -90,14 +89,11 @@ public class Menu {
                 "2player.png", 200, 200, true, true));
 
         menuItems[3] = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\tank4.png", 50, 50,
-                 true, true));
-
-
+                true, true));
         // Set initial current item
         currentItem = 0;
 
         // Create the menu layout
-        System.out.println(menuItems[0].getLayoutY());
         menuBox = new VBox();
         menuBox.setSpacing(10);
         menuBox.setAlignment(Pos.CENTER);
@@ -118,7 +114,6 @@ public class Menu {
         System.out.println(menuItems[0].getLayoutY());
         scene.setFill(Color.BLACK);
         System.out.println(scene.getFill());
-
         // scene.setOnKeyPressed(this::handleKeyPress); // Add key press event listener to the scene
     }
 
@@ -159,11 +154,14 @@ public class Menu {
     }
 
 
-    public void startGameMenu() {
+    public void startGameMenu(int currentLine) {
         // Redirect to the game class and its start menu
         Main game = new Main(); // Assuming there is a Game class
+        User user=new User(currentLine);
+        game.setUser(user);
         game.startGame(stage);
     }
+
 
     public void createSignInScene() {
         // Create sign-in elements (text fields, button, etc.)
@@ -187,13 +185,13 @@ public class Menu {
         // Create the sign-in scene
         scene = new Scene(signInLayout, 400, 400);
 
-    //    scene.getStylesheets().add(getClass().getResource("java/ir/ac/kntu/style.css").toExternalForm());
+        //    scene.getStylesheets().add(getClass().getResource("java/ir/ac/kntu/style.css").toExternalForm());
         stage.setTitle("Sign In");
         stage.setScene(scene);
     }
 
     public void colorizeButtons(TextField usernameTextField, TextField passwordField, Label usernameLabel,
-             Label passwordLabel) {
+                                Label passwordLabel) {
         usernameLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: firebrick;");
         passwordLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: FIREBRICK;");
         passwordField.setStyle("-fx-background-color: yellow; -fx-text-fill: blue;");
@@ -212,7 +210,8 @@ public class Menu {
             String password = passwordField.getText();
 
             if (validateCredentials(username, password, users)) {
-                startGameMenu();
+                int currentLine = findingUser(users, username, password);
+                startGameMenu(currentLine);
             } else {
                 showInvalidCredentialsMessage();
             }
@@ -228,6 +227,29 @@ public class Menu {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public int findingUser(ArrayList<String> users, String userName, String passWord) {
+
+        try {
+            // Read the original file
+            File file = new File("Users.txt");
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line;
+            int currentLine = 1;
+            while ((line = reader.readLine()) != null) {
+                // Append the new text to the desired line
+                if (line.startsWith(userName)) {
+                    return currentLine;
+                }
+                currentLine++;
+            }
+            reader.close();
+            // Write the modified content back to the file
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     public boolean validateCredentials(String username, String password, ArrayList<String> users) {

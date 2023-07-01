@@ -40,6 +40,9 @@ public class Main extends Application {
 
     private static final double BULLET_SPEED = 5.0;
 
+
+    private User user;
+
     private ImageView explosion;
 
     private ArrayList<Tank> tanks = new ArrayList<>();
@@ -62,6 +65,11 @@ public class Main extends Application {
         launch(args);
     }
 
+
+    public void setUser(User user){
+        this.user=user;
+    }
+
     public void start(Stage primaryStage) throws Exception {
         this.stage = primaryStage;
 
@@ -82,7 +90,7 @@ public class Main extends Application {
         menu.handleKeyPress(event);
     }
 
-    public void startGame(Stage primaryStage){
+    public void startGame(Stage primaryStage) {
         root = new Pane();
         canvas = new Canvas(WIDTH, HEIGHT);
         gc = canvas.getGraphicsContext2D();
@@ -209,6 +217,7 @@ public class Main extends Application {
                 if (tanks.get(i).getHealth() <= 0) {
                     if (!tanks.get(i).getClass().getSimpleName().equals("Player")) {
                         player.addScore(tanks.get(i).getScore());
+                        user.addScore(tanks.get(i).getScore());
                         explosion = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images" +
                                 "\\explode.png", 20, 20, true, true));
                         double xPos = tanks.get(i).getXPos();
