@@ -15,6 +15,11 @@ public class Collision {
 
     private ArrayList<Wall> walls = new ArrayList<>();
 
+
+    private ArrayList<Tank> tanks=new ArrayList<>();
+
+    private ImageView explosion;
+
     public Collision(Group obstaclesGroup) {
         this.obstaclesGroup = obstaclesGroup;
         this.walls = walls;
@@ -22,6 +27,15 @@ public class Collision {
 
     public Collision(ArrayList<Wall> walls) {
         this.walls = walls;
+    }
+
+
+    public ArrayList<Tank> getTanks() {
+        return tanks;
+    }
+
+    public void setTanks(ArrayList<Tank> tanks) {
+        this.tanks = tanks;
     }
 
     public Group getObstaclesGroup() {
@@ -145,6 +159,32 @@ public class Collision {
             }
         }
 
+        return false;
+    }
+
+
+    public boolean destroy(ImageView bullet,Pane root) {
+        Bounds bounds1 = bullet.getBoundsInParent();
+        for (int i = 0; i < this.tanks.size(); i++) {
+            Bounds bounds2 = this.tanks.get(i).getImageView().getBoundsInParent();
+            if (bounds1.intersects(bounds2) && tanks.get(i).getClass().getSimpleName().equals("Player")) {
+                tanks.get(i).lostHP();
+                System.out.println("Player");
+                if (tanks.get(i).getHealth() <= 0) {
+                        explosion = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images" +
+                                "\\explode.png", 20, 20, true, true));
+                        double xPos = tanks.get(i).getXPos();
+                        double yPos = tanks.get(i).getYPos();
+                        explosion.setX(xPos);
+                        explosion.setY(yPos);
+                        root.getChildren().add(explosion);
+                        tanks.remove(tanks.get(i));
+                        new Explosion(explosion).explosionAnimation(xPos, yPos, root);
+                        return true;
+                }
+                return true;
+            }
+        }
         return false;
     }
 }

@@ -18,6 +18,7 @@ import static ir.ac.kntu.constants.GlobalConstants.canvasWidth;
 
 public class Player extends Tank {
 
+    private GraphicsContext gc;
     private int playerSize = 25;
 
     public int getPlayerSize() {
@@ -34,10 +35,26 @@ public class Player extends Tank {
 
     public Player(double xPos, double yPos, ImageView imageView) {
         super(xPos, yPos, imageView);
+        super.setHealth(3);
     }
 
     public void draw(GraphicsContext gc) {
         gc.drawImage(super.getImageView().getImage(), super.getXPos(), super.getYPos(), playerSize, playerSize);
+    }
+
+    @Override
+    public void lostHP(){
+        super.setXPos(400);
+        super.setYPos(600-playerSize);
+        draw(gc);
+    }
+
+    public GraphicsContext getGc() {
+        return gc;
+    }
+
+    public void setGc(GraphicsContext gc) {
+        this.gc = gc;
     }
 
     public void setImage(Image image) {

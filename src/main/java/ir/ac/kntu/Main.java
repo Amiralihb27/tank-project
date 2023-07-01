@@ -117,6 +117,7 @@ public class Main extends Application {
         ImageView imageView = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\tank1.png"));
         player = new Player(400, 600, imageView);
         player.setYPos(600 - player.getPlayerSize());
+        player.setGc(gc);
         bullet = new Bullet(0, 0);
         //  bulletAngle = 90.0;
         player.setBullet(bullet);
@@ -135,8 +136,10 @@ public class Main extends Application {
                         "\\enemyupmetal.png", player.getPlayerSize(),
                         player.getPlayerSize(), true, true)));
         root.getChildren().addAll(ordinaryTank.getImageView(), shieldTank.getImageView());
+        this.tanks.add(player);
         this.tanks.add(ordinaryTank);
         this.tanks.add(shieldTank);
+
         Bullet newBullet = new Bullet(0, 0);
         shieldTank.setBullet(newBullet);
         newBullet = new Bullet(0, 0);
@@ -144,10 +147,10 @@ public class Main extends Application {
         ordinaryTank.initializeDirection(player.getPlayerSize(), obstaclesGroup);
         shieldTank.initializeDirection(player.getPlayerSize(), obstaclesGroup);
         if (root.getChildren().contains(ordinaryTank.getImageView())) {
-            ordinaryTank.shootBullet(root, walls);
+            ordinaryTank.shootBullet(root, walls,tanks);
         }
         if (root.getChildren().contains(shieldTank.getImageView())) {
-            shieldTank.shootBullet(root, walls);
+            shieldTank.shootBullet(root, walls,tanks);
         }
     }
 
@@ -212,7 +215,7 @@ public class Main extends Application {
         Bounds bounds1 = bullet.getBoundsInParent();
         for (int i = 0; i < this.tanks.size(); i++) {
             Bounds bounds2 = this.tanks.get(i).getImageView().getBoundsInParent();
-            if (bounds1.intersects(bounds2)) {
+            if (bounds1.intersects(bounds2) && !this.tanks.get(i).getClass().getSimpleName().equals("Player")) {
                 tanks.get(i).lostHP();
                 if (tanks.get(i).getHealth() <= 0) {
                     if (!tanks.get(i).getClass().getSimpleName().equals("Player")) {

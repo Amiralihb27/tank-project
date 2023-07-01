@@ -204,7 +204,7 @@ public class Tank {
         this.size = size;
     }
 
-    public void shootBullet(Pane root, ArrayList<Wall> walls) {
+    public void shootBullet(Pane root, ArrayList<Wall> walls,ArrayList<Tank> tanks) {
         ImageView bullet = new ImageView(new Image(this.getBullet().getBulletImage().getUrl(),
                 15, 15, true, true));
         // System.out.println(bullet.getFitHeight());
@@ -216,6 +216,7 @@ public class Tank {
         getBullet().setSpeedX(Math.cos(Math.toRadians(getBullet().getAngle())) * getBullet().getBulletSpeed());
         // Set up animation timeline
         Collision collision = new Collision(walls);
+        collision.setTanks(tanks);
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.03), event -> updateBullet(bullet, root, collision)));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
@@ -242,6 +243,9 @@ public class Tank {
             newBullet.setLayoutY(getBullet().getStartingY());
             getBullet().setxPos(getBullet().getStartingX());
             getBullet().setyPos(getBullet().getStartingY());
+            if(collision.destroy(newBullet,root)){
+                respawnBullet(newBullet);
+            }
             if (collision.destroyWalls(newBullet, this.getBullet().getSpeedX(), this.getBullet().getSpeedY(),
                     root)) {
                 respawnBullet(newBullet);
