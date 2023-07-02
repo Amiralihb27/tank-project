@@ -14,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import static ir.ac.kntu.constants.GlobalConstants.*;
@@ -28,7 +29,7 @@ public class OrdinaryTank extends Tank {
         super.setScore(100);
     }
 
-    public void initializeDirection(int size, Group obstaclesGroup) {
+    public void initializeDirection(int size,Collision collision) {
         Random random = new Random();
         int rand=random.nextInt(4);
         while (getPositionToRespawn()[rand]==-100){
@@ -41,10 +42,10 @@ public class OrdinaryTank extends Tank {
         getImageView().setX(getXPos());
         super.setYPos(0);
         getImageView().setY(0);
-        chooseToMove(size,obstaclesGroup);
+        chooseToMove(size,collision);
     }
 
-    public void chooseToMove(int size, Group obstaclesGroup){
+    public void chooseToMove(int size, Collision collision){
         Random random=new Random();
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> {
             int[] directions = {-1, 0, 1};
@@ -62,7 +63,7 @@ public class OrdinaryTank extends Tank {
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
-        gameLoop(size, obstaclesGroup);
+        gameLoop(size, collision);
     }
 
     public void chooseHorizontalPicture(int xPos, int size) {
@@ -100,27 +101,27 @@ public class OrdinaryTank extends Tank {
         }
     }
 
-    public void gameLoop(int size, Group obstaclesGroup) {
+    public void gameLoop(int size, Collision collision) {
         Timeline gameLoop = new Timeline(new KeyFrame(Duration.millis(30), event -> {
-            move(size, obstaclesGroup);
+            move(size, collision);
         }));
         gameLoop.setCycleCount(Animation.INDEFINITE);
         gameLoop.play();
     }
 
-    public void move(int size, Group obstaclesGroup) {
+    public void move(int size, Collision collision) {
         super.setXPos(super.getXPos() + super.getSpeedX());
         super.setYPos(super.getYPos() + super.getSpeedY());
         chooseHorizontalPicture(getSpeedX(), size);
         chooseVerticalPicture(getSpeedY(), size);
         getImageView().setX(getXPos());
         getImageView().setY(getYPos());
-        checkingBoundries(size, obstaclesGroup);
+        checkingBoundries(size, collision);
     }
 
-    public void checkingBoundries(int size, Group obstaclesGroup) {
+    public void checkingBoundries(int size, Collision collision) {
         Bounds bounds = getImageView().getBoundsInParent();
-        actAgainstCollision(obstaclesGroup);
+        actAgainstCollision(collision);
         if (bounds.getMinX() < 0) {
             super.setXPos(0);
             super.setSpeedX(super.getSpeedX() * -1);
@@ -148,8 +149,8 @@ public class OrdinaryTank extends Tank {
         }
     }
 
-    public void actAgainstCollision(Group obstaclesGroup) {
-        if (checkCollision(this, obstaclesGroup)) {
+    public void actAgainstCollision(Collision collision) {
+        if ( collision.checkCollision(this,getSpeedX(),getSpeedY())) {
             super.setSpeedX(super.getSpeedX() * -1);
             super.setSpeedY(super.getSpeedY() * -1);
         }

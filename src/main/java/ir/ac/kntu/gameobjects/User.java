@@ -30,7 +30,7 @@ public class User {
     }
 
     public User(int lineNumber) {
-
+        System.out.println(lineNumber);
         this.currentLine = lineNumber;
         try {
             // Read the original file

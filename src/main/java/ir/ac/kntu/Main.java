@@ -106,7 +106,9 @@ public class Main extends Application {
         handlingTanks(obstaclesGroup);
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         scene.setFill(Color.BLACK);
-        player.move(scene, gc, obstaclesGroup, root, walls);
+        Collision collision=new Collision(walls);
+        collision.setTanks(tanks);
+        player.move(scene, gc, collision);
         primaryStage.setTitle("Player Shoot Game");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -144,8 +146,10 @@ public class Main extends Application {
         shieldTank.setBullet(newBullet);
         newBullet = new Bullet(0, 0);
         ordinaryTank.setBullet(newBullet);
-        ordinaryTank.initializeDirection(player.getPlayerSize(), obstaclesGroup);
-        shieldTank.initializeDirection(player.getPlayerSize(), obstaclesGroup);
+        Collision collision=new Collision(walls);
+        collision.setTanks(tanks);
+        ordinaryTank.initializeDirection(player.getPlayerSize(),collision);
+        shieldTank.initializeDirection(player.getPlayerSize(), collision);
         if (root.getChildren().contains(ordinaryTank.getImageView())) {
             ordinaryTank.shootBullet(root, walls,tanks);
         }

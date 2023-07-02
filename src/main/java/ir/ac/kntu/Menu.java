@@ -98,7 +98,6 @@ public class Menu {
         menuBox.setSpacing(10);
         menuBox.setAlignment(Pos.CENTER);
         menuBox.getChildren().add(menuItems[0]);
-        System.out.println(menuItems[0].getLayoutY());
         hbox = new HBox();
         hbox.setSpacing(10);
         hbox.setAlignment(Pos.CENTER);
@@ -111,9 +110,7 @@ public class Menu {
         System.out.println(menuItems[0].getLayoutY());
         // Create the scene
         scene = new Scene(menuBox, 600, 600);
-        System.out.println(menuItems[0].getLayoutY());
         scene.setFill(Color.BLACK);
-        System.out.println(scene.getFill());
         // scene.setOnKeyPressed(this::handleKeyPress); // Add key press event listener to the scene
     }
 
@@ -236,7 +233,7 @@ public class Menu {
             File file = new File("Users.txt");
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
-            int currentLine = 1;
+            int currentLine = 0;
             while ((line = reader.readLine()) != null) {
                 // Append the new text to the desired line
                 if (line.startsWith(userName)) {

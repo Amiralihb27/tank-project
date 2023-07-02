@@ -24,8 +24,6 @@ public class Place {
                 walls.add(brickWall);
                 brickWall.getImageView().setX(brickWall.getImageView().getX() + 2.5 * size * i);
                 brickWall.getImageView().setY(brickWall.getImageView().getY() + size * j );
-                ImageView copy=createCopy(brickWall.getImageView());
-                obstaclesGroup.getChildren().add(copy);
                 brickWall.drawWall(root);
             }
         }
@@ -38,8 +36,6 @@ public class Place {
                 walls.add(brickWall);
                 brickWall.getImageView().setX(brickWall.getImageView().getX() + 2.5 * size * i);
                 brickWall.getImageView().setY(brickWall.getImageView().getY() + size * j );
-                ImageView copy=createCopy(brickWall.getImageView());
-                obstaclesGroup.getChildren().add(copy);
                 brickWall.drawWall(root);
             }
         }
@@ -56,8 +52,6 @@ public class Place {
                 walls.add(brickWall);
                 brickWall.getImageView().setX(brickWall.getImageView().getX() + 2.5 * size * i);
                 brickWall.getImageView().setY(brickWall.getImageView().getY() + size * j );
-                ImageView copy=createCopy(brickWall.getImageView());
-                obstaclesGroup.getChildren().add(copy);
                 brickWall.drawWall(root);
             }
         }
@@ -70,8 +64,6 @@ public class Place {
                 walls.add(brickWall);
                 brickWall.getImageView().setX(brickWall.getImageView().getX() + 2.5 * size * i);
                 brickWall.getImageView().setY(brickWall.getImageView().getY() + size * j);
-                ImageView copy=createCopy(brickWall.getImageView());
-                obstaclesGroup.getChildren().add(copy);
                 brickWall.drawWall(root);
             }
         }
@@ -88,8 +80,6 @@ public class Place {
                 walls.add(metalWall);
                 metalWall.getImageView().setX(metalWall.getImageView().getX() + 6.5 * size * i);
                 metalWall.getImageView().setY(metalWall.getImageView().getY() + size * j );
-                ImageView copy=createCopy(metalWall.getImageView());
-                obstaclesGroup.getChildren().add(copy);
                 metalWall.drawWall(root);
 
             }
