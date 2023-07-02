@@ -144,60 +144,9 @@ public class Game extends Application {
     }
 
     public void creatingEnemy() {
-
-        ArrayList<OrdinaryTank> ordinaryTanks = new ArrayList<>();
-        ArrayList<ShieldTank> shieldTanks = new ArrayList<>();
-        for (int i = 0; i < numberOfTotalTanks / 2; i++) {
-            OrdinaryTank ordinaryTank = new OrdinaryTank(0, 0,
-                    new ImageView(new Image("F:\\javap for 4012\\FilePractice\\enemytank1.png", player.getPlayerSize(),
-                            player.getPlayerSize(), true, true)));
-            ordinaryTanks.add(ordinaryTank);
-            ShieldTank shieldTank = new ShieldTank(0, 0,
-                    new ImageView(new Image("F:\\project4\\src\\main\\resources\\images" +
-                            "\\enemyupmetal.png", player.getPlayerSize(),
-                            player.getPlayerSize(), true, true)));
-            shieldTanks.add(shieldTank);
-        }
-
-        System.out.println("size:" + ordinaryTanks.size());
-        javafx.animation.AnimationTimer timer = new javafx.animation.AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                if (tanks.size() < 5) {
-                    Bullet newBullet = new Bullet(0, 0);
-                    Collision collision = new Collision(walls);
-                    collision.setTanks(tanks);
-                    if (indexes[0] < ordinaryTanks.size()) {
-                        root.getChildren().add(ordinaryTanks.get(indexes[0]).getImageView());
-                        tanks.add(ordinaryTanks.get(indexes[0]));
-                        ordinaryTanks.get(indexes[0]).setBullet(newBullet);
-                        ordinaryTanks.get(indexes[0]).initializeDirection(player.getPlayerSize(), collision);
-                        if (root.getChildren().contains(ordinaryTanks.get(indexes[0]).getImageView())) {
-                            ordinaryTanks.get(indexes[0]).shootBullet(root, walls, tanks);
-                        }
-                        indexes[0]++;
-                    }
-                    if (indexes[1] < ordinaryTanks.size()) {
-                        if (tanks.size() < 5) {
-                            root.getChildren().add(shieldTanks.get(indexes[1]).getImageView());
-                            tanks.add(shieldTanks.get(indexes[1]));
-                            newBullet = new Bullet(0, 0);
-                            shieldTanks.get(indexes[1]).setBullet(newBullet);
-                            shieldTanks.get(indexes[1]).initializeDirection(player.getPlayerSize(), collision);
-                            if (root.getChildren().contains(shieldTanks.get(indexes[1]).getImageView())) {
-                                shieldTanks.get(indexes[1]).shootBullet(root, walls, tanks);
-                            }
-                            System.out.println("Shiled+index:" + indexes[1]);
-                            indexes[1]++;
-                            System.out.println("Shiled+index:" + indexes[1]);
-                        }
-                    }
-
-
-                }
-            }
-        };
-        timer.start();
+        TankCreation tankCreation = new TankCreation(tanks, walls);
+        tankCreation.setNumberOfTotalTanks(numberOfTotalTanks);
+        tankCreation.creatingEnemy(root);
     }
 
 
