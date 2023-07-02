@@ -5,6 +5,7 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -19,11 +20,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.*;
 import java.util.ArrayList;
 
 import static javafx.application.Application.launch;
 
-public class Main extends Application {
+public class Game extends Application {
 
     private static final int WIDTH = 600;
 
@@ -33,6 +35,11 @@ public class Main extends Application {
     private static final int PLAYER_SIZE = 25;
 
     private ArrayList<Wall> walls = new ArrayList<>();
+
+
+    private GameState gameState = GameState.RESUMED;
+
+    private int clicked = 0;
 
 
     private static final int BULLET_SIZE = 20;
@@ -66,21 +73,19 @@ public class Main extends Application {
     }
 
 
-    public void setUser(User user){
-        this.user=user;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void start(Stage primaryStage) throws Exception {
         this.stage = primaryStage;
 
-
         // Initialize the menu
         menu = new Menu(stage);
-
+        menu.setGame(this);
         // Set the key event handler for the menu
         menu.show();
         menu.getScene().setOnKeyPressed(this::handleKeyPress);
-
         // Show the menu initially
         // stage.setScene(menu.getScene());
     }
@@ -106,14 +111,17 @@ public class Main extends Application {
         handlingTanks(obstaclesGroup);
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         scene.setFill(Color.BLACK);
-        Collision collision=new Collision(walls);
+        Collision collision = new Collision(walls);
         collision.setTanks(tanks);
         player.move(scene, gc, collision);
         primaryStage.setTitle("Player Shoot Game");
         primaryStage.setScene(scene);
         primaryStage.show();
         shooting(gc, obstaclesGroup);
+
+
     }
+
 
     public void handlingTanks(Group obstaclesGroup) {
         ImageView imageView = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\tank1.png"));
@@ -146,15 +154,15 @@ public class Main extends Application {
         shieldTank.setBullet(newBullet);
         newBullet = new Bullet(0, 0);
         ordinaryTank.setBullet(newBullet);
-        Collision collision=new Collision(walls);
+        Collision collision = new Collision(walls);
         collision.setTanks(tanks);
-        ordinaryTank.initializeDirection(player.getPlayerSize(),collision);
+        ordinaryTank.initializeDirection(player.getPlayerSize(), collision);
         shieldTank.initializeDirection(player.getPlayerSize(), collision);
         if (root.getChildren().contains(ordinaryTank.getImageView())) {
-            ordinaryTank.shootBullet(root, walls,tanks);
+            ordinaryTank.shootBullet(root, walls, tanks);
         }
         if (root.getChildren().contains(shieldTank.getImageView())) {
-            shieldTank.shootBullet(root, walls,tanks);
+            shieldTank.shootBullet(root, walls, tanks);
         }
     }
 
@@ -256,5 +264,35 @@ public class Main extends Application {
         newBullet.draw(gc);
     }
 
+
+    public void stop() {
+        if (this.user != null) {
+            Platform.runLater(() -> {
+                int lineNumber = user.getCurrentLine(); // Specify the line number where you want to add the text
+                try {
+                    File file = new File("Users.txt");
+                    BufferedReader reader = new BufferedReader(new FileReader(file));
+                    StringBuilder content = new StringBuilder();
+                    String line;
+                    int currentLine = 0;
+                    while ((line = reader.readLine()) != null) {
+                        if (currentLine == lineNumber) {
+                            content.append(user.getUserName()).append(" ").append(user.getPassWord()).append(" ")
+                                    .append(0).append(" ").append(user.getHighScore()).append(System.lineSeparator());
+                        } else {
+                            content.append(line).append(System.lineSeparator());
+                        }
+                        currentLine++;
+                    }
+                    reader.close();
+                    FileWriter writer = new FileWriter(file);
+                    writer.write(content.toString());
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+    }
 
 }

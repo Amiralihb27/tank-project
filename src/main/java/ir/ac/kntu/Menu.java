@@ -5,7 +5,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -14,9 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.scene.shape.StrokeType;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -29,6 +26,9 @@ public class Menu {
     private VBox menuBox;
 
     private HBox hbox;
+
+
+    private Game game;
 
     private ImageView[] menuItems;
 
@@ -55,6 +55,15 @@ public class Menu {
 
     public void setScene(Scene scene) {
         this.scene = scene;
+    }
+
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public Game getGame() {
+        return game;
     }
 
 
@@ -153,8 +162,8 @@ public class Menu {
 
     public void startGameMenu(int currentLine) {
         // Redirect to the game class and its start menu
-        Main game = new Main(); // Assuming there is a Game class
-        User user=new User(currentLine);
+        //Main game = new Main(); // Assuming there is a Game class
+        User user = new User(currentLine);
         game.setUser(user);
         game.startGame(stage);
     }
