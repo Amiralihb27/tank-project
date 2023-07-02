@@ -1,5 +1,6 @@
 package ir.ac.kntu.gameobjects;
 
+import ir.ac.kntu.Game;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -9,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 
+import java.awt.font.GlyphMetrics;
 import java.lang.reflect.GenericArrayType;
 import java.util.ArrayList;
 
@@ -21,6 +23,10 @@ public class Player extends Tank {
     private GraphicsContext gc;
 
     private int playerSize = 25;
+
+    private Game game;
+
+    private ArrayList<Tank> tanks = new ArrayList<>();
 
     public int getPlayerSize() {
         return playerSize;
@@ -39,6 +45,10 @@ public class Player extends Tank {
         super.setHealth(3);
     }
 
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
     public void draw(GraphicsContext gc) {
         gc.drawImage(super.getImageView().getImage(), super.getXPos(), super.getYPos(), playerSize, playerSize);
     }
@@ -48,7 +58,12 @@ public class Player extends Tank {
         super.setXPos(400);
         super.setYPos(600 - playerSize);
         super.lostHP();
-        draw(gc);
+        if (getHealth() <=2 ) {
+            game.showResult();
+        } else {
+            draw(gc);
+        }
+
     }
 
     public GraphicsContext getGc() {
@@ -163,6 +178,32 @@ public class Player extends Tank {
         copy.setY(getImageView().getY() + dy);
         copy.setImage(getImageView().getImage());
         return copy;
+    }
+
+    public void addDestroyedTanks(Tank tank) {
+        this.tanks.add(tank);
+    }
+
+    public ArrayList<OrdinaryTank> ordinaryTanks() {
+        ArrayList<OrdinaryTank> ordinaryTanks = new ArrayList<>();
+        for (Tank tank : tanks) {
+            if (tank.getClass().getSimpleName().equals("OrdinaryTank")) {
+                OrdinaryTank ordinaryTank = (OrdinaryTank) tank;
+                ordinaryTanks.add(ordinaryTank);
+            }
+        }
+        return ordinaryTanks;
+    }
+
+    public ArrayList<ShieldTank> shieldTanks() {
+        ArrayList<ShieldTank> shieldTank = new ArrayList<>();
+        for (Tank tank : tanks) {
+            if (tank.getClass().getSimpleName().equals("ShieldTank")) {
+                ShieldTank shieldTank1 = (ShieldTank) tank;
+                shieldTank.add(shieldTank1);
+            }
+        }
+        return shieldTank;
     }
 
 

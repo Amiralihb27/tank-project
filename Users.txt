@@ -1,4 +1,4 @@
-a s 0 900
+a s 0 0
 Mohammad Ahmadi 0 0
 Ali Hamedi 0 0
 Tanjiro Kamado 0 0

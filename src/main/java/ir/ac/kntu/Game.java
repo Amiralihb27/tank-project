@@ -39,6 +39,8 @@ public class Game extends Application {
 
     private GameState gameState = GameState.RESUMED;
 
+    private Scene scene;
+
 
     private int numberOfTotalTanks = 6;
 
@@ -114,8 +116,9 @@ public class Game extends Application {
         Place place = new Place();
         place.addBrickToTheTop(root, PLAYER_SIZE, obstaclesGroup, walls);
         handlingTanks(obstaclesGroup);
-        Scene scene = new Scene(root, WIDTH, HEIGHT);
+        scene = new Scene(root, WIDTH, HEIGHT);
         scene.setFill(Color.BLACK);
+        player.setGame(this);
         Collision collision = new Collision(walls);
         collision.setTanks(tanks);
         player.move(scene, gc, collision);
@@ -215,6 +218,7 @@ public class Game extends Application {
                 if (tanks.get(i).getHealth() <= 0) {
                     if (!tanks.get(i).getClass().getSimpleName().equals("Player")) {
                         player.addScore(tanks.get(i).getScore());
+                        player.addDestroyedTanks(tanks.get(i));
                         user.addScore(tanks.get(i).getScore());
                         explosion = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images" +
                                 "\\explode.png", 20, 20, true, true));
@@ -277,6 +281,14 @@ public class Game extends Application {
                 }
             });
         }
+    }
+
+    public void showResult() {
+
+        ShowScores showScores = new ShowScores(stage, scene, this.player, user);
+
+        showScores.showScreen();
+
     }
 
 }
