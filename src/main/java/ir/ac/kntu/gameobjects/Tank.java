@@ -13,9 +13,6 @@ import static ir.ac.kntu.constants.GlobalConstants.canvasWidth;
 
 public class Tank {
 
-    private double firstPosX;
-
-    private double firstPosY;
 
     private double xPos;
 
@@ -23,7 +20,7 @@ public class Tank {
 
     private Bullet bullet;
 
-    private static int tankSize = 30;
+    private static int tankSize = 25;
 
     private int speedY = 5;
 
@@ -39,10 +36,12 @@ public class Tank {
 
     private int powerOfTheBullet = 1;
 
-    private int size = 25;
-
 
     private static int[] positionToRespawn = {0, 2 * canvasWidth / 15 + 4 * tankSize,
+        11 * canvasWidth / 15 + tankSize,
+        canvasWidth - tankSize};
+
+    private int[] copyOfFirstPos = {0, 2 * canvasWidth / 15 + 4 * tankSize,
         11 * canvasWidth / 15 + tankSize,
         canvasWidth - tankSize};
 
@@ -50,20 +49,23 @@ public class Tank {
         return positionToRespawn;
     }
 
-    public double getFirstPosX() {
-        return firstPosX;
+    public int[] getCopyOfFirstPos() {
+        return copyOfFirstPos;
     }
 
-    public void setFirstPosX(double firstPosX) {
-        this.firstPosX = firstPosX;
+    public boolean isFull() {
+        for (int i = 0; i < positionToRespawn.length; i++) {
+            if (positionToRespawn[i] != -100) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    public double getFirstPosY() {
-        return firstPosY;
-    }
-
-    public void setFirstPosY(double firstPosY) {
-        this.firstPosY = firstPosY;
+    public void makeEmpty() {
+        for (int i = 0; i < positionToRespawn.length; i++) {
+            positionToRespawn[i] = copyOfFirstPos[i];
+        }
     }
 
     public Tank() {
@@ -191,15 +193,7 @@ public class Tank {
     }
 
 
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-    public void shootBullet(Pane root, ArrayList<Wall> walls,ArrayList<Tank> tanks) {
+    public void shootBullet(Pane root, ArrayList<Wall> walls, ArrayList<Tank> tanks) {
         ImageView bullet = new ImageView(new Image(this.getBullet().getBulletImage().getUrl(),
                 15, 15, true, true));
         // System.out.println(bullet.getFitHeight());
@@ -238,7 +232,7 @@ public class Tank {
             newBullet.setLayoutY(getBullet().getStartingY());
             getBullet().setxPos(getBullet().getStartingX());
             getBullet().setyPos(getBullet().getStartingY());
-            if(collision.destroy(newBullet,root)){
+            if (collision.destroy(newBullet, root)) {
                 respawnBullet(newBullet);
             }
             if (collision.destroyWalls(newBullet, this.getBullet().getSpeedX(), this.getBullet().getSpeedY(),

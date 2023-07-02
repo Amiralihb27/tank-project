@@ -39,10 +39,15 @@ public class Game extends Application {
 
     private GameState gameState = GameState.RESUMED;
 
+
+    private int numberOfTotalTanks = 6;
+
+    private int[] indexes = {0, 0, 0};
+
     private int clicked = 0;
 
 
-    private static final int BULLET_SIZE = 20;
+    private static final int BULLET_SIZE = 25;
 
 
     private static final double BULLET_SPEED = 5.0;
@@ -132,38 +137,67 @@ public class Game extends Application {
         //  bulletAngle = 90.0;
         player.setBullet(bullet);
         root.getChildren().add(canvas);
-        creatingEnemy(obstaclesGroup);
+        tanks.add(player);
+        creatingEnemy();
         shooting(gc, obstaclesGroup);
 
     }
 
-    public void creatingEnemy(Group obstaclesGroup) {
-        OrdinaryTank ordinaryTank = new OrdinaryTank(0, 0,
-                new ImageView(new Image("F:\\javap for 4012\\FilePractice\\enemytank1.png", player.getPlayerSize(),
-                        player.getPlayerSize(), true, true)));
-        ShieldTank shieldTank = new ShieldTank(0, 0,
-                new ImageView(new Image("F:\\project4\\src\\main\\resources\\images" +
-                        "\\enemyupmetal.png", player.getPlayerSize(),
-                        player.getPlayerSize(), true, true)));
-        root.getChildren().addAll(ordinaryTank.getImageView(), shieldTank.getImageView());
-        this.tanks.add(player);
-        this.tanks.add(ordinaryTank);
-        this.tanks.add(shieldTank);
+    public void creatingEnemy() {
 
-        Bullet newBullet = new Bullet(0, 0);
-        shieldTank.setBullet(newBullet);
-        newBullet = new Bullet(0, 0);
-        ordinaryTank.setBullet(newBullet);
-        Collision collision = new Collision(walls);
-        collision.setTanks(tanks);
-        ordinaryTank.initializeDirection(player.getPlayerSize(), collision);
-        shieldTank.initializeDirection(player.getPlayerSize(), collision);
-        if (root.getChildren().contains(ordinaryTank.getImageView())) {
-            ordinaryTank.shootBullet(root, walls, tanks);
+        ArrayList<OrdinaryTank> ordinaryTanks = new ArrayList<>();
+        ArrayList<ShieldTank> shieldTanks = new ArrayList<>();
+        for (int i = 0; i < numberOfTotalTanks / 2; i++) {
+            OrdinaryTank ordinaryTank = new OrdinaryTank(0, 0,
+                    new ImageView(new Image("F:\\javap for 4012\\FilePractice\\enemytank1.png", player.getPlayerSize(),
+                            player.getPlayerSize(), true, true)));
+            ordinaryTanks.add(ordinaryTank);
+            ShieldTank shieldTank = new ShieldTank(0, 0,
+                    new ImageView(new Image("F:\\project4\\src\\main\\resources\\images" +
+                            "\\enemyupmetal.png", player.getPlayerSize(),
+                            player.getPlayerSize(), true, true)));
+            shieldTanks.add(shieldTank);
         }
-        if (root.getChildren().contains(shieldTank.getImageView())) {
-            shieldTank.shootBullet(root, walls, tanks);
-        }
+
+        System.out.println("size:" + ordinaryTanks.size());
+        javafx.animation.AnimationTimer timer = new javafx.animation.AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (tanks.size() < 5) {
+                    Bullet newBullet = new Bullet(0, 0);
+                    Collision collision = new Collision(walls);
+                    collision.setTanks(tanks);
+                    if (indexes[0] < ordinaryTanks.size()) {
+                        root.getChildren().add(ordinaryTanks.get(indexes[0]).getImageView());
+                        tanks.add(ordinaryTanks.get(indexes[0]));
+                        ordinaryTanks.get(indexes[0]).setBullet(newBullet);
+                        ordinaryTanks.get(indexes[0]).initializeDirection(player.getPlayerSize(), collision);
+                        if (root.getChildren().contains(ordinaryTanks.get(indexes[0]).getImageView())) {
+                            ordinaryTanks.get(indexes[0]).shootBullet(root, walls, tanks);
+                        }
+                        indexes[0]++;
+                    }
+                    if (indexes[1] < ordinaryTanks.size()) {
+                        if (tanks.size() < 5) {
+                            root.getChildren().add(shieldTanks.get(indexes[1]).getImageView());
+                            tanks.add(shieldTanks.get(indexes[1]));
+                            newBullet = new Bullet(0, 0);
+                            shieldTanks.get(indexes[1]).setBullet(newBullet);
+                            shieldTanks.get(indexes[1]).initializeDirection(player.getPlayerSize(), collision);
+                            if (root.getChildren().contains(shieldTanks.get(indexes[1]).getImageView())) {
+                                shieldTanks.get(indexes[1]).shootBullet(root, walls, tanks);
+                            }
+                            System.out.println("Shiled+index:" + indexes[1]);
+                            indexes[1]++;
+                            System.out.println("Shiled+index:" + indexes[1]);
+                        }
+                    }
+
+
+                }
+            }
+        };
+        timer.start();
     }
 
 
@@ -242,6 +276,7 @@ public class Game extends Application {
                         root.getChildren().add(explosion);
                         root.getChildren().remove(tanks.get(i).getImageView());
                         tanks.remove(tanks.get(i));
+                        System.out.println(tanks.size());
                         new Explosion(explosion).explosionAnimation(xPos, yPos, root);
                         return true;
                     }

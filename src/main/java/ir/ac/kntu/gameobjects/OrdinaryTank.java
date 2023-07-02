@@ -32,12 +32,14 @@ public class OrdinaryTank extends Tank {
     public void initializeDirection(int size,Collision collision) {
         Random random = new Random();
         int rand=random.nextInt(4);
+        if(this.isFull()){
+            this.makeEmpty();
+            System.out.println("full");
+        }
         while (getPositionToRespawn()[rand]==-100){
             rand=random.nextInt(4);
         }
         super.setXPos(getPositionToRespawn()[rand]);
-        super.setFirstPosX(getPositionToRespawn()[rand]);
-        setFirstPosY(0);
         getPositionToRespawn()[rand]=-100;
         getImageView().setX(getXPos());
         super.setYPos(0);
