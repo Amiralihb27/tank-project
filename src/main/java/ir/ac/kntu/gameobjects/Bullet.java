@@ -170,7 +170,6 @@ public class Bullet {
         if (alive) {
             gc.drawImage(bulletImage, xPos, yPos, bulletSize, bulletSize);
 
-
         }
     }
 }

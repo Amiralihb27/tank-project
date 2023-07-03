@@ -1,5 +1,6 @@
 package ir.ac.kntu;
 
+import ir.ac.kntu.constants.GlobalConstants;
 import ir.ac.kntu.gameobjects.*;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
@@ -22,19 +23,20 @@ import javafx.util.Duration;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import static ir.ac.kntu.constants.GlobalConstants.canvasHeight;
 import static ir.ac.kntu.constants.GlobalConstants.canvasWidth;
-import static javafx.application.Application.launch;
+
 
 public class Game extends Application {
 
-    private static final int WIDTH = 600;
+    private static int width;
 
-    private static final int HEIGHT = 600;
+    private static int heidth;
 
 
-    private static final int PLAYER_SIZE = 25;
+    private static final int PLAYER_SIZE = GlobalConstants.getTankSize();
 
     private ArrayList<Wall> walls = new ArrayList<>();
 
@@ -82,6 +84,14 @@ public class Game extends Application {
     private Menu menu;
 
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the Width of the scene: ");
+        int sceneWidth = sc.nextInt();
+        System.out.println("Enter the Height of the scene: ");
+        int height = sc.nextInt();
+        GlobalConstants globalConstants = new GlobalConstants(sceneWidth, height);
+        width = canvasWidth;
+        heidth = canvasHeight;
         launch(args);
     }
 
@@ -118,9 +128,9 @@ public class Game extends Application {
 
     public void startGame(Stage primaryStage) {
         root = new Pane();
-        canvas = new Canvas(WIDTH, HEIGHT);
+        canvas = new Canvas(width, heidth);
         gc = canvas.getGraphicsContext2D();
-        Rectangle rect = new Rectangle(0, 0, 600, 600);
+        Rectangle rect = new Rectangle(0, 0, width, heidth);
         root.setStyle("-fx-background-color: black;");
         // Group obstaclesGroup = new Group();
         rect.setFill(null);
@@ -131,9 +141,9 @@ public class Game extends Application {
         ImageView flagImage = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\flag.png",
                 PLAYER_SIZE, PLAYER_SIZE, true, true));
         flag = new Flag(canvasWidth / 2, canvasHeight - PLAYER_SIZE, flagImage);
-        place.addBrickToTheTop(root, PLAYER_SIZE, walls,flag);
+        place.addBrickToTheTop(root, PLAYER_SIZE, walls, flag);
         handlingTanks();
-        scene = new Scene(root, WIDTH, HEIGHT);
+        scene = new Scene(root, width, heidth);
         scene.setFill(Color.BLACK);
         player.setGame(this);
         Collision collision = new Collision(walls);
@@ -148,8 +158,8 @@ public class Game extends Application {
 
     public void handlingTanks() {
         ImageView imageView = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\tank1.png"));
-        player = new Player(400, 600, imageView);
-        player.setYPos(600 - player.getPlayerSize());
+        player = new Player(canvasWidth / 3, canvasHeight - PLAYER_SIZE, imageView);
+        //player.setYPos(600 - player.getPlayerSize());
         player.setGc(gc);
         bullet = new Bullet(0, 0);
         //  bulletAngle = 90.0;
@@ -164,7 +174,7 @@ public class Game extends Application {
     public void creatingEnemy() {
         TankCreation tankCreation = new TankCreation(tanks, walls);
         tankCreation.setNumberOfTotalTanks(numberOfTotalTanks);
-        tankCreation.creatingEnemy(root,this.flag);
+        tankCreation.creatingEnemy(root, this.flag);
     }
 
 
@@ -176,7 +186,7 @@ public class Game extends Application {
             public void handle(long now) {
                 double deltaTime = (now - lastTime) / 50000000.0;
                 lastTime = now;
-                gc.clearRect(0, 0, 600, 600);
+                gc.clearRect(0, 0, canvasWidth, canvasHeight);
                 player.draw(gc);
                 Bullet newBullet = player.getBullet();
                 // tanks.get(0).shootBullet(gc,tanks,obstaclesGroup,root);
@@ -217,8 +227,8 @@ public class Game extends Application {
             timeline.setCycleCount(3);
             timeline.play();
         }
-        if (newBullet.getxPos() < 0 || newBullet.getxPos() > 600 - newBullet.getBulletSize() ||
-                newBullet.getyPos() < 0 || newBullet.getyPos() > 600 - newBullet.getBulletSize()
+        if (newBullet.getxPos() < 0 || newBullet.getxPos() > canvasWidth - newBullet.getBulletSize() ||
+                newBullet.getyPos() < 0 || newBullet.getyPos() > canvasHeight - newBullet.getBulletSize()
                 || Math.abs(newBullet.getxPos() - newBullet.getStartingX()) >= 200 ||
                 Math.abs(newBullet.getyPos() - newBullet.getStartingY()) >= 200) {
             newBullet.kill();

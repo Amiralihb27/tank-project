@@ -9,6 +9,7 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 
+import static ir.ac.kntu.constants.GlobalConstants.canvasHeight;
 import static ir.ac.kntu.constants.GlobalConstants.canvasWidth;
 
 public class Tank {
@@ -207,13 +208,14 @@ public class Tank {
         Collision collision = new Collision(walls);
         collision.setTanks(tanks);
         collision.setFlag(flag);
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.03), event -> updateBullet(bullet, root, collision)));
+
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.02), event -> updateBullet(bullet, root, collision)));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
         // Enable shooting initially
         getBullet().setShooting(true);
         // Set up shooting timeline
-        Timeline shootingTimeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> {
+        Timeline shootingTimeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             if (!bullet.isVisible() && root.getChildren().contains(this.getImageView())) {
                 // Shoot the bullet if it's not visible
                 shootBullet(bullet);
@@ -239,7 +241,7 @@ public class Tank {
             if (collision.destroyWalls(newBullet, this.getBullet().getSpeedX(), this.getBullet().getSpeedY(),
                     root)) {
                 respawnBullet(newBullet);
-            } else if (newBullet.getLayoutY() >= 600 || newBullet.getLayoutX() >= 600 ||
+            } else if (newBullet.getLayoutY() >= canvasHeight || newBullet.getLayoutX() >= canvasWidth ||
                     newBullet.getLayoutY() < 0 || newBullet.getLayoutX() < 0 ||
                     newBullet.getLayoutX() - getBullet().getStartingX() >= 100 ||
                     newBullet.getLayoutY() - getBullet().getStartingY() >= 100) {

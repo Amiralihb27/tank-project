@@ -55,8 +55,8 @@ public class Player extends Tank {
 
     @Override
     public void lostHP() {
-        super.setXPos(400);
-        super.setYPos(600 - playerSize);
+        super.setXPos(canvasWidth/3);
+        super.setYPos(canvasHeight - playerSize);
         super.lostHP();
         if (getHealth() <=0 ) {
             game.showResult();
