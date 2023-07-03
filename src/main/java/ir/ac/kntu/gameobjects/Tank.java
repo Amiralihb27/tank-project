@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import static ir.ac.kntu.constants.GlobalConstants.canvasHeight;
 import static ir.ac.kntu.constants.GlobalConstants.canvasWidth;
 
-public class Tank {
+public abstract class Tank {
 
 
     private double xPos;
@@ -284,5 +284,18 @@ public class Tank {
         }));
         resetTimeline.setCycleCount(1);
         resetTimeline.play();
+    }
+
+    public void chooseVerticalPicture(int speedY,int size){
+
+    }
+
+    public void chooseHorizontalPicture(int speedX,int size){
+
+    }
+
+    public void movement(int size,Collision collision){
+        TankMovements tankMovements=new TankMovements(this);
+        tankMovements.initializeDirection(size,collision);
     }
 }

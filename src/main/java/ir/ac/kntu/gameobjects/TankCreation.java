@@ -76,7 +76,7 @@ public class TankCreation {
             root.getChildren().add(ordinaryTanks.get(indexes[0]).getImageView());
             tanks.add(ordinaryTanks.get(indexes[0]));
             ordinaryTanks.get(indexes[0]).setBullet(newBullet);
-            ordinaryTanks.get(indexes[0]).initializeDirection(tankSize, collision);
+            ordinaryTanks.get(indexes[0]).movement(tankSize, collision);
             if (root.getChildren().contains(ordinaryTanks.get(indexes[0]).getImageView())) {
                 ordinaryTanks.get(indexes[0]).shootBullet(root, walls, tanks,collision.getFlag());
             }
@@ -94,7 +94,7 @@ public class TankCreation {
                 tanks.add(shieldTanks.get(indexes[1]));
                 newBullet = new Bullet(0, 0);
                 shieldTanks.get(indexes[1]).setBullet(newBullet);
-                shieldTanks.get(indexes[1]).initializeDirection(tankSize, collision);
+                shieldTanks.get(indexes[1]).movement(tankSize, collision);
                 if (root.getChildren().contains(shieldTanks.get(indexes[1]).getImageView())) {
                     shieldTanks.get(indexes[1]).shootBullet(root, walls, tanks,collision.getFlag());
                 }
