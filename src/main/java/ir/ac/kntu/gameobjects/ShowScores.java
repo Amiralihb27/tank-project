@@ -1,9 +1,12 @@
 package ir.ac.kntu.gameobjects;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -19,6 +22,10 @@ public class ShowScores {
     private Stage stage;
 
     private Scene scene;
+
+    private int currentImageIndex;
+
+    private VBox imageVBox;
 
     private Player player;
 
@@ -49,7 +56,7 @@ public class ShowScores {
                 + player.shieldTanks().size() * 200);
         text[1].setFont(Font.font("Arial", 20));
         text[1].setFill(Color.GOLD);
-        ImageView[] score = new ImageView[3];
+        ImageView[] score = new ImageView[4];
         score[0] = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\enemyupmetal.png"
                 , 50, 50, true, true));
         hBox[1].getChildren().addAll(score[0], text[1]);
@@ -86,11 +93,14 @@ public class ShowScores {
         hBox[3] = new HBox(10);
         hBox[3].getChildren().addAll(score[2], text[4]);
         hBox[3].setAlignment(Pos.CENTER);
+        score[3] = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\gameover.png"
+                , 100, 100, true, true));
         VBox vBox = new VBox(10);
         vBox.getChildren().addAll(hBox);
         vBox.getChildren().add(line);
         vBox.getChildren().add(text[3]);
         vBox.setAlignment(Pos.CENTER);
+        vBox.getChildren().add(score[3]);
 
         AnchorPane root = new AnchorPane();
         root.getChildren().add(vBox);
@@ -103,5 +113,70 @@ public class ShowScores {
         stage.show();
 
 
+    }
+
+    public void showStage() {
+        ImageView[] imageViews = new ImageView[10];
+        Text[] texts = new Text[10];
+        HBox[] hbox = new HBox[10];
+        hbox[0] = new HBox(5);
+         imageVBox = new VBox();
+        imageVBox.setAlignment(Pos.CENTER);
+        ImageView arrowKeyImageView = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\" +
+                "enemyright.png"));
+
+        for (int i = 0; i < 10; i++) {
+            imageViews[i] = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\" +
+                    "stage.png", 50, 50, true, true));
+            texts[i] = new Text("" + (i + 1));
+            texts[i].setFont(Font.font("Arial", 20));
+            texts[i].setFill(Color.GRAY);
+            if (i == 0) {
+                hbox[0].getChildren().addAll(arrowKeyImageView, imageViews[0], texts[0]);
+                hbox[0].setAlignment(Pos.CENTER);
+                imageVBox.getChildren().add(hbox[0]);
+            } else {
+                hbox[i] = new HBox(5);
+                hbox[i].getChildren().addAll(imageViews[i], texts[i]);
+                imageVBox.getChildren().add(hbox[i]);
+            }
+
+        }
+    }
+
+    public void choosingStage(ImageView[] imageViews,HBox[] hbox,ImageView arrowKeyImageView,Text[] texts) {
+         currentImageIndex = 0;
+
+        // Set up the event handler to handle arrow key presses
+        Scene scene = new Scene(imageVBox, 400, 400);
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.UP && currentImageIndex > 0) {
+                    // Move arrow key image up
+                    currentImageIndex--;
+                    imageVBox.getChildren().remove( hbox[currentImageIndex]);
+                     hbox[currentImageIndex] = new HBox(5);
+                    hbox[currentImageIndex].getChildren().addAll(arrowKeyImageView, imageViews[currentImageIndex]);
+                    hbox[currentImageIndex].setAlignment(Pos.CENTER);
+//                    imageVBox.getChildren().remove(arrowKeyImageView);
+//                    imageVBox.getChildren().remove(imageViews[currentImageIndex]);
+                    imageVBox.getChildren().add(currentImageIndex, hbox[currentImageIndex]);
+                } else if (event.getCode() == KeyCode.DOWN && currentImageIndex < imageViews.length - 1) {
+                    // Move arrow key image down
+                    currentImageIndex++;
+                    imageVBox.getChildren().remove( hbox[currentImageIndex]);
+                    hbox[currentImageIndex] = new HBox(5);
+                    hbox[currentImageIndex].getChildren().addAll(arrowKeyImageView, imageViews[currentImageIndex]);
+                    hbox[currentImageIndex].setAlignment(Pos.CENTER);
+//                    imageVBox.getChildren().remove(arrowKeyImageView);
+//                    imageVBox.getChildren().remove(imageViews[currentImageIndex]);
+                    imageVBox.getChildren().add(currentImageIndex, hbox[currentImageIndex]);
+                }
+            }
+        });
+
+        stage.setScene(scene);
+        stage.show();
     }
 }

@@ -84,6 +84,14 @@ public class Game extends Application {
         this.user = user;
     }
 
+    public int getNumberOfTotalTanks() {
+        return numberOfTotalTanks;
+    }
+
+    public void setNumberOfTotalTanks(int numberOfTotalTanks) {
+        this.numberOfTotalTanks = numberOfTotalTanks;
+    }
+
     public void start(Stage primaryStage) throws Exception {
         this.stage = primaryStage;
 

@@ -1,5 +1,6 @@
 package ir.ac.kntu;
 
+import ir.ac.kntu.gameobjects.DefineStages;
 import ir.ac.kntu.gameobjects.User;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -165,7 +166,11 @@ public class Menu {
         //Main game = new Main(); // Assuming there is a Game class
         User user = new User(currentLine);
         game.setUser(user);
-        game.startGame(stage);
+        //game.startGame(stage);
+        DefineStages defineStages=new DefineStages(stage,scene,game);
+        defineStages.showStage();
+//        game.setUser(user);
+//        game.startGame(stage);
     }
 
 
@@ -216,7 +221,7 @@ public class Menu {
             String password = passwordField.getText();
 
             if (validateCredentials(username, password, users)) {
-                int currentLine = findingUser(users, username, password);
+                int currentLine = findingUser( username, password);
                 startGameMenu(currentLine);
             } else {
                 showInvalidCredentialsMessage();
@@ -235,7 +240,7 @@ public class Menu {
         }
     }
 
-    public int findingUser(ArrayList<String> users, String userName, String passWord) {
+    public int findingUser( String userName, String passWord) {
 
         try {
             // Read the original file

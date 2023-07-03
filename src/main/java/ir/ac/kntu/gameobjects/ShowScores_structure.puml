@@ -1,0 +1,512 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": true,
+    "cutInterfaceStructures": true,
+    "cutDataStructures": true,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 6,
+    "backwardDepth": 6,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": false,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": false,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "ir.ac.kntu.gameobjects.ShowScores",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_3106 { 
+   	label=ac
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_1226391184 { 
+   	label=kntu
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   BrickWall1426278113[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)BrickWall</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ drawWall(Pane)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Bullet1426278113[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Bullet</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   alive: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   angle: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   bulletImage: Image [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   bulletSize: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   bulletSpeed: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   shooting: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   speedX: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   speedY: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   startingX: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   startingY: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   xPos: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   yPos: double [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ draw(GraphicsContext)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ initializeTheDirection(Direction)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ kill()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ revive(boolean)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(double)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Collision1426278113[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Collision</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   explosion: ImageView [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   obstaclesGroup: Group [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   tanks: ArrayList&lt;Tank&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   walls: ArrayList&lt;Wall&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ checkCollision(Tank, double, double)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ destroy(Pane, ImageView)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ destroy(ImageView, Pane)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ destroyWalls(ImageView, double, double, Pane)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ destroyWalls(Tank, double, double, Pane)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ makeCopy(Tank)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Explosion1426278113[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Explosion</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   explosion: ImageView [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ explosionAnimation(double, double, Pane)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Game1711954517[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Game</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   bullet: Bullet [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   canvas: Canvas [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   clicked: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   explosion: ImageView [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   gameState: GameState [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   gc: GraphicsContext [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   indexes: int[] [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   menu: Menu [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   numberOfTotalTanks: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   player: Player [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   root: Pane [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   scene: Scene [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   stage: Stage [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   tanks: ArrayList&lt;Tank&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   user: User [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   walls: ArrayList&lt;Wall&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ checkCollisionForBullet(Bullet, Group)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ creatingEnemy()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ destroy(ImageView)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ handleKeyPress(KeyEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ handlingTanks(Group)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ main(String[])</TD></TR>
+<TR><TD ALIGN="LEFT" >+ shooting(GraphicsContext, Group)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ showResult()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ start(Stage)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ startGame(Stage)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ stop()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+GameObjects1426278113[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)GameObjects</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   health: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   imageView: ImageView [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   score: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   xPos: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   yPos: double [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ lostHP(int)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Menu1711954517[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Menu</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   currentItem: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   game: Game [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   hbox: HBox [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   menuBox: VBox [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   menuItems: ImageView[] [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   root: Pane [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   scene: Scene [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   stage: Stage [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ colorizeButtons(TextField, TextField, Label, Label)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ createSignInScene()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ findingUser(ArrayList&lt;String&gt;, String, String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ handleKeyPress(KeyEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ handlingUsers(ArrayList&lt;String&gt;)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ show()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ showInvalidCredentialsMessage()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ signInHandling(Button, TextField, TextField, ArrayList&lt;String&gt;)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ startGameMenu(int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ validateCredentials(String, String, ArrayList&lt;String&gt;)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+MetalWall1426278113[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)MetalWall</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ drawWall(Pane)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+OrdinaryTank1426278113[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)OrdinaryTank</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ actAgainstCollision(Collision)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ checkCollision(Tank, Group)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ checkingBoundries(int, Collision)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ chooseHorizontalPicture(int, int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ chooseToMove(int, Collision)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ chooseVerticalPicture(int, int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ gameLoop(int, Collision)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ initializeDirection(int, Collision)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ move(int, Collision)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Place1426278113[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Place</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ addBrickToTheBot(Pane, int, Group, ArrayList&lt;Wall&gt;)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ addBrickToTheTop(Pane, int, Group, ArrayList&lt;Wall&gt;)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ addMetalToTheTop(Pane, int, Group, ArrayList&lt;Wall&gt;)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ createCopy(ImageView)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Player1426278113[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Player</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   game: Game [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   gc: GraphicsContext [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   playerSize: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   tanks: ArrayList&lt;Tank&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ addDestroyedTanks(Tank)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ draw(GraphicsContext)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ lostHP()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ makeCopy()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ move(Scene, GraphicsContext, Collision)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ moveDown(Collision)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ moveLeft(Collision)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ moveRight(Collision)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ moveUp(Collision)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ ordinaryTanks()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ shieldTanks()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ShieldTank1426278113[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ShieldTank</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ actAgainstCollision(Collision)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ checkCollision(Tank, Group)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ checkingBoundries(int, Collision)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ chooseHorizontalPicture(int, int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ chooseToMove(int, Collision)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ chooseVerticalPicture(int, int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ gameLoop(int, Collision)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ initializeDirection(int, Collision)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ move(int, Collision)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ShowScores1426278113[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ShowScores</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   player: Player [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   scene: Scene [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   stage: Stage [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   user: User [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ showScreen()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Tank1426278113[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Tank</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   bullet: Bullet [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   copyOfFirstPos: int[] [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   direction: Direction [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   health: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   imageView: ImageView [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   powerOfTheBullet: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   score: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   speedX: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   speedY: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   xPos: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   yPos: double [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ addScore(int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ lostHP()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ makeEmpty()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ respawnBullet(ImageView)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ shootBullet(Pane, ArrayList&lt;Wall&gt;, ArrayList&lt;Tank&gt;)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ shootBullet(ImageView)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ updateBullet(ImageView, Pane, Collision)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+TankCreation1426278113[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)TankCreation</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   indexes: int[] [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   numberOfTotalTanks: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   ordinaryTanks: ArrayList&lt;OrdinaryTank&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   shieldTanks: ArrayList&lt;ShieldTank&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   tanks: ArrayList&lt;Tank&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   walls: ArrayList&lt;Wall&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ creatingEnemy(Pane)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ handlingOrdinary(Pane)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ handlingShield(Pane, Bullet, Collision)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ handlingTanks(Pane)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+User1426278113[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)User</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   currentLine: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   highScore: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   passWord: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   score: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   userName: String [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ addScore(int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ textFileModifier()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Wall1426278113[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Wall</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ drawWall(Pane)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+} 
+
+'edges    
+Collision1426278113 -> Explosion1426278113[label="destroy() -> explosionAnimation()"];
+Collision1426278113 -> Tank1426278113[label="tanks
+[0..*]"];
+Collision1426278113 -> Wall1426278113[label="walls
+[0..*]"];
+Game1711954517 -> Bullet1426278113[label="bullet
+[0..1]"];
+Game1711954517 -> Collision1426278113[label="checkCollisionForBullet() -> destroyWalls()"];
+Game1711954517 -> Explosion1426278113[label="destroy() -> explosionAnimation()"];
+Game1711954517 -> Menu1711954517[label="menu
+[0..1]"];
+Game1711954517 -> Place1426278113[label="startGame() -> addBrickToTheTop()"];
+Game1711954517 -> Player1426278113[label="player
+[0..1]"];
+Game1711954517 -> ShowScores1426278113[label="showResult() -> showScreen()"];
+Game1711954517 -> Tank1426278113[label="tanks
+[0..*]"];
+Game1711954517 -> TankCreation1426278113[label="creatingEnemy() -> creatingEnemy()"];
+Game1711954517 -> User1426278113[label="user
+[0..1]"];
+Game1711954517 -> Wall1426278113[label="walls
+[0..*]"];
+GameObjects1426278113 -> Wall1426278113[arrowhead=none, arrowtail=empty, dir=both];
+Menu1711954517 -> Game1711954517[label="game
+[0..1]"];
+OrdinaryTank1426278113 -> Collision1426278113[label="actAgainstCollision() -> checkCollision()"];
+Place1426278113 -> MetalWall1426278113[label="addMetalToTheTop() -> drawWall()"];
+Player1426278113 -> Game1711954517[label="game
+[0..1]"];
+Player1426278113 -> Tank1426278113[label="tanks
+[0..*]"];
+ShieldTank1426278113 -> Collision1426278113[label="actAgainstCollision() -> checkCollision()"];
+ShowScores1426278113 -> Player1426278113[label="player
+[0..1]"];
+ShowScores1426278113 -> User1426278113[label="user
+[0..1]"];
+Tank1426278113 -> Bullet1426278113[label="bullet
+[0..1]"];
+Tank1426278113 -> OrdinaryTank1426278113[arrowhead=none, arrowtail=empty, dir=both];
+Tank1426278113 -> Player1426278113[arrowhead=none, arrowtail=empty, dir=both];
+Tank1426278113 -> ShieldTank1426278113[arrowhead=none, arrowtail=empty, dir=both];
+TankCreation1426278113 -> OrdinaryTank1426278113[label="ordinaryTanks
+[0..*]"];
+TankCreation1426278113 -> ShieldTank1426278113[label="shieldTanks
+[0..*]"];
+TankCreation1426278113 -> Tank1426278113[label="tanks
+[0..*]"];
+TankCreation1426278113 -> Wall1426278113[label="walls
+[0..*]"];
+Wall1426278113 -> BrickWall1426278113[arrowhead=none, arrowtail=empty, dir=both];
+Wall1426278113 -> MetalWall1426278113[arrowhead=none, arrowtail=empty, dir=both];
+    
+}
+@enduml
