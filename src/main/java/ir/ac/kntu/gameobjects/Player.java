@@ -211,5 +211,35 @@ public class Player extends Tank {
         return shieldTank;
     }
 
+    public ArrayList<RandomTank> ordinaryRandom() {
+        ArrayList<RandomTank> randomTanks = new ArrayList<>();
+        for (Tank tank : tanks) {
+            if (tank.getClass().getSimpleName().equals("RandomTank")) {
+                RandomTank randomTank = (RandomTank) tank;
+                if(randomTank.getName().equals("OrdinaryTank")){
+                    randomTanks.add(randomTank);
+                }
+
+            }
+        }
+        return randomTanks;
+    }
+
+    public ArrayList<RandomTank> shieldRandom() {
+        ArrayList<RandomTank> randomTanks = new ArrayList<>();
+        for (Tank tank : tanks) {
+            if (tank.getClass().getSimpleName().equals("RandomTank")) {
+                RandomTank randomTank = (RandomTank) tank;
+                if(randomTank.getName().equals("ShieldTank")){
+                    randomTanks.add(randomTank);
+                }
+
+            }
+        }
+        return randomTanks;
+    }
+
+
+
 
 }

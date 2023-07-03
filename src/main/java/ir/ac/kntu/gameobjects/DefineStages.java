@@ -135,6 +135,7 @@ public class DefineStages {
         this.stage.setScene(scene);
         this.stage.show();
         Timeline start = new Timeline(new KeyFrame(Duration.seconds(5), event -> {
+            game.getUser().addTotalNumberOfMatches();
             game.startGame(this.stage);
         }));
         start.setCycleCount(1);

@@ -14,6 +14,8 @@ public class User {
 
     private int highScore = 0;
 
+    private int numberOfMatches = 0;
+
 
     public User(String userName, String passWord, int score) {
         this.userName = userName;
@@ -55,6 +57,14 @@ public class User {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public int getNumberOfMatches() {
+        return numberOfMatches;
+    }
+
+    public void setNumberOfMatches(int numberOfMatches) {
+        this.numberOfMatches = numberOfMatches;
     }
 
     public int getCurrentLine() {
@@ -110,6 +120,37 @@ public class User {
         textFileModifier();
     }
 
+    public void addTotalNumberOfMatches() {
+        this.numberOfMatches++;
+        String filePath = "Users.txt"; // Specify the path to your text file
+        int lineNumber = currentLine; // Specify the line number where you want to add the text
+        try {
+            // Read the original file
+            File file = new File(filePath);
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            StringBuilder content = new StringBuilder();
+            String line;
+            int currentLine = 0;
+            while ((line = reader.readLine()) != null) {
+                // Append the new text to the desired line
+                if (currentLine == lineNumber) {
+                    content.append(this.userName).append(" ").append(this.passWord).append(" ")
+                            .append(this.score).append(" ").append(this.highScore).append(" ").append(numberOfMatches)
+                            .append(System.lineSeparator());
+                } else {
+                    content.append(line).append(System.lineSeparator());
+                }
+                currentLine++;
+            }
+            reader.close();
+            FileWriter writer = new FileWriter(file);
+            writer.write(content.toString());
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void textFileModifier() {
         String filePath = "Users.txt"; // Specify the path to your text file
         int lineNumber = currentLine; // Specify the line number where you want to add the text
@@ -124,7 +165,8 @@ public class User {
                 // Append the new text to the desired line
                 if (currentLine == lineNumber) {
                     content.append(this.userName).append(" ").append(this.passWord).append(" ")
-                            .append(this.score).append(" ").append(this.highScore).append(System.lineSeparator());
+                            .append(this.score).append(" ").append(this.highScore).append(" ").append(numberOfMatches)
+                            .append(System.lineSeparator());
                 } else {
                     content.append(line).append(System.lineSeparator());
                 }

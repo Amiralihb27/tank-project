@@ -116,8 +116,7 @@ public class Menu {
 
         menuBox.getChildren().add(hbox);
         menuBox.getChildren().add(menuItems[2]);
-        //  menuBox.getChildren().add(pointer);
-        System.out.println(menuItems[0].getLayoutY());
+
         // Create the scene
         scene = new Scene(menuBox, 600, 600);
         scene.setFill(Color.BLACK);
@@ -211,7 +210,6 @@ public class Menu {
         usernameTextField.setPrefWidth(300);
         passwordField.setMaxWidth(300);
         passwordField.setPrefWidth(300);
-        System.out.println(scene.getFill());
     }
 
     public void signInHandling(Button signInButton, TextField usernameTextField, TextField passwordField,

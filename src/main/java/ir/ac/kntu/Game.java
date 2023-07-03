@@ -57,7 +57,7 @@ public class Game extends Application {
     private int clicked = 0;
 
 
-    private static final int BULLET_SIZE = 25;
+    private static int bulletsize = 15 / 25 * PLAYER_SIZE;
 
 
     private static final double BULLET_SPEED = 5.0;
@@ -98,6 +98,10 @@ public class Game extends Application {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public User getUser() {
+        return user;
     }
 
     public int getNumberOfTotalTanks() {
@@ -255,7 +259,6 @@ public class Game extends Application {
                         root.getChildren().add(explosion);
                         root.getChildren().remove(tanks.get(i).getImageView());
                         tanks.remove(tanks.get(i));
-                        System.out.println(tanks.size());
                         new Explosion(explosion).explosionAnimation(xPos, yPos, root);
                         return true;
                     }
@@ -284,22 +287,23 @@ public class Game extends Application {
             Platform.runLater(() -> {
                 int lineNumber = user.getCurrentLine(); // Specify the line number where you want to add the text
                 try {
-                    File file = new File("Users.txt");
-                    BufferedReader reader = new BufferedReader(new FileReader(file));
+                    BufferedReader reader = new BufferedReader(new FileReader( new File("Users.txt")));
                     StringBuilder content = new StringBuilder();
                     String line;
                     int currentLine = 0;
                     while ((line = reader.readLine()) != null) {
                         if (currentLine == lineNumber) {
                             content.append(user.getUserName()).append(" ").append(user.getPassWord()).append(" ")
-                                    .append(0).append(" ").append(user.getHighScore()).append(System.lineSeparator());
+                                    .append(0).append(" ").append(user.getHighScore()).append(" ")
+                                    .append(user.getNumberOfMatches())
+                                    .append(System.lineSeparator());
                         } else {
                             content.append(line).append(System.lineSeparator());
                         }
                         currentLine++;
                     }
                     reader.close();
-                    FileWriter writer = new FileWriter(file);
+                    FileWriter writer = new FileWriter( new File("Users.txt"));
                     writer.write(content.toString());
                     writer.close();
                 } catch (IOException e) {

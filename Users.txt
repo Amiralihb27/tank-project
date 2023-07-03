@@ -1,5 +1,5 @@
-a s 0 3000
-Mohammad Ahmadi 0 0
-Ali Hamedi 0 0
-Tanjiro Kamado 0 0
-Kyojuro Rengoku 0 0
+a s 0 3000 1
+Mohammad Ahmadi 0 0 0
+Ali Hamedi 0 0 0
+Tanjiro Kamado 0 0 0
+Kyojuro Rengoku 0 0 0

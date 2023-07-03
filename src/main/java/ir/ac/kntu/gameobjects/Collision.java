@@ -170,8 +170,7 @@ public class Collision {
             Bounds bounds2 = this.tanks.get(i).getImageView().getBoundsInParent();
             if (bounds1.intersects(bounds2) && tanks.get(i).getClass().getSimpleName().equals("Player")) {
                 tanks.get(i).lostHP();
-                System.out.println("Player");
-                System.out.println(tanks.get(i).getHealth());
+                System.out.println("Health: "+tanks.get(i).getHealth());
                 if (tanks.get(i).getHealth() <= 0) {
                     explosion = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images" +
                             "\\explode.png", 20, 20, true, true));
