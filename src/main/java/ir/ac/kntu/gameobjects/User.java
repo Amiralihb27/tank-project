@@ -113,7 +113,6 @@ public class User {
     public void addScore(int score) {
         // int min=0;
         this.score += score;
-        System.out.println(this.score);
         if (this.score >= highScore) {
             this.highScore = this.score;
         }
