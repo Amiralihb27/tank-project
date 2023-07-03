@@ -23,6 +23,8 @@ import javafx.util.Duration;
 import java.io.*;
 import java.util.ArrayList;
 
+import static ir.ac.kntu.constants.GlobalConstants.canvasHeight;
+import static ir.ac.kntu.constants.GlobalConstants.canvasWidth;
 import static javafx.application.Application.launch;
 
 public class Game extends Application {
@@ -41,6 +43,8 @@ public class Game extends Application {
 
     private Scene scene;
 
+
+    private Flag flag;
 
     private boolean isWinning = false;
 
@@ -124,7 +128,10 @@ public class Game extends Application {
         rect.setStrokeWidth(5);
         root.getChildren().add(rect);
         Place place = new Place();
-        place.addBrickToTheTop(root, PLAYER_SIZE, walls);
+        ImageView flagImage = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\flag.png",
+                PLAYER_SIZE, PLAYER_SIZE, true, true));
+        flag = new Flag(canvasWidth / 2, canvasHeight - PLAYER_SIZE, flagImage);
+        place.addBrickToTheTop(root, PLAYER_SIZE, walls,flag);
         handlingTanks();
         scene = new Scene(root, WIDTH, HEIGHT);
         scene.setFill(Color.BLACK);
@@ -136,8 +143,6 @@ public class Game extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         shooting(gc);
-
-
     }
 
 
@@ -159,7 +164,7 @@ public class Game extends Application {
     public void creatingEnemy() {
         TankCreation tankCreation = new TankCreation(tanks, walls);
         tankCreation.setNumberOfTotalTanks(numberOfTotalTanks);
-        tankCreation.creatingEnemy(root);
+        tankCreation.creatingEnemy(root,this.flag);
     }
 
 
@@ -202,8 +207,8 @@ public class Game extends Application {
             explosion.setY(bulletImageView.getY());
             root.getChildren().add(explosion);
             newBullet.kill();
-            if (tanks.size() <=1 ) {
-                this.isWinning=true;
+            if (tanks.size() <= 1) {
+                this.isWinning = true;
                 showResult();
             }
             Timeline timeline = new Timeline(new KeyFrame(Duration.millis(20), event -> {

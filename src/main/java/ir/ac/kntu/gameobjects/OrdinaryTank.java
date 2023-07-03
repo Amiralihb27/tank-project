@@ -42,7 +42,7 @@ public class OrdinaryTank extends Tank {
         super.setXPos(getPositionToRespawn()[rand]);
         getPositionToRespawn()[rand]=-100;
         getImageView().setX(getXPos());
-        super.setYPos(0);
+        super.setYPos(600);
         getImageView().setY(0);
         chooseToMove(size,collision);
     }

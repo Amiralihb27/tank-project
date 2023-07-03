@@ -66,6 +66,11 @@ public class Player extends Tank {
 
     }
 
+    public void die(){
+        setHealth(0);
+        lostHP();
+    }
+
     public GraphicsContext getGc() {
         return gc;
     }

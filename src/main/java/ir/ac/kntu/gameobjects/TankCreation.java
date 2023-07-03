@@ -38,7 +38,7 @@ public class TankCreation {
         this.numberOfTotalTanks = numberOfTotalTanks;
     }
 
-    public void creatingEnemy(Pane root) {
+    public void creatingEnemy(Pane root,Flag flag) {
         for (int i = 0; i < numberOfTotalTanks / 2; i++) {
             OrdinaryTank ordinaryTank = new OrdinaryTank(0, 0,
                     new ImageView(new Image("F:\\javap for 4012\\FilePractice\\enemytank1.png", tankSize,
@@ -50,16 +50,16 @@ public class TankCreation {
                             tankSize, true, true)));
             shieldTanks.add(shieldTank);
         }
-        handlingTanks(root);
+        handlingTanks(root,flag);
     }
 
 
-    public void handlingTanks(Pane root) {
+    public void handlingTanks(Pane root,Flag flag) {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 if (tanks.size() < 5) {
-                    handlingOrdinary(root);
+                    handlingOrdinary(root,flag);
                 }
             }
         };
@@ -67,17 +67,18 @@ public class TankCreation {
     }
 
 
-    public void handlingOrdinary(Pane root) {
+    public void handlingOrdinary(Pane root,Flag flag) {
         Bullet newBullet = new Bullet(0, 0);
         Collision collision = new Collision(walls);
         collision.setTanks(tanks);
+        collision.setFlag(flag);
         if (indexes[0] < ordinaryTanks.size()) {
             root.getChildren().add(ordinaryTanks.get(indexes[0]).getImageView());
             tanks.add(ordinaryTanks.get(indexes[0]));
             ordinaryTanks.get(indexes[0]).setBullet(newBullet);
             ordinaryTanks.get(indexes[0]).initializeDirection(tankSize, collision);
             if (root.getChildren().contains(ordinaryTanks.get(indexes[0]).getImageView())) {
-                ordinaryTanks.get(indexes[0]).shootBullet(root, walls, tanks);
+                ordinaryTanks.get(indexes[0]).shootBullet(root, walls, tanks,collision.getFlag());
             }
             indexes[0]++;
         }
@@ -95,11 +96,9 @@ public class TankCreation {
                 shieldTanks.get(indexes[1]).setBullet(newBullet);
                 shieldTanks.get(indexes[1]).initializeDirection(tankSize, collision);
                 if (root.getChildren().contains(shieldTanks.get(indexes[1]).getImageView())) {
-                    shieldTanks.get(indexes[1]).shootBullet(root, walls, tanks);
+                    shieldTanks.get(indexes[1]).shootBullet(root, walls, tanks,collision.getFlag());
                 }
-                System.out.println("Shiled+index:" + indexes[1]);
                 indexes[1]++;
-                System.out.println("Shiled+index:" + indexes[1]);
             }
         }
     }

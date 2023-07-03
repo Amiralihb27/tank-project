@@ -15,7 +15,7 @@ public class Wall extends GameObjects {
 
     public void drawWall(Pane root) {
         getImageView().setY(canvasHeight / 15);
-        getImageView().setY(canvasWidth / 15);
+        getImageView().setX(canvasWidth / 15);
         root.getChildren().add(getImageView());
         getImageView().setY(getyPos() + canvasHeight);
 

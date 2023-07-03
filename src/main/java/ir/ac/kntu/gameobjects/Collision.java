@@ -5,13 +5,13 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 
 public class Collision {
 
-    private Group obstaclesGroup;
 
     private ArrayList<Wall> walls = new ArrayList<>();
 
@@ -20,10 +20,8 @@ public class Collision {
 
     private ImageView explosion;
 
-    public Collision(Group obstaclesGroup) {
-        this.obstaclesGroup = obstaclesGroup;
-        this.walls = walls;
-    }
+    private Flag flag;
+
 
     public Collision(ArrayList<Wall> walls) {
         this.walls = walls;
@@ -38,12 +36,12 @@ public class Collision {
         this.tanks = tanks;
     }
 
-    public Group getObstaclesGroup() {
-        return obstaclesGroup;
+    public Flag getFlag() {
+        return flag;
     }
 
-    public void setObstaclesGroup(Group obstaclesGroup) {
-        this.obstaclesGroup = obstaclesGroup;
+    public void setFlag(Flag flag) {
+        this.flag = flag;
     }
 
     public ArrayList<Wall> getWalls() {
@@ -78,8 +76,6 @@ public class Collision {
         } else {
             copy = tank.getImageView();
         }
-
-
         for (Wall wall : this.walls) {
             if (copy.getBoundsInParent().intersects(wall.getImageView().getBoundsInParent())) {
                 return true;
@@ -116,33 +112,6 @@ public class Collision {
         return copy;
     }
 
-
-    public void destroy(Pane root, ImageView object) {
-        ArrayList<Node> nodes = new ArrayList<>();
-        for (Node node : obstaclesGroup.getChildren()) {
-            if (object.getBoundsInParent().intersects(node.getBoundsInParent())) {
-                if (object.getImage().getUrl().endsWith("Bullet.png")) {
-                    nodes.add(node);
-                    break;
-                }
-
-            }
-        }
-
-        for (Wall wall : walls) {
-            if (object.getBoundsInParent().intersects(wall.getImageView().getBoundsInParent())) {
-                if (object.getImage().getUrl().endsWith("Bullet.png")) {
-                    if (root.getChildren().contains(wall.getImageView())) {
-                        root.getChildren().remove(wall.getImageView());
-                        break;
-                    }
-                }
-
-            }
-        }
-
-        obstaclesGroup.getChildren().removeAll(nodes);
-    }
 
     public boolean destroyWalls(ImageView object, double dx, double dy, Pane root) {
         object.setLayoutX(object.getLayoutX() + dx);
@@ -196,6 +165,7 @@ public class Collision {
 
     public boolean destroy(ImageView bullet, Pane root) {
         Bounds bounds1 = bullet.getBoundsInParent();
+        checkForFlag(bounds1);
         for (int i = 0; i < this.tanks.size(); i++) {
             Bounds bounds2 = this.tanks.get(i).getImageView().getBoundsInParent();
             if (bounds1.intersects(bounds2) && tanks.get(i).getClass().getSimpleName().equals("Player")) {
@@ -218,5 +188,18 @@ public class Collision {
             }
         }
         return false;
+    }
+
+    public void checkForFlag(Bounds bullet) {
+        Bounds object = this.flag.getImageView().getBoundsInParent();
+        for (Tank tank : tanks) {
+            if (tank.getClass().getSimpleName().equals("Player")) {
+                Player player = (Player) tank;
+                if (bullet.intersects(object)) {
+                    player.die();
+                }
+            }
+        }
+
     }
 }

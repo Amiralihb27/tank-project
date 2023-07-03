@@ -193,7 +193,7 @@ public class Tank {
     }
 
 
-    public void shootBullet(Pane root, ArrayList<Wall> walls, ArrayList<Tank> tanks) {
+    public void shootBullet(Pane root, ArrayList<Wall> walls, ArrayList<Tank> tanks,Flag flag) {
         ImageView bullet = new ImageView(new Image(this.getBullet().getBulletImage().getUrl(),
                 15, 15, true, true));
         // System.out.println(bullet.getFitHeight());
@@ -206,6 +206,7 @@ public class Tank {
         // Set up animation timeline
         Collision collision = new Collision(walls);
         collision.setTanks(tanks);
+        collision.setFlag(flag);
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.03), event -> updateBullet(bullet, root, collision)));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();

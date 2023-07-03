@@ -14,7 +14,7 @@ import static ir.ac.kntu.constants.GlobalConstants.canvasWidth;
 public class Place {
 
 
-    public void addBrickToTheTop(Pane root, int size, ArrayList<Wall>  walls) {
+    public void addBrickToTheTop(Pane root, int size, ArrayList<Wall> walls, Flag flag) {
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 6; j++) {
                 BrickWall brickWall = new BrickWall(2 * canvasWidth / 15, canvasHeight / 20 + 10,
@@ -23,7 +23,7 @@ public class Place {
                                 size, true, true)));
                 walls.add(brickWall);
                 brickWall.getImageView().setX(brickWall.getImageView().getX() + 2.5 * size * i);
-                brickWall.getImageView().setY(brickWall.getImageView().getY() + size * j );
+                brickWall.getImageView().setY(brickWall.getImageView().getY() + size * j);
                 brickWall.drawWall(root);
             }
         }
@@ -35,14 +35,14 @@ public class Place {
                                 size, true, true)));
                 walls.add(brickWall);
                 brickWall.getImageView().setX(brickWall.getImageView().getX() + 2.5 * size * i);
-                brickWall.getImageView().setY(brickWall.getImageView().getY() + size * j );
+                brickWall.getImageView().setY(brickWall.getImageView().getY() + size * j);
                 brickWall.drawWall(root);
             }
         }
-        addBrickToTheBot(root, size,walls);
+        addBrickToTheBot(root, size, walls, flag);
     }
 
-    public void addBrickToTheBot(Pane root, int size,ArrayList<Wall> walls) {
+    public void addBrickToTheBot(Pane root, int size, ArrayList<Wall> walls, Flag flag) {
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 6; j++) {
                 BrickWall brickWall = new BrickWall(2 * canvasWidth / 15, canvasHeight / 20 + 10 + 9 * size,
@@ -51,7 +51,7 @@ public class Place {
                                 size, true, true)));
                 walls.add(brickWall);
                 brickWall.getImageView().setX(brickWall.getImageView().getX() + 2.5 * size * i);
-                brickWall.getImageView().setY(brickWall.getImageView().getY() + size * j );
+                brickWall.getImageView().setY(brickWall.getImageView().getY() + size * j);
                 brickWall.drawWall(root);
             }
         }
@@ -67,10 +67,10 @@ public class Place {
                 brickWall.drawWall(root);
             }
         }
-        addMetalToTheTop(root, size,walls);
+        addMetalToTheTop(root, size, walls, flag);
     }
 
-    public void addMetalToTheTop(Pane root, int size,ArrayList<Wall> walls ) {
+    public void addMetalToTheTop(Pane root, int size, ArrayList<Wall> walls, Flag flag) {
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 5; j++) {
                 MetalWall metalWall = new MetalWall(2 * canvasWidth / 15 + 5 * size, canvasHeight / 20 + 10,
@@ -79,16 +79,26 @@ public class Place {
                                 size, true, true)));
                 walls.add(metalWall);
                 metalWall.getImageView().setX(metalWall.getImageView().getX() + 6.5 * size * i);
-                metalWall.getImageView().setY(metalWall.getImageView().getY() + size * j );
+                metalWall.getImageView().setY(metalWall.getImageView().getY() + size * j);
                 metalWall.drawWall(root);
 
             }
         }
+        addFlag(root, size, walls, flag);
 
     }
 
-    public ImageView createCopy(ImageView imageView){
-        ImageView copy=new ImageView();
+
+    public void addFlag(Pane root, int size, ArrayList<Wall> walls, Flag flag) {
+        ImageView flagImage = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\flag.png",
+                size, size, true, true));
+        flag = new Flag(canvasWidth / 2, canvasHeight - size, flagImage);
+
+        root.getChildren().add(flagImage);
+    }
+
+    public ImageView createCopy(ImageView imageView) {
+        ImageView copy = new ImageView();
         copy.setX(imageView.getX());
         copy.setY(imageView.getY());
         copy.setImage(imageView.getImage());
