@@ -33,10 +33,12 @@ public class DefineStages {
 
     private Game game;
 
-    public DefineStages(Stage stage, Scene scene,Game game) {
+    ImageView arrowKeyImageView;
+
+    public DefineStages(Stage stage, Scene scene, Game game) {
         this.scene = scene;
         this.stage = stage;
-        this.game=game;
+        this.game = game;
     }
 
     public void showStage() {
@@ -46,9 +48,8 @@ public class DefineStages {
         hbox[0] = new HBox(5);
         imageVBox = new VBox(10);
         imageVBox.setAlignment(Pos.CENTER);
-        ImageView arrowKeyImageView = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\" +
+        arrowKeyImageView = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\" +
                 "enemyright.png", 40, 40, true, true));
-
         for (int i = 0; i < 10; i++) {
             imageViews[i] = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\" +
                     "stage.png", 100, 100, true, true));
@@ -65,17 +66,12 @@ public class DefineStages {
                 hbox[i].getChildren().addAll(imageViews[i], texts[i]);
                 imageVBox.getChildren().add(hbox[i]);
             }
-
         }
-
-        choosingStage(imageViews, hbox, arrowKeyImageView, texts);
-
-
+        choosingStage(imageViews, hbox, texts);
     }
 
-    public void choosingStage(ImageView[] imageViews, HBox[] hbox, ImageView arrowKeyImageView, Text[] texts) {
+    public void choosingStage(ImageView[] imageViews, HBox[] hbox, Text[] texts) {
         currentImageIndex = 0;
-
         // Set up the event handler to handle arrow key presses
         AnchorPane root = new AnchorPane(imageVBox);
         root.setStyle("-fx-background-color: black;");
@@ -86,59 +82,56 @@ public class DefineStages {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.UP && currentImageIndex > 0) {
-                    // Move arrow key image up
-                    currentImageIndex--;
-                    imageVBox.getChildren().remove(hbox[currentImageIndex]);
-                    hbox[currentImageIndex] = new HBox(5);
-                    hbox[currentImageIndex].getChildren().addAll(arrowKeyImageView, imageViews[currentImageIndex],
-                            texts[currentImageIndex]);
-                    hbox[currentImageIndex].setAlignment(Pos.CENTER);
-//                    imageVBox.getChildren().remove(arrowKeyImageView);
-//                    imageVBox.getChildren().remove(imageViews[currentImageIndex]);
-                    imageVBox.getChildren().add(currentImageIndex, hbox[currentImageIndex]);
-                } else if (event.getCode() == KeyCode.DOWN && currentImageIndex < imageViews.length - 1) {
-                    // Move arrow key image down
-                    currentImageIndex++;
-                    imageVBox.getChildren().remove(hbox[currentImageIndex]);
-                    hbox[currentImageIndex] = new HBox(5);
-                    hbox[currentImageIndex].getChildren().addAll(arrowKeyImageView, imageViews[currentImageIndex],
-                            texts[currentImageIndex]);
-                    hbox[currentImageIndex].setAlignment(Pos.CENTER);
-//                    imageVBox.getChildren().remove(arrowKeyImageView);
-//                    imageVBox.getChildren().remove(imageViews[currentImageIndex]);
-                    imageVBox.getChildren().add(currentImageIndex, hbox[currentImageIndex]);
-                } else if (event.getCode() == KeyCode.ENTER) {
-                    game.setNumberOfTotalTanks(currentImageIndex*4+10);
-                    loading(imageViews[currentImageIndex],texts[currentImageIndex]);
-                  // game.startGame(stage);
-                }
+                eventHandling(imageViews, hbox, texts, event);
             }
         });
-
         scene.setFill(Color.BLACK);
         stage.setScene(scene);
         stage.show();
     }
 
-    public void loading(ImageView stage,Text text){
+    public void eventHandling(ImageView[] imageViews, HBox[] hbox, Text[] texts, KeyEvent event) {
+        if (event.getCode() == KeyCode.UP && currentImageIndex > 0) {
+            currentImageIndex--;
+            imageVBox.getChildren().remove(hbox[currentImageIndex]);
+            hbox[currentImageIndex] = new HBox(5);
+            hbox[currentImageIndex].getChildren().addAll(arrowKeyImageView, imageViews[currentImageIndex],
+                    texts[currentImageIndex]);
+            hbox[currentImageIndex].setAlignment(Pos.CENTER);
+            imageVBox.getChildren().add(currentImageIndex, hbox[currentImageIndex]);
+        } else if (event.getCode() == KeyCode.DOWN && currentImageIndex < imageViews.length - 1) {
+            currentImageIndex++;
+            imageVBox.getChildren().remove(hbox[currentImageIndex]);
+            hbox[currentImageIndex] = new HBox(5);
+            hbox[currentImageIndex].getChildren().addAll(arrowKeyImageView, imageViews[currentImageIndex],
+                    texts[currentImageIndex]);
+            hbox[currentImageIndex].setAlignment(Pos.CENTER);
+            imageVBox.getChildren().add(currentImageIndex, hbox[currentImageIndex]);
+        } else if (event.getCode() == KeyCode.ENTER) {
+            game.setNumberOfTotalTanks(currentImageIndex * 4 + 10);
+            loading(imageViews[currentImageIndex], texts[currentImageIndex]);
+        }
+    }
 
-        ImageView loading=new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\" +
+
+    public void loading(ImageView stage, Text text) {
+
+        ImageView loading = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\" +
                 "loading.png", 200, 200, true, true));
-        stage=new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\" +
+        stage = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\" +
                 "stage.png", 200, 200, true, true));
-        Text totalTanks= new Text("Total tanks: " + ((currentImageIndex*4)+10));
+        Text totalTanks = new Text("Total tanks: " + ((currentImageIndex * 4) + 10));
         totalTanks.setFont(Font.font("Arial", 30));
         totalTanks.setFill(Color.GRAY);
-        VBox vBox=new VBox(10);
+        VBox vBox = new VBox(10);
         text.setFont(Font.font("Arial", 50));
-        vBox.getChildren().addAll(loading,stage,text,totalTanks);
+        vBox.getChildren().addAll(loading, stage, text, totalTanks);
         vBox.setAlignment(Pos.CENTER);
-        AnchorPane root=new AnchorPane(vBox);
-        scene=new Scene(root,600,600);
+        AnchorPane root = new AnchorPane(vBox);
+        scene = new Scene(root, 600, 600);
         root.setStyle("-fx-background-color: black;");
-        AnchorPane.setLeftAnchor(vBox,scene.getWidth()/3);
-        AnchorPane.setTopAnchor(vBox,scene.getHeight()/3);
+        AnchorPane.setLeftAnchor(vBox, scene.getWidth() / 3);
+        AnchorPane.setTopAnchor(vBox, scene.getHeight() / 3);
         this.stage.setScene(scene);
         this.stage.show();
         Timeline start = new Timeline(new KeyFrame(Duration.seconds(5), event -> {

@@ -14,7 +14,7 @@ import static ir.ac.kntu.constants.GlobalConstants.canvasWidth;
 public class Place {
 
 
-    public void addBrickToTheTop(Pane root, int size, Group obstaclesGroup, ArrayList<Wall>  walls) {
+    public void addBrickToTheTop(Pane root, int size, ArrayList<Wall>  walls) {
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 6; j++) {
                 BrickWall brickWall = new BrickWall(2 * canvasWidth / 15, canvasHeight / 20 + 10,
@@ -39,10 +39,10 @@ public class Place {
                 brickWall.drawWall(root);
             }
         }
-        addBrickToTheBot(root, size,obstaclesGroup,walls);
+        addBrickToTheBot(root, size,walls);
     }
 
-    public void addBrickToTheBot(Pane root, int size,Group obstaclesGroup,ArrayList<Wall> walls) {
+    public void addBrickToTheBot(Pane root, int size,ArrayList<Wall> walls) {
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 6; j++) {
                 BrickWall brickWall = new BrickWall(2 * canvasWidth / 15, canvasHeight / 20 + 10 + 9 * size,
@@ -67,10 +67,10 @@ public class Place {
                 brickWall.drawWall(root);
             }
         }
-        addMetalToTheTop(root, size,obstaclesGroup,walls);
+        addMetalToTheTop(root, size,walls);
     }
 
-    public void addMetalToTheTop(Pane root, int size,Group obstaclesGroup,ArrayList<Wall> walls ) {
+    public void addMetalToTheTop(Pane root, int size,ArrayList<Wall> walls ) {
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 5; j++) {
                 MetalWall metalWall = new MetalWall(2 * canvasWidth / 15 + 5 * size, canvasHeight / 20 + 10,

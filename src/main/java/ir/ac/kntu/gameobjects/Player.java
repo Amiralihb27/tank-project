@@ -58,7 +58,7 @@ public class Player extends Tank {
         super.setXPos(400);
         super.setYPos(600 - playerSize);
         super.lostHP();
-        if (getHealth() <=2 ) {
+        if (getHealth() <=0 ) {
             game.showResult();
         } else {
             draw(gc);

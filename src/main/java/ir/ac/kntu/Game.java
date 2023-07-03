@@ -42,7 +42,9 @@ public class Game extends Application {
     private Scene scene;
 
 
-    private int numberOfTotalTanks = 6;
+    private boolean isWinning = false;
+
+    private int numberOfTotalTanks = 10;
 
     private int[] indexes = {0, 0, 0};
 
@@ -116,14 +118,14 @@ public class Game extends Application {
         gc = canvas.getGraphicsContext2D();
         Rectangle rect = new Rectangle(0, 0, 600, 600);
         root.setStyle("-fx-background-color: black;");
-        Group obstaclesGroup = new Group();
+        // Group obstaclesGroup = new Group();
         rect.setFill(null);
         rect.setStroke(Color.RED);
         rect.setStrokeWidth(5);
         root.getChildren().add(rect);
         Place place = new Place();
-        place.addBrickToTheTop(root, PLAYER_SIZE, obstaclesGroup, walls);
-        handlingTanks(obstaclesGroup);
+        place.addBrickToTheTop(root, PLAYER_SIZE, walls);
+        handlingTanks();
         scene = new Scene(root, WIDTH, HEIGHT);
         scene.setFill(Color.BLACK);
         player.setGame(this);
@@ -133,13 +135,13 @@ public class Game extends Application {
         primaryStage.setTitle("Player Shoot Game");
         primaryStage.setScene(scene);
         primaryStage.show();
-        shooting(gc, obstaclesGroup);
+        shooting(gc);
 
 
     }
 
 
-    public void handlingTanks(Group obstaclesGroup) {
+    public void handlingTanks() {
         ImageView imageView = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\tank1.png"));
         player = new Player(400, 600, imageView);
         player.setYPos(600 - player.getPlayerSize());
@@ -150,7 +152,7 @@ public class Game extends Application {
         root.getChildren().add(canvas);
         tanks.add(player);
         creatingEnemy();
-        shooting(gc, obstaclesGroup);
+        shooting(gc);
 
     }
 
@@ -161,7 +163,7 @@ public class Game extends Application {
     }
 
 
-    public void shooting(GraphicsContext gc, Group obstaclesGroup) {
+    public void shooting(GraphicsContext gc) {
         AnimationTimer timer = new AnimationTimer() {
             long lastTime = System.nanoTime();
 
@@ -179,7 +181,7 @@ public class Game extends Application {
                 if (newBullet.isAlive()) {
                     newBullet.update(deltaTime);
                     newBullet.draw(gc);
-                    checkCollisionForBullet(newBullet, obstaclesGroup);
+                    checkCollisionForBullet(newBullet);
 
                 }
             }
@@ -187,27 +189,28 @@ public class Game extends Application {
         timer.start();
     }
 
-    public void checkCollisionForBullet(Bullet newBullet, Group obstaclesGroup) {
-        Collision collision = new Collision(obstaclesGroup);
-        collision.setWalls(walls);
+    public void checkCollisionForBullet(Bullet newBullet) {
+        Collision collision = new Collision(walls);
         ImageView bulletImageView = new ImageView(newBullet.getBulletImage());
         bulletImageView.setY(newBullet.getyPos());
         bulletImageView.setX(newBullet.getxPos());
         if (collision.destroyWalls(bulletImageView, newBullet.getSpeedX(),
                 newBullet.getSpeedY(), root) || destroy(bulletImageView)) {
-            //collision.destroy(root, bulletImageView);
             ImageView explosion = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images" +
                     "\\explode.png", 20, 20, true, true));
             explosion.setX(bulletImageView.getX());
             explosion.setY(bulletImageView.getY());
             root.getChildren().add(explosion);
             newBullet.kill();
+            if (tanks.size() <=1 ) {
+                this.isWinning=true;
+                showResult();
+            }
             Timeline timeline = new Timeline(new KeyFrame(Duration.millis(20), event -> {
                 root.getChildren().remove(explosion); // Remove the image from the root pane
             }));
             timeline.setCycleCount(3);
             timeline.play();
-
         }
         if (newBullet.getxPos() < 0 || newBullet.getxPos() > 600 - newBullet.getBulletSize() ||
                 newBullet.getyPos() < 0 || newBullet.getyPos() > 600 - newBullet.getBulletSize()
@@ -292,9 +295,8 @@ public class Game extends Application {
     }
 
     public void showResult() {
-
         ShowScores showScores = new ShowScores(stage, scene, this.player, user);
-
+        showScores.setWinning(this.isWinning);
         showScores.showScreen();
 
     }
