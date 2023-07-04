@@ -104,6 +104,11 @@ public class Menu {
         currentItem = 0;
 
         // Create the menu layout
+        menuConstructor();
+        // scene.setOnKeyPressed(this::handleKeyPress); // Add key press event listener to the scene
+    }
+
+    public void menuConstructor(){
         menuBox = new VBox();
         menuBox.setSpacing(10);
         menuBox.setAlignment(Pos.CENTER);
@@ -120,7 +125,6 @@ public class Menu {
         // Create the scene
         scene = new Scene(menuBox, 600, 600);
         scene.setFill(Color.BLACK);
-        // scene.setOnKeyPressed(this::handleKeyPress); // Add key press event listener to the scene
     }
 
     public void show() {
