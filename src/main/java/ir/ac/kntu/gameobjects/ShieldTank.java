@@ -1,20 +1,8 @@
 package ir.ac.kntu.gameobjects;
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.geometry.Bounds;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
-import javafx.util.Duration;
-
-import java.util.Random;
 
 import static ir.ac.kntu.constants.GlobalConstants.*;
 
@@ -33,21 +21,6 @@ public class ShieldTank extends Tank{
     }
 
     public void chooseHorizontalPicture(int xPos, int size) {
-//        switch (xPos) {
-//            case 1:
-//                getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\enemyrightmetal.png",
-//                        size, size, true, true));
-//                super.getBullet().setAngle(0.0);
-//                break;
-//            case -1:
-//                getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\enemyleftmetal.png",
-//                        size, size, true, true));
-//                super.getBullet().setAngle(180.0);
-//                break;
-//            default:
-//                break;
-//        }
-
         if (xPos == 3*tankSize/50) {
             getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\enemyrightmetal.png",
                     size, size, true, true));

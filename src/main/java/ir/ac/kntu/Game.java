@@ -56,7 +56,7 @@ public class Game extends Application {
     private static int bulletsize = 15 / 25 * GlobalConstants.tankSize;
 
 
-    private static final double BULLET_SPEED = 5.0;
+   // private static final double BULLET_SPEED = 5.0;
 
 
     private User user;
