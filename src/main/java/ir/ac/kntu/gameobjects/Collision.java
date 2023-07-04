@@ -82,8 +82,10 @@ public class Collision {
 
     public boolean checkToAddSpecialPower(RandomTank randomTank) {
         Random random = new Random();
-        randomTank.getSpecialPowers().setxPos(random.nextDouble(Double.valueOf(canvasWidth - tankSize)));
-        randomTank.getSpecialPowers().setyPos(random.nextDouble(Double.valueOf(canvasHeight - tankSize)));
+        double xposition=Double.valueOf(canvasWidth - tankSize);
+        double yPosition=Double.valueOf(canvasHeight - tankSize);
+        randomTank.getSpecialPowers().setxPos(random.nextDouble(xposition));
+        randomTank.getSpecialPowers().setyPos(random.nextDouble(yPosition));
         Bounds bounds = randomTank.getSpecialPowers().getImageView().getBoundsInParent();
         for (Wall wall : walls) {
             if (bounds.intersects(wall.getImageView().getBoundsInParent())) {
