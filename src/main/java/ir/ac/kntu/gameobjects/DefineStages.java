@@ -89,6 +89,7 @@ public class DefineStages {
         });
         scene.setFill(Color.BLACK);
         stage.setScene(scene);
+        stage.setTitle("Stage");
         stage.show();
     }
 
@@ -135,6 +136,7 @@ public class DefineStages {
         AnchorPane.setLeftAnchor(vBox, scene.getWidth() / 3);
         AnchorPane.setTopAnchor(vBox, scene.getHeight() / 3);
         this.stage.setScene(scene);
+        this.stage.setTitle("Loading");
         this.stage.show();
         Timeline start = new Timeline(new KeyFrame(Duration.seconds(5), event -> {
             game.getUser().addTotalNumberOfMatches();

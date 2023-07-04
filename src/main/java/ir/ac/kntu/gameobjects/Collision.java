@@ -14,8 +14,7 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static ir.ac.kntu.constants.GlobalConstants.canvasHeight;
-import static ir.ac.kntu.constants.GlobalConstants.canvasWidth;
+import static ir.ac.kntu.constants.GlobalConstants.*;
 
 public class Collision {
 
@@ -83,10 +82,8 @@ public class Collision {
 
     public boolean checkToAddSpecialPower(RandomTank randomTank) {
         Random random = new Random();
-        randomTank.getSpecialPowers().setxPos(random.nextDouble(canvasWidth -
-                randomTank.getSpecialPowers().getImageView().getFitWidth()));
-        randomTank.getSpecialPowers().setyPos(random.nextDouble(canvasHeight -
-                randomTank.getSpecialPowers().getImageView().getFitHeight()));
+        randomTank.getSpecialPowers().setxPos(random.nextDouble(canvasWidth - tankSize));
+        randomTank.getSpecialPowers().setyPos(random.nextDouble(canvasHeight - tankSize));
         Bounds bounds = randomTank.getSpecialPowers().getImageView().getBoundsInParent();
         for (Wall wall : walls) {
             if (bounds.intersects(wall.getImageView().getBoundsInParent())) {
