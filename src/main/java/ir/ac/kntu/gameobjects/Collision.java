@@ -187,18 +187,18 @@ public class Collision {
         for (int i = 0; i < this.tanks.size(); i++) {
             Bounds bounds2 = this.tanks.get(i).getImageView().getBoundsInParent();
             if (bounds1.intersects(bounds2) && tanks.get(i).getClass().getSimpleName().equals("Player")) {
+                double deadPosX= tanks.get(i).getXPos();
+                double deadPosY=tanks.get(i).getYPos();
                 tanks.get(i).lostHP();
+                explosion = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images" +
+                        "\\explode.png", 20, 20, true, true));
+                explosion.setX(deadPosX);
+                explosion.setY(deadPosY);
+                root.getChildren().add(explosion);
+                new Explosion(explosion).explosionAnimation(deadPosX, deadPosY, root);
                 System.out.println("Health: " + tanks.get(i).getHealth());
                 if (tanks.get(i).getHealth() <= 0) {
-                    explosion = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images" +
-                            "\\explode.png", 20, 20, true, true));
-                    double xPos = tanks.get(i).getXPos();
-                    double yPos = tanks.get(i).getYPos();
-                    explosion.setX(xPos);
-                    explosion.setY(yPos);
-                    root.getChildren().add(explosion);
                     tanks.remove(tanks.get(i));
-                    new Explosion(explosion).explosionAnimation(xPos, yPos, root);
                     return true;
                 }
                 return true;
