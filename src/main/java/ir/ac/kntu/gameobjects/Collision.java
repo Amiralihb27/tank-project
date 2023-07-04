@@ -84,8 +84,10 @@ public class Collision {
         Random random = new Random();
         double xposition=Double.valueOf(canvasWidth - tankSize);
         double yPosition=Double.valueOf(canvasHeight - tankSize);
-        randomTank.getSpecialPowers().setxPos(random.nextDouble(xposition));
-        randomTank.getSpecialPowers().setyPos(random.nextDouble(yPosition));
+//        randomTank.getSpecialPowers().setxPos(random.nextDouble(xposition));
+//        randomTank.getSpecialPowers().setyPos(random.nextDouble(yPosition));
+        randomTank.getSpecialPowers().setxPos(random.nextDouble()*xposition);
+        randomTank.getSpecialPowers().setyPos(random.nextDouble()*yPosition);
         Bounds bounds = randomTank.getSpecialPowers().getImageView().getBoundsInParent();
         for (Wall wall : walls) {
             if (bounds.intersects(wall.getImageView().getBoundsInParent())) {
