@@ -74,7 +74,7 @@ public class Collision {
             isFull = checkToAddSpecialPower(randomTank);
         }
         root.getChildren().add(randomTank.getSpecialPowers().getImageView());
-        Timeline start = new Timeline(new KeyFrame(Duration.seconds(15), event -> {
+        Timeline start = new Timeline(new KeyFrame(Duration.seconds(randomTank.getSpecialPowers().getTime()), event -> {
             root.getChildren().remove(randomTank.getSpecialPowers().getImageView());
         }));
         start.setCycleCount(1);
@@ -83,8 +83,10 @@ public class Collision {
 
     public boolean checkToAddSpecialPower(RandomTank randomTank) {
         Random random = new Random();
-        randomTank.getSpecialPowers().setxPos(random.nextDouble(canvasWidth));
-        randomTank.getSpecialPowers().setyPos(random.nextDouble(canvasHeight));
+        randomTank.getSpecialPowers().setxPos(random.nextDouble(canvasWidth -
+                randomTank.getSpecialPowers().getImageView().getFitWidth()));
+        randomTank.getSpecialPowers().setyPos(random.nextDouble(canvasHeight -
+                randomTank.getSpecialPowers().getImageView().getFitHeight()));
         Bounds bounds = randomTank.getSpecialPowers().getImageView().getBoundsInParent();
         for (Wall wall : walls) {
             if (bounds.intersects(wall.getImageView().getBoundsInParent())) {
@@ -92,28 +94,15 @@ public class Collision {
             }
         }
 
-
         for (Tank other : this.tanks) {
             if (bounds.intersects(other.getImageView().getBoundsInParent())) {
                 return true;
             }
         }
+
         return false;
 
     }
-//    public boolean checkCollision(ImageView tank, double dx, double dy) {
-//        tank.setLayoutX(tank.getLayoutX() + dx);
-//        tank.setLayoutY(tank.getLayoutY() + dy);
-//
-//        for (Node node : obstaclesGroup.getChildren()) {
-//            if (tank.getBoundsInParent().intersects(node.getBoundsInParent())) {
-//                return true;
-//            }
-//        }
-//
-//        return false;
-//
-//    }
 
     public boolean checkCollision(Tank tank, double dx, double dy) {
         ImageView copy;
@@ -191,30 +180,6 @@ public class Collision {
 
         return false;
     }
-
-    public boolean destroyWalls(Tank object, double dx, double dy, Pane root) {
-        object.getImageView().setLayoutX(object.getImageView().getLayoutX() + dx);
-        object.getImageView().setLayoutY(object.getImageView().getLayoutY() + dy);
-//        ImageView imageView = new ImageView(new Image(object.getImageView().getImage().getUrl()));
-//        imageView.setY(object.getLayoutY());
-//        imageView.setX(object.getLayoutX());
-
-        for (Wall wall : walls) {
-            if (object.getImageView().getBoundsInParent().intersects(wall.getImageView().getBoundsInParent())) {
-                if (object.getImageView().getImage().getUrl().endsWith("Bullet.png")) {
-                    if (root.getChildren().contains(wall.getImageView())) {
-                        //wall.lostHP();
-                        root.getChildren().remove(wall.getImageView());
-                        return true;
-                    }
-                }
-
-            }
-        }
-
-        return false;
-    }
-
 
     public boolean destroy(ImageView bullet, Pane root) {
         Bounds bounds1 = bullet.getBoundsInParent();

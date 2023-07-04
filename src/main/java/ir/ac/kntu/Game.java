@@ -25,8 +25,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import static ir.ac.kntu.constants.GlobalConstants.canvasHeight;
-import static ir.ac.kntu.constants.GlobalConstants.canvasWidth;
+import static ir.ac.kntu.constants.GlobalConstants.*;
 
 
 public class Game extends Application {
@@ -36,7 +35,7 @@ public class Game extends Application {
     private static int heidth;
 
 
-    private static final int PLAYER_SIZE = GlobalConstants.getTankSize();
+ //   private static final int PLAYER_SIZE = GlobalConstants.getTankSize();
 
     private ArrayList<Wall> walls = new ArrayList<>();
 
@@ -54,7 +53,7 @@ public class Game extends Application {
     private int clicked = 0;
 
 
-    private static int bulletsize = 15 / 25 * PLAYER_SIZE;
+    private static int bulletsize = 15 / 25 * GlobalConstants.tankSize;
 
 
     private static final double BULLET_SPEED = 5.0;
@@ -89,6 +88,10 @@ public class Game extends Application {
         GlobalConstants globalConstants = new GlobalConstants(sceneWidth, height);
         width = canvasWidth;
         heidth = canvasHeight;
+        GlobalConstants.setTankSize(25*canvasHeight/600);
+        System.out.println("Enter the duration for the special powers to stay in the grid.");
+        int time=sc.nextInt();
+        timeForSpeacialPowers=time;
         launch(args);
     }
 
@@ -139,9 +142,9 @@ public class Game extends Application {
         root.getChildren().add(rect);
         Place place = new Place();
         ImageView flagImage = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\flag.png",
-                PLAYER_SIZE, PLAYER_SIZE, true, true));
-        flag = new Flag(canvasWidth / 2, canvasHeight - PLAYER_SIZE, flagImage);
-        place.addBrickToTheTop(root, PLAYER_SIZE, walls, flag);
+                GlobalConstants.tankSize, GlobalConstants.tankSize, true, true));
+        flag = new Flag(canvasWidth / 2, canvasHeight - GlobalConstants.tankSize, flagImage);
+        place.addBrickToTheTop(root, GlobalConstants.tankSize, walls, flag);
         Collision collision = new Collision(walls);
         collision.setTanks(tanks);
         collision.setFlag(flag);
@@ -160,7 +163,7 @@ public class Game extends Application {
 
     public void handlingTanks(Collision collision) {
         ImageView imageView = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\tank1.png"));
-        player = new Player(canvasWidth / 3, canvasHeight - PLAYER_SIZE, imageView);
+        player = new Player(canvasWidth / 3, canvasHeight - GlobalConstants.tankSize, imageView);
         //player.setYPos(600 - player.getPlayerSize());
         player.setGc(gc);
         bullet = new Bullet(0, 0);
@@ -214,7 +217,7 @@ public class Game extends Application {
         if (collision.destroyWalls(bulletImageView, newBullet.getSpeedX(),
                 newBullet.getSpeedY(), root) || destroy(bulletImageView, collision)) {
             ImageView explosion = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images" +
-                    "\\explode.png", 20, 20, true, true));
+                    "\\explode.png", 4*tankSize/5, 4*tankSize/5, true, true));
             explosion.setX(bulletImageView.getX());
             explosion.setY(bulletImageView.getY());
             root.getChildren().add(explosion);
@@ -231,8 +234,8 @@ public class Game extends Application {
         }
         if (newBullet.getxPos() < 0 || newBullet.getxPos() > canvasWidth - newBullet.getBulletSize() ||
                 newBullet.getyPos() < 0 || newBullet.getyPos() > canvasHeight - newBullet.getBulletSize()
-                || Math.abs(newBullet.getxPos() - newBullet.getStartingX()) >= 200 ||
-                Math.abs(newBullet.getyPos() - newBullet.getStartingY()) >= 200) {
+                || Math.abs(newBullet.getxPos() - newBullet.getStartingX()) >= canvasWidth/3 ||
+                Math.abs(newBullet.getyPos() - newBullet.getStartingY()) >= canvasWidth/3) {
             newBullet.kill();
         }
     }
@@ -248,7 +251,7 @@ public class Game extends Application {
                         player.addDestroyedTanks(tanks.get(i));
                         user.addScore(tanks.get(i).getScore());
                         explosion = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images" +
-                                "\\explode.png", 20, 20, true, true));
+                                "\\explode.png", 4*tankSize/5, 4*tankSize/5, true, true));
                         double xPos = tanks.get(i).getXPos();
                         double yPos = tanks.get(i).getYPos();
                         explosion.setX(xPos);
@@ -276,9 +279,9 @@ public class Game extends Application {
 
     public void setPosWhileShooting(Bullet newBullet) {
         newBullet.setStartingX(player.getXPos()
-                + player.getPlayerSize() / 2 - newBullet.getBulletSize() / 2);
+                + player.getTankSize() / 2 - newBullet.getBulletSize() / 2);
         newBullet.setxPos(newBullet.getStartingX());
-        newBullet.setStartingY(player.getYPos() + player.getPlayerSize() / 2 - newBullet.getBulletSize() / 2);
+        newBullet.setStartingY(player.getYPos() + player.getTankSize() / 2 - newBullet.getBulletSize() / 2);
         newBullet.setyPos(newBullet.getStartingY());
         newBullet.setSpeedX(Math.cos(Math.toRadians(newBullet.getAngle())) * newBullet.getBulletSpeed());
         newBullet.setSpeedY(-Math.sin(Math.toRadians(newBullet.getAngle())) * newBullet.getBulletSpeed());

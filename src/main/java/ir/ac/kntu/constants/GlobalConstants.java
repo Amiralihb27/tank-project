@@ -11,6 +11,15 @@ public class GlobalConstants {
     public static int bulletSpeed;
 
 
+    public static int speedX;
+
+
+    public static int speedY;
+
+    public static int timeForSpeacialPowers;
+
+
+
     public GlobalConstants(int width, int height) {
         canvasWidth = width;
         canvasHeight = height;
@@ -47,5 +56,13 @@ public class GlobalConstants {
 
     public static void setBulletSpeed(int bulletSpeed) {
         GlobalConstants.bulletSpeed = bulletSpeed;
+    }
+
+    public static int getTimeForSpeacialPowers() {
+        return timeForSpeacialPowers;
+    }
+
+    public static void setTimeForSpeacialPowers(int timeForSpeacialPowers) {
+        GlobalConstants.timeForSpeacialPowers = timeForSpeacialPowers;
     }
 }

@@ -1,5 +1,6 @@
 package ir.ac.kntu.gameobjects;
 
+import ir.ac.kntu.constants.GlobalConstants;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.image.Image;
@@ -21,13 +22,13 @@ public abstract class Tank {
 
     private Bullet bullet;
 
-    private static int tankSize = 25;
+    private static int tankSize;
 
-    private int speedY = 5;
+    private int speedY;
 
     private Direction direction = Direction.UP;
 
-    private int speedX = 5;
+    private int speedX;
 
     private ImageView imageView;
 
@@ -189,8 +190,8 @@ public abstract class Tank {
 
     }
 
-    public void lostHP(int power){
-        this.health-=power;
+    public void lostHP(int power) {
+        this.health -= power;
     }
 
     public void setHealth(int health) {
@@ -198,10 +199,9 @@ public abstract class Tank {
     }
 
 
-    public void shootBullet(Pane root, ArrayList<Wall> walls, ArrayList<Tank> tanks,Flag flag) {
+    public void shootBullet(Pane root, ArrayList<Wall> walls, ArrayList<Tank> tanks, Flag flag) {
         ImageView bullet = new ImageView(new Image(this.getBullet().getBulletImage().getUrl(),
-                15, 15, true, true));
-        // System.out.println(bullet.getFitHeight());
+                15 * tankSize / 25, 15 * tankSize / 25, true, true));
         root.getChildren().add(bullet);
         // Set initial position of the bullet
         getBullet().setStartingX(this.getXPos()); // Adjust the starting position as needed
@@ -212,8 +212,8 @@ public abstract class Tank {
         Collision collision = new Collision(walls);
         collision.setTanks(tanks);
         collision.setFlag(flag);
-
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.02), event -> updateBullet(bullet, root, collision)));
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.03),
+                event -> updateBullet(bullet, root, collision)));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
         // Enable shooting initially
@@ -290,16 +290,16 @@ public abstract class Tank {
         resetTimeline.play();
     }
 
-    public void chooseVerticalPicture(int speedY,int size){
+    public void chooseVerticalPicture(int speedY, int size) {
 
     }
 
-    public void chooseHorizontalPicture(int speedX,int size){
+    public void chooseHorizontalPicture(int speedX, int size) {
 
     }
 
-    public void movement(int size,Collision collision){
-        TankMovements tankMovements=new TankMovements(this);
-        tankMovements.initializeDirection(size,collision);
+    public void movement(int size, Collision collision) {
+        TankMovements tankMovements = new TankMovements(this);
+        tankMovements.initializeDirection(size, collision);
     }
 }

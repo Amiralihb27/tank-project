@@ -2,6 +2,8 @@ package ir.ac.kntu.gameobjects;
 
 import javafx.scene.image.ImageView;
 
+import static ir.ac.kntu.constants.GlobalConstants.timeForSpeacialPowers;
+
 public abstract class SpecialPowers {
 
     private double xPos;
@@ -12,10 +14,13 @@ public abstract class SpecialPowers {
 
     private  ImageView imageView;
 
+    private int time;
+
 
     public SpecialPowers(double xPos, double yPos) {
         this.xPos = xPos;
         this.yPos = yPos;
+        time=timeForSpeacialPowers;
     }
 
     public double getxPos() {
@@ -57,5 +62,13 @@ public abstract class SpecialPowers {
 
     public void addBuff(Player player){
 
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
     }
 }

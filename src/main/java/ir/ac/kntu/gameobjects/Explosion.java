@@ -7,6 +7,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
+import static ir.ac.kntu.constants.GlobalConstants.tankSize;
+
 public class Explosion {
 
     private ImageView explosion;
@@ -23,7 +25,7 @@ public class Explosion {
                     root.getChildren().remove(explosion);
                     // Add the second image after the specified delay
                     explosion = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images" +
-                            "\\explode1.png", 30, 30, true, true));
+                            "\\explode1.png", tankSize, tankSize, true, true));
                     explosion.setX(xPos);
                     explosion.setY(yPos);
                     root.getChildren().add(explosion);
@@ -32,7 +34,7 @@ public class Explosion {
                     // Remove the second image
                     root.getChildren().remove(explosion);
                     explosion = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images" +
-                            "\\explode2.png", 30, 30, true, true));
+                            "\\explode2.png", tankSize, tankSize, true, true));
                     explosion.setX(xPos);
                     explosion.setY(yPos);
                     // Add the third image after the specified delay

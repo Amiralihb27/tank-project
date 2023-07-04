@@ -29,7 +29,7 @@ public class Place {
         }
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 6; j++) {
-                BrickWall brickWall = new BrickWall(11 * canvasWidth / 15, canvasHeight / 20 + 10,
+                BrickWall brickWall = new BrickWall(canvasWidth-4 * canvasWidth / 15, canvasHeight / 20 + 10,
                         new ImageView(new Image(
                                 "F:\\project4\\src\\main\\resources\\images\\stackbrick.png", size,
                                 size, true, true)));
@@ -58,7 +58,7 @@ public class Place {
         }
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 6; j++) {
-                BrickWall brickWall = new BrickWall(11 * canvasWidth / 15,
+                BrickWall brickWall = new BrickWall(canvasWidth-4 * canvasWidth / 15,
                         canvasHeight - (3 * canvasHeight / 20 + 10 + 6 * size),
                         new ImageView(new Image(
                                 "F:\\project4\\src\\main\\resources\\images\\stackbrick.png", size,
@@ -80,11 +80,20 @@ public class Place {
                                 "F:\\project4\\src\\main\\resources\\images\\stackmetal.png", size,
                                 size, true, true)));
                 walls.add(metalWall);
-                metalWall.getImageView().setX(metalWall.getImageView().getX() + 6.5 * size * i);
+                if(i==1){
+                    metalWall.getImageView().setX(canvasWidth-6 * canvasWidth / 15);
+                }else{
+                    metalWall.getImageView().setX(metalWall.getImageView().getX() + 6.5 * size * i);
+                }
                 metalWall.getImageView().setY(metalWall.getImageView().getY() + size * j);
                 metalWall.drawWall(root);
-
             }
+        }
+        addMetalToTheBot(root,size,walls,flag);
+    }
+
+    public void addMetalToTheBot(Pane root, int size, ArrayList<Wall> walls, Flag flag){
+        for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 5; j++) {
                 MetalWall metalWall = new MetalWall(2 * canvasWidth / 15 + 5 * size,
                         canvasHeight - (3 * canvasHeight / 20 + 10 + 6 * size),
@@ -92,14 +101,16 @@ public class Place {
                                 "F:\\project4\\src\\main\\resources\\images\\stackmetal.png", size,
                                 size, true, true)));
                 walls.add(metalWall);
-                metalWall.getImageView().setX(metalWall.getImageView().getX() + 6.5 * size * i);
+                if(i==1){
+                    metalWall.getImageView().setX(canvasWidth-6 * canvasWidth / 15);
+                }else{
+                    metalWall.getImageView().setX(metalWall.getImageView().getX() + 6.5 * size * i);
+                }
                 metalWall.getImageView().setY(metalWall.getImageView().getY() + size * j);
                 metalWall.drawWall(root);
-
             }
         }
         addFlag(root, size, walls, flag);
-
     }
 
 

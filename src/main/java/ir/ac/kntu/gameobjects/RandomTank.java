@@ -5,6 +5,8 @@ import javafx.scene.image.ImageView;
 
 import java.util.Random;
 
+import static ir.ac.kntu.constants.GlobalConstants.tankSize;
+
 public class RandomTank extends Tank {
 
     private String name;
@@ -66,41 +68,63 @@ public class RandomTank extends Tank {
     }
 
     public void chooseHorizontalPicture(int xPos, int size) {
-        switch (xPos) {
-            case 1:
-                getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\" + imageName
-                        + "right.png",
-                        size, size, true, true));
-                super.getBullet().setAngle(0.0);
-                break;
-            case -1:
-                getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\" + imageName
-                        + "left.png",
-                        size, size, true, true));
-                super.getBullet().setAngle(180.0);
-                break;
-            default:
-                break;
+//        switch (xPos) {
+//            case 1:
+//                getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\" + imageName
+//                        + "right.png",
+//                        size, size, true, true));
+//                super.getBullet().setAngle(0.0);
+//                break;
+//            case -1:
+//                getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\" + imageName
+//                        + "left.png",
+//                        size, size, true, true));
+//                super.getBullet().setAngle(180.0);
+//                break;
+//            default:
+//                break;
+//        }
+        if (xPos == 3*tankSize/50) {
+            getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\" + imageName
+                    + "right.png",
+                    size, size, true, true));
+            super.getBullet().setAngle(0.0);
+        } else if (xPos == -1 * 3*tankSize/50) {
+            getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\" + imageName
+                    + "left.png",
+                    size, size, true, true));
+            super.getBullet().setAngle(180.0);
         }
     }
 
     public void chooseVerticalPicture(int ySpeed, int size) {
-        switch (ySpeed) {
-            case 1:
-                getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\" + imageName
-                        + "down.png",
-                        size, size, true, true));
-                super.getBullet().setAngle(270.0);
-                break;
-            case -1:
-                getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\" + imageName
-                        + "up.png",
-                        size, size, true, true));
-                super.getBullet().setAngle(90.0);
-                break;
-            default:
-                break;
-
+//        switch (ySpeed) {
+//            case 1:
+//                getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\" + imageName
+//                        + "down.png",
+//                        size, size, true, true));
+//                super.getBullet().setAngle(270.0);
+//                break;
+//            case -1:
+//                getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\" + imageName
+//                        + "up.png",
+//                        size, size, true, true));
+//                super.getBullet().setAngle(90.0);
+//                break;
+//            default:
+//                break;
+//
+//        }
+        if (ySpeed == 3*tankSize/50) {
+            getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\" + imageName
+                    + "down.png",
+                    size, size, true, true));
+            super.getBullet().setAngle(270.0);
+        } else if (ySpeed == -3*tankSize/50) {
+            getImageView().setImage(new Image("F:\\project4\\src\\main\\resources\\images\\" + imageName
+                    + "up.png",
+                    size, size, true, true));
+            super.getBullet().setAngle(90.0);
         }
     }
 }

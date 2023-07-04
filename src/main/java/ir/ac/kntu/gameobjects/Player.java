@@ -1,6 +1,7 @@
 package ir.ac.kntu.gameobjects;
 
 import ir.ac.kntu.Game;
+import ir.ac.kntu.constants.GlobalConstants;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -22,19 +23,12 @@ public class Player extends Tank {
 
     private GraphicsContext gc;
 
-    private int playerSize = 25;
+  //  private int playerSize = 25;
 
     private Game game;
 
     private ArrayList<Tank> tanks = new ArrayList<>();
 
-    public int getPlayerSize() {
-        return playerSize;
-    }
-
-    public void setPlayerSize(int playerSize) {
-        this.playerSize = playerSize;
-    }
 
     public Player() {
 
@@ -43,6 +37,9 @@ public class Player extends Tank {
     public Player(double xPos, double yPos, ImageView imageView) {
         super(xPos, yPos, imageView);
         super.setHealth(3);
+        setTankSize(GlobalConstants.tankSize);
+        setSpeedX(7*canvasWidth/600);
+        setSpeedY(7*canvasHeight/600);
     }
 
     public void setGame(Game game) {
@@ -50,13 +47,13 @@ public class Player extends Tank {
     }
 
     public void draw(GraphicsContext gc) {
-        gc.drawImage(super.getImageView().getImage(), super.getXPos(), super.getYPos(), playerSize, playerSize);
+        gc.drawImage(super.getImageView().getImage(), super.getXPos(), super.getYPos(), getTankSize(), getTankSize());
     }
 
     @Override
     public void lostHP() {
         super.setXPos(canvasWidth/3);
-        super.setYPos(canvasHeight - playerSize);
+        super.setYPos(canvasHeight - getTankSize());
         super.lostHP();
         if (getHealth() <=0 ) {
             game.showResult();
@@ -114,7 +111,7 @@ public class Player extends Tank {
         super.getBullet().initializeTheDirection(super.getDirection());
         //  Collision collision = new Collision(walls);
 
-        if (getYPos() + getSpeedY() > 0 && !collision.checkCollision(this, 0, super.getSpeedY() * -1)) {
+        if (getYPos() - getSpeedY() > 0 && !collision.checkCollision(this, 0, super.getSpeedY() * -1)) {
             super.setYPos(super.getYPos() - super.getSpeedY());
             super.getImageView().setY(super.getYPos());
         }
@@ -127,7 +124,7 @@ public class Player extends Tank {
         super.setDirection(Direction.DOWN);
         super.getBullet().initializeTheDirection(super.getDirection());
         //Collision collision = new Collision(walls);
-        if (getYPos() + getPlayerSize() < canvasHeight &&
+        if (getYPos() + getTankSize() < canvasHeight &&
                 !collision.checkCollision(this, 0, super.getSpeedY())) {
             super.setYPos(super.getYPos() + super.getSpeedY());
             super.getImageView().setY(super.getYPos());
@@ -157,7 +154,7 @@ public class Player extends Tank {
         super.getBullet().initializeTheDirection(super.getDirection());
         //Collision collision = new Collision(walls);
 
-        if (getXPos() + playerSize + getSpeedX() < canvasWidth &&
+        if (getXPos() + getTankSize() + getSpeedX() < canvasWidth &&
                 !collision.checkCollision(this, super.getSpeedX(), 0)) {
             super.setXPos(super.getXPos() + super.getSpeedX());
             super.getImageView().setX(super.getXPos());
@@ -171,13 +168,13 @@ public class Player extends Tank {
         int dx = 0;
         int dy = 0;
         if (angle == 0.0) {
-            dx += playerSize / 2;
-            dy += playerSize / 2;
+            dx += getTankSize() / 2;
+            dy += getTankSize() / 2;
         } else if (angle == 270.0) {
-            dy += playerSize / 2;
-            dx += playerSize / 2;
+            dy += getTankSize() / 2;
+            dx += getTankSize() / 2;
         } else if (angle == 180.0) {
-            dy += playerSize / 2;
+            dy += getTankSize() / 2;
         }
         copy.setX(getImageView().getX() + dx);
         copy.setY(getImageView().getY() + dy);

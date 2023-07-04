@@ -9,8 +9,7 @@ import javafx.util.Duration;
 
 import java.util.Random;
 
-import static ir.ac.kntu.constants.GlobalConstants.canvasHeight;
-import static ir.ac.kntu.constants.GlobalConstants.canvasWidth;
+import static ir.ac.kntu.constants.GlobalConstants.*;
 
 public class TankMovements {
 
@@ -26,7 +25,7 @@ public class TankMovements {
         int rand = random.nextInt(4);
         if (tank.isFull()) {
             tank.makeEmpty();
-            System.out.println("full");
+//            System.out.println("full");
         }
         while (tank.getPositionToRespawn()[rand] == -100) {
             rand = random.nextInt(4);
@@ -42,7 +41,7 @@ public class TankMovements {
     public void chooseToMove(int size, Collision collision) {
         Random random = new Random();
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> {
-            int[] directions = {-1, 0, 1};
+            int[] directions = {-3*tankSize/50, 0, 3*tankSize/50};
             tank.setSpeedX(directions[random.nextInt(3)]);
             tank.setSpeedY(directions[random.nextInt(3)]);
             if (tank.getSpeedX() != 0 && tank.getSpeedY() != 0) {

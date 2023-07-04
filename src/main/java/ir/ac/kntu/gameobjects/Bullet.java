@@ -4,6 +4,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 
+import static ir.ac.kntu.constants.GlobalConstants.canvasWidth;
+import static ir.ac.kntu.constants.GlobalConstants.tankSize;
+
 
 public class Bullet {
     private double xPos;
@@ -28,7 +31,7 @@ public class Bullet {
 
     private Image bulletImage;
 
-    private double bulletSpeed = 5.0;
+    private double bulletSpeed = 7.0;
 
     public Bullet(double xPos, double yPos) {
         this.xPos = xPos;
@@ -37,6 +40,8 @@ public class Bullet {
         this.speedY = 0.0;
         this.alive = false;
         bulletImage = new Image("F:\\project4\\src\\main\\resources\\images\\UpBullet.png");
+        bulletSpeed=canvasWidth*7.0/600;
+        bulletSize=15*tankSize/25;
     }
 
     public double getBulletSpeed() {
