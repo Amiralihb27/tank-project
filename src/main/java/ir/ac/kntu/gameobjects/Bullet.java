@@ -40,8 +40,8 @@ public class Bullet {
         this.speedY = 0.0;
         this.alive = false;
         bulletImage = new Image("F:\\project4\\src\\main\\resources\\images\\UpBullet.png");
-        bulletSpeed=canvasWidth*7.0/600;
-        bulletSize=15*tankSize/25;
+        bulletSpeed = canvasWidth * 7.0 / 600;
+        bulletSize = 15 * tankSize / 25;
     }
 
     public double getBulletSpeed() {
@@ -139,8 +139,8 @@ public class Bullet {
         this.shooting = shooting;
     }
 
-    public void revive(boolean status){
-        alive=status;
+    public void revive(boolean status) {
+        alive = status;
     }
 
     public boolean isAlive() {
@@ -160,14 +160,19 @@ public class Bullet {
         switch (direction) {
             case UP:
                 bulletImage = new Image("F:\\project4\\src\\main\\resources\\images\\UpBullet.png");
+                break;
             case DOWN:
-                bulletImage = new Image("F:\\project4\\src\\main\\resources\\images\\UpBullet.png");
+                bulletImage = new Image("F:\\project4\\src\\main\\resources\\images\\DownBullet.png");
+                break;
             case LEFT:
-                bulletImage = new Image("F:\\project4\\src\\main\\resources\\images\\UpBullet.png");
+                bulletImage = new Image("F:\\project4\\src\\main\\resources\\images\\LeftBullet.png");
+                break;
             case RIGHT:
                 bulletImage = new Image("F:\\project4\\src\\main\\resources\\images\\RightBullet.png");
+                break;
             default:
                 bulletImage = new Image("F:\\project4\\src\\main\\resources\\images\\UpBullet.png");
+                break;
         }
     }
 

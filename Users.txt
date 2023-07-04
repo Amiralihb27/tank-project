@@ -1,5 +1,7 @@
-a s 0 2500 11
+a s 0 0 0
 Mohammad Ahmadi 0 0 0
 Ali Hamedi 0 0 0
 Tanjiro Kamado 0 0 0
 Kyojuro Rengoku 0 0 0
+mehdi amiri 0 0 0
+hossein habibi 0 0 0

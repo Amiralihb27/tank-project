@@ -195,7 +195,6 @@ public class Menu {
         // Create the sign-in scene
         scene = new Scene(signInLayout, 400, 400);
 
-        //    scene.getStylesheets().add(getClass().getResource("java/ir/ac/kntu/style.css").toExternalForm());
         stage.setTitle("Sign In");
         stage.setScene(scene);
     }
