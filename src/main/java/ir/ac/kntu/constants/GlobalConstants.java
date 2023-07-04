@@ -18,6 +18,8 @@ public class GlobalConstants {
 
     public static int timeForSpeacialPowers;
 
+    public static int numberOfTanks;
+
 
 
     public GlobalConstants(int width, int height) {

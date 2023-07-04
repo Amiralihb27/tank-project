@@ -21,6 +21,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import static ir.ac.kntu.constants.GlobalConstants.numberOfTanks;
+
 public class DefineStages {
 
     private int currentImageIndex;
@@ -108,7 +110,7 @@ public class DefineStages {
             hbox[currentImageIndex].setAlignment(Pos.CENTER);
             imageVBox.getChildren().add(currentImageIndex, hbox[currentImageIndex]);
         } else if (event.getCode() == KeyCode.ENTER) {
-            game.setNumberOfTotalTanks(currentImageIndex * 4 + 10);
+            game.setNumberOfTotalTanks(currentImageIndex * 4 + numberOfTanks);
             loading(imageViews[currentImageIndex], texts[currentImageIndex]);
         }
     }
@@ -120,7 +122,7 @@ public class DefineStages {
                 "loading.png", 200, 200, true, true));
         stage = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\" +
                 "stage.png", 200, 200, true, true));
-        Text totalTanks = new Text("Total tanks: " + ((currentImageIndex * 4) + 10));
+        Text totalTanks = new Text("Total tanks: " + ((currentImageIndex * 4) + numberOfTanks));
         totalTanks.setFont(Font.font("Arial", 30));
         totalTanks.setFill(Color.GRAY);
         VBox vBox = new VBox(10);

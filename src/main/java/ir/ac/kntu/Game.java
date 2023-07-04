@@ -92,6 +92,9 @@ public class Game extends Application {
         System.out.println("Enter the duration for the special powers to stay in the grid.");
         int time=sc.nextInt();
         timeForSpeacialPowers=time;
+        System.out.println("Enter the number of total tanks for the first stage: ");
+        int number=sc.nextInt();
+        numberOfTanks=number;
         launch(args);
     }
 
