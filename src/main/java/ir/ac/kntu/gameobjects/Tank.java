@@ -219,7 +219,7 @@ public abstract class Tank {
         // Enable shooting initially
         getBullet().setShooting(true);
         // Set up shooting timeline
-        Timeline shootingTimeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+        Timeline shootingTimeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> {
             if (!bullet.isVisible() && root.getChildren().contains(this.getImageView())) {
                 // Shoot the bullet if it's not visible
                 shootBullet(bullet);

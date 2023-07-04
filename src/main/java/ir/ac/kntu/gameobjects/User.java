@@ -35,7 +35,6 @@ public class User {
         System.out.println(lineNumber);
         this.currentLine = lineNumber;
         try {
-            // Read the original file
             File file = new File("Users.txt");
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
@@ -43,7 +42,6 @@ public class User {
             while ((line = reader.readLine()) != null) {
                 // Append the new text to the desired line
                 if (currentLine == lineNumber) {
-                    // String[] words=line.split(" ");
                     String[] words = line.split(" ");
                     this.score = Integer.parseInt(words[2]);
                     this.highScore = Integer.parseInt(words[3]);
@@ -120,21 +118,21 @@ public class User {
     }
 
     public void addTotalNumberOfMatches() {
-        this.numberOfMatches++;
         String filePath = "Users.txt"; // Specify the path to your text file
         int lineNumber = currentLine; // Specify the line number where you want to add the text
         try {
-            // Read the original file
             File file = new File(filePath);
             BufferedReader reader = new BufferedReader(new FileReader(file));
             StringBuilder content = new StringBuilder();
             String line;
             int currentLine = 0;
             while ((line = reader.readLine()) != null) {
-                // Append the new text to the desired line
                 if (currentLine == lineNumber) {
+                    String[] words =line.split(" ");
+                    int match=Integer.parseInt(words[4])+1;
+                    numberOfMatches=match;
                     content.append(this.userName).append(" ").append(this.passWord).append(" ")
-                            .append(this.score).append(" ").append(this.highScore).append(" ").append(numberOfMatches)
+                            .append(this.score).append(" ").append(this.highScore).append(" ").append(match)
                             .append(System.lineSeparator());
                 } else {
                     content.append(line).append(System.lineSeparator());
