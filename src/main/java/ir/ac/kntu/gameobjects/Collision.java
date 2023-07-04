@@ -1,5 +1,7 @@
 package ir.ac.kntu.gameobjects;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -7,8 +9,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.Random;
+
+import static ir.ac.kntu.constants.GlobalConstants.canvasHeight;
+import static ir.ac.kntu.constants.GlobalConstants.canvasWidth;
 
 public class Collision {
 
@@ -21,6 +28,10 @@ public class Collision {
     private ImageView explosion;
 
     private Flag flag;
+
+    private SpecialPowers specialPowers;
+
+    private Pane root;
 
 
     public Collision(ArrayList<Wall> walls) {
@@ -44,6 +55,10 @@ public class Collision {
         this.flag = flag;
     }
 
+    public void setRoot(Pane root) {
+        this.root = root;
+    }
+
     public ArrayList<Wall> getWalls() {
         return walls;
     }
@@ -52,6 +67,40 @@ public class Collision {
         this.walls = walls;
     }
 
+    public void setSpecialPowers(Pane root, RandomTank randomTank) {
+        this.specialPowers = randomTank.getSpecialPowers();
+        boolean isFull = true;
+        while (isFull) {
+            isFull = checkToAddSpecialPower(randomTank);
+        }
+        root.getChildren().add(randomTank.getSpecialPowers().getImageView());
+        Timeline start = new Timeline(new KeyFrame(Duration.seconds(15), event -> {
+            root.getChildren().remove(randomTank.getSpecialPowers().getImageView());
+        }));
+        start.setCycleCount(1);
+        start.play();
+    }
+
+    public boolean checkToAddSpecialPower(RandomTank randomTank) {
+        Random random = new Random();
+        randomTank.getSpecialPowers().setxPos(random.nextDouble(canvasWidth));
+        randomTank.getSpecialPowers().setyPos(random.nextDouble(canvasHeight));
+        Bounds bounds = randomTank.getSpecialPowers().getImageView().getBoundsInParent();
+        for (Wall wall : walls) {
+            if (bounds.intersects(wall.getImageView().getBoundsInParent())) {
+                return true;
+            }
+        }
+
+
+        for (Tank other : this.tanks) {
+            if (bounds.intersects(other.getImageView().getBoundsInParent())) {
+                return true;
+            }
+        }
+        return false;
+
+    }
 //    public boolean checkCollision(ImageView tank, double dx, double dy) {
 //        tank.setLayoutX(tank.getLayoutX() + dx);
 //        tank.setLayoutY(tank.getLayoutY() + dy);
@@ -67,7 +116,6 @@ public class Collision {
 //    }
 
     public boolean checkCollision(Tank tank, double dx, double dy) {
-
         ImageView copy;
         if (tank.getClass().getSimpleName().equals("Player")) {
             copy = makeCopy(tank);
@@ -81,15 +129,20 @@ public class Collision {
                 return true;
             }
         }
-
         for (Tank other : this.tanks) {
             if (copy.getBoundsInParent().intersects(other.getImageView().getBoundsInParent())
                     && !tank.equals(other)) {
                 return true;
             }
         }
+        if (this.specialPowers != null && tank.getClass().getSimpleName().equals("Player")) {
+            if (copy.getBoundsInParent().intersects(specialPowers.getImageView().getBoundsInParent()) &&
+                    root.getChildren().contains(specialPowers.getImageView())) {
+                root.getChildren().remove(specialPowers.getImageView());
+                specialPowers.addBuff((Player) tank);
+            }
+        }
         return false;
-
     }
 
     public ImageView makeCopy(Tank tank) {
@@ -170,7 +223,7 @@ public class Collision {
             Bounds bounds2 = this.tanks.get(i).getImageView().getBoundsInParent();
             if (bounds1.intersects(bounds2) && tanks.get(i).getClass().getSimpleName().equals("Player")) {
                 tanks.get(i).lostHP();
-                System.out.println("Health: "+tanks.get(i).getHealth());
+                System.out.println("Health: " + tanks.get(i).getHealth());
                 if (tanks.get(i).getHealth() <= 0) {
                     explosion = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images" +
                             "\\explode.png", 20, 20, true, true));

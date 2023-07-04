@@ -40,9 +40,6 @@ public class Game extends Application {
 
     private ArrayList<Wall> walls = new ArrayList<>();
 
-
-    private GameState gameState = GameState.RESUMED;
-
     private Scene scene;
 
 
@@ -136,7 +133,6 @@ public class Game extends Application {
         gc = canvas.getGraphicsContext2D();
         Rectangle rect = new Rectangle(0, 0, width, heidth);
         root.setStyle("-fx-background-color: black;");
-        // Group obstaclesGroup = new Group();
         rect.setFill(null);
         rect.setStroke(Color.RED);
         rect.setStrokeWidth(5);
@@ -146,21 +142,23 @@ public class Game extends Application {
                 PLAYER_SIZE, PLAYER_SIZE, true, true));
         flag = new Flag(canvasWidth / 2, canvasHeight - PLAYER_SIZE, flagImage);
         place.addBrickToTheTop(root, PLAYER_SIZE, walls, flag);
-        handlingTanks();
+        Collision collision = new Collision(walls);
+        collision.setTanks(tanks);
+        collision.setFlag(flag);
+        collision.setRoot(root);
+        handlingTanks(collision);
         scene = new Scene(root, width, heidth);
         scene.setFill(Color.BLACK);
         player.setGame(this);
-        Collision collision = new Collision(walls);
-        collision.setTanks(tanks);
         player.move(scene, gc, collision);
         primaryStage.setTitle("Player Shoot Game");
         primaryStage.setScene(scene);
         primaryStage.show();
-        shooting(gc);
+        shooting(gc, collision);
     }
 
 
-    public void handlingTanks() {
+    public void handlingTanks(Collision collision) {
         ImageView imageView = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images\\tank1.png"));
         player = new Player(canvasWidth / 3, canvasHeight - PLAYER_SIZE, imageView);
         //player.setYPos(600 - player.getPlayerSize());
@@ -171,7 +169,7 @@ public class Game extends Application {
         root.getChildren().add(canvas);
         tanks.add(player);
         creatingEnemy();
-        shooting(gc);
+        shooting(gc, collision);
 
     }
 
@@ -182,7 +180,7 @@ public class Game extends Application {
     }
 
 
-    public void shooting(GraphicsContext gc) {
+    public void shooting(GraphicsContext gc, Collision collision) {
         AnimationTimer timer = new AnimationTimer() {
             long lastTime = System.nanoTime();
 
@@ -200,7 +198,7 @@ public class Game extends Application {
                 if (newBullet.isAlive()) {
                     newBullet.update(deltaTime);
                     newBullet.draw(gc);
-                    checkCollisionForBullet(newBullet);
+                    checkCollisionForBullet(newBullet, collision);
 
                 }
             }
@@ -208,13 +206,13 @@ public class Game extends Application {
         timer.start();
     }
 
-    public void checkCollisionForBullet(Bullet newBullet) {
-        Collision collision = new Collision(walls);
+    public void checkCollisionForBullet(Bullet newBullet, Collision collision) {
+        //Collision collision = new Collision(walls);
         ImageView bulletImageView = new ImageView(newBullet.getBulletImage());
         bulletImageView.setY(newBullet.getyPos());
         bulletImageView.setX(newBullet.getxPos());
         if (collision.destroyWalls(bulletImageView, newBullet.getSpeedX(),
-                newBullet.getSpeedY(), root) || destroy(bulletImageView)) {
+                newBullet.getSpeedY(), root) || destroy(bulletImageView, collision)) {
             ImageView explosion = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images" +
                     "\\explode.png", 20, 20, true, true));
             explosion.setX(bulletImageView.getX());
@@ -239,15 +237,14 @@ public class Game extends Application {
         }
     }
 
-    public boolean destroy(ImageView bullet) {
+    public boolean destroy(ImageView bullet, Collision collision) {
         Bounds bounds1 = bullet.getBoundsInParent();
         for (int i = 0; i < this.tanks.size(); i++) {
             Bounds bounds2 = this.tanks.get(i).getImageView().getBoundsInParent();
             if (bounds1.intersects(bounds2) && !this.tanks.get(i).getClass().getSimpleName().equals("Player")) {
-                tanks.get(i).lostHP();
+                tanks.get(i).lostHP(player.getPowerOfTheBullet());
                 if (tanks.get(i).getHealth() <= 0) {
                     if (!tanks.get(i).getClass().getSimpleName().equals("Player")) {
-                        player.addScore(tanks.get(i).getScore());
                         player.addDestroyedTanks(tanks.get(i));
                         user.addScore(tanks.get(i).getScore());
                         explosion = new ImageView(new Image("F:\\project4\\src\\main\\resources\\images" +
@@ -258,6 +255,7 @@ public class Game extends Application {
                         explosion.setY(yPos);
                         root.getChildren().add(explosion);
                         root.getChildren().remove(tanks.get(i).getImageView());
+                        powerUp(tanks.get(i),collision);
                         tanks.remove(tanks.get(i));
                         new Explosion(explosion).explosionAnimation(xPos, yPos, root);
                         return true;
@@ -267,6 +265,12 @@ public class Game extends Application {
             }
         }
         return false;
+    }
+
+    public void powerUp(Tank tank,Collision collision){
+        if (tank.getClass().getSimpleName().equals("RandomTank")) {
+            collision.setSpecialPowers(root, (RandomTank) tank);
+        }
     }
 
 
@@ -287,7 +291,7 @@ public class Game extends Application {
             Platform.runLater(() -> {
                 int lineNumber = user.getCurrentLine(); // Specify the line number where you want to add the text
                 try {
-                    BufferedReader reader = new BufferedReader(new FileReader( new File("Users.txt")));
+                    BufferedReader reader = new BufferedReader(new FileReader(new File("Users.txt")));
                     StringBuilder content = new StringBuilder();
                     String line;
                     int currentLine = 0;
@@ -303,7 +307,7 @@ public class Game extends Application {
                         currentLine++;
                     }
                     reader.close();
-                    FileWriter writer = new FileWriter( new File("Users.txt"));
+                    FileWriter writer = new FileWriter(new File("Users.txt"));
                     writer.write(content.toString());
                     writer.close();
                 } catch (IOException e) {

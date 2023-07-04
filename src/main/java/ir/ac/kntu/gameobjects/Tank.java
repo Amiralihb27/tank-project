@@ -189,6 +189,10 @@ public abstract class Tank {
 
     }
 
+    public void lostHP(int power){
+        this.health-=power;
+    }
+
     public void setHealth(int health) {
         this.health = health;
     }
